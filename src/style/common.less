@@ -1,0 +1,78 @@
+@base-font-color1:#333333;
+@base-font-color2:#666666;
+@base-font-color3:#999999;
+@base-font-color4:#F2B643;
+@btn-bgc-color:#F2B643;
+/*字体样式大小和颜色*/
+.font-style(@big,@color){
+    font-size:@big;
+    color:@color;
+}
+.font_common(@width,@height){
+    width:@width;
+    height:@height;
+    line-height:@height;
+    text-align: center;
+}
+/*设置flex并居中排列*/
+.flex-simple{
+    display: -webkit-flex;
+    display: -o-flex;
+    display: -moz-flex;
+    display: flex;
+}
+.flex{
+    display: -webkit-flex;
+    display: -o-flex;
+    display: -moz-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    -o-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+}
+.flex_num(@num){
+    -webkit-flex:@num;
+    -moz-flex:@num;
+    -o-flex:@num;
+    flex:@num;
+}
+/*设置图片大小*/
+.imgStyle(@width,@height){
+    width:@width;
+    height:@height;
+}
+/*内填充*/
+.padding(@top,@right,@bottom,@left){
+    padding:@top @right @bottom @left;
+}
+/*左内填充*/
+.left-padding(@left){
+    padding-left:@left;
+}
+/*右内填充*/
+.right-padding(@right){
+    padding-right:@right;
+}
+/*上内填充*/
+.top-padding(@top){
+    padding-top:@top;
+}
+/*下内填充*/
+.bottom-padding(@bottom){
+    padding-bottom:@bottom;
+}
+/*边框*/
+.radius(@radian){
+    -webkit-border-radius: @radian;
+    -moz-border-radius: @radian;
+    -o-border-radius: @radian;
+    border-radius: @radian;
+}
+/*定位居中*/
+.position_middle(@width,@height){
+    left:50%;
+    margin-left:-@width/2;
+    top:50%;
+    margin-top:-@height/2;
+}

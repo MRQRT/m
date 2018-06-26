@@ -1,0 +1,148 @@
+*{margin: 0; padding: 0; box-sizing: border-box;font-family: PingFang-SC-Regular,'Microsoft YaHei',Arial,Helvetica,sans-serif;}
+*:not(input,textarea){
+    user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+}
+body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-style: normal;
+    text-decoration: none;
+    border: none;
+    font-weight: normal;
+    box-sizing: border-box;
+    outline: none;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-font-smoothing: antialiased;
+}
+img { border:none; width:100%;}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar 
+{  
+    width: 0px;  
+    height: 0px;  
+    background-color: #F5F5F5;
+}  
+  
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);  
+    border-radius: 10px;  
+    background-color: #F5F5F5; 
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #555;  
+}  
+input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+}
+input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
+    -webkit-appearance: none;
+}
+
+textarea { -webkit-appearance: none; -moz-appearance: none;}   
+
+html,body{
+    width: 100%;
+}
+
+.clear:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.clear{
+    zoom:1;
+}
+
+.back_img{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.margin{
+    margin: 0 auto;
+}
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: block;
+}
+/*溢出省略处理*/
+.ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#click_btn{
+    background-color: #F2B643;
+    display: block;
+    text-decoration: none;
+}
+#click_btn:link{
+    background-color: #F2B643;
+}
+#click_btn:hover{
+    background-color: #F2B643;
+}
+#click_btn:active{
+    background-color: #eda835;
+}
+#click_btn:visited{
+    background-color: #F2B643;
+}
+/*弹出框样式*/
+.mint-msgbox-wrapper>.mint-msgbox{
+    width: 5.5rem;
+    border-radius: .15rem;
+    border: none;
+}
+.mint-msgbox-wrapper .mint-msgbox-title{
+    color:#000000;
+    font-size:.32rem;
+}
+.mint-msgbox-wrapper .mint-msgbox-message{
+    color: #333333;
+    margin: 0;
+    text-align: center;
+    line-height: .45rem;
+    font-size:.24rem;
+}
+.mint-msgbox-wrapper .mint-msgbox-content {
+    padding: 10px 10px 15px;
+    border-bottom: 1px solid #ddd;
+    min-height: 36px;
+    position: relative;
+}
+.mint-msgbox-wrapper .mint-msgbox-confirm,.mint-msgbox .mint-msgbox-btns .mint-msgbox-cancel{
+    font-size: .3rem;
+    color: #EDA835;
+}
+.mint-msgbox-wrapper .mint-msgbox-confirm:active,.mint-msgbox-wrapper .mint-msgbox-cancel:active{
+    color: #EDA835;
+}

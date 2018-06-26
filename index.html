@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="format-detection" content="telephone=no,email=no" /><!-- 不自动识别页面中的电话号和邮箱 -->
+    <meta name="screen-orientation" content="portrait"/><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"/><!-- qq强制竖屏 -->
+    <meta name="full-screen" content="yes"><!-- UC全屏模式 -->
+    <meta name="x5-fullscreen" content="true"><!-- QQ全屏模式 -->
+    <!-- <meta http-equiv="cache-control"   content="no-store">
+    <meta http-equiv="pragma"   content="no-store"> -->
+    <!-- 页面icon图标 -->
+    <link rel="icon" type="image/ico" href="/static/icon.ico"/>
+<!-- 高德地图的地图选址组件    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.4.5&key=3fcfa1447058e57f637314ba1d0c7d64"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js"></script> -->
+
+    <!-- <iframe id="mapPage" width="100%" height="100%" frameborder=0 
+        src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
+    </iframe> --><!-- 腾讯地图使用的地图选址组件 -->
+
+    <title>黄金管家</title>
+    <style type="text/css">
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-to{
+        opacity: 0
+    }
+    </style>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type='text/javascript'>
+      var _vds = _vds || [];
+      window._vds = _vds;
+      (function(){
+        _vds.push(['setAccountId', 'bb96dc72adc326e0']);
+        (function() {
+          var vds = document.createElement('script');
+          vds.type='text/javascript';
+          vds.async = true;
+          vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(vds, s);
+        })();
+      })();
+  </script>
+  </head>
+  <body style="margin:0;">
+  	<div id="app">
+        <router-view></router-view>
+  	</div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+[
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":2,
+        "weight":90
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":2,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":3,
+        "weight":11
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":8,
+        "weight":12
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":9,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":10,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":1,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":8,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":2,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":3,
+        "weight":45
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":8,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":9,
+        "weight":1
+    },{
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":10,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":3,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":1,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":2,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":3,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":8,
+        "weight":1
+    },
+    {
+        "amount":100,
+        "createTime":"2018-04-20 17:43:43",
+        "id":"8ad8d86362e257050162e270242a0005",
+        "productName":"",
+        "status":1,
+        "type":8,
+        "weight":1
+    }
+]
