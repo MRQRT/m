@@ -131,10 +131,33 @@ window.goToWhere=function(val){
 window.Indicat=function(){
     Indicator.close()
 }
+//获取微信登入成功后的参数
+window.getWeParams=function(userid){
+    console.log(userid)
+    var arr=userid.split('_')
+    localStorage.setItem('userId',arr[0])
+    localStorage.setItem('token',userid)
+    store.state.token=userid
+    store.state.userId=arr[0]
+    takeUserInfor()//调用获取用户信息接口
+    promise.then(function(res){
+        console.log(res)
+        if(res.code==100){
+            store.state.userInfo = res.content
+            localStorage.setItem('userInfo',res.content)
+        }
+    })
+}
 /*
  与原生交互API
  */
 if(agent=='And'){
+    //微信登入
+    window.openWeChat=function(){
+        if(window.stub&&window.stub.openWeChat){
+            window.stub.openWeChat();
+        }
+    }
     //存金成功页回首页的交互
     window.toHomePage=function(){
         if(window.stub&&window.stub.backHomePage){
@@ -204,6 +227,11 @@ if(agent=='And'){
         window.stub.cancleDialog(value)
     }
 }else{
+    //微信登入
+    window.openWeChat=function(){
+        if(!window.openWeChat)return;
+        window.openWeChat()
+    }
      //存金成功页回首页的交互
      window.toHomePage=function(){
         if(!window.backHomePage)return;

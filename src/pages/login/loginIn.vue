@@ -61,6 +61,11 @@
     <div class="login"  @click="goToNext" ref="login">
         <mt-button type="default" :class="{'hasActived':highLight,'noActived':dark}">登录</mt-button>
     </div>
+    <!--微信登入-->
+    <div class="weixin_login" style="display:block;">
+        <p class="weixin_text">其他登录方式</p>
+        <img src="../../images/weixinLogin.png" class="weixin_img" @click="weixinLogin">
+    </div>
    <!--  <a class="login" @click="goToNext" :class="{'hasActived':highLight,'noActived':dark}" ref="login">登录</a> -->
     <!--遮罩层-->
     <section class="floatLayer" v-show="picCodeVisible"></section>
@@ -208,6 +213,10 @@
             ...mapMutations([
                 'RECORD_TOKEN','RECORD_USERINFO'
             ]),
+            //微信登入
+            weixinLogin(){
+                window.openWeChat()
+            },
             //点击左上角关闭按钮
             backWard(){
                 var from=this.$route.query && this.$route.query.from
