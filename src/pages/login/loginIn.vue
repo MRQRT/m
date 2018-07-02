@@ -775,4 +775,31 @@
     vertical-align: bottom;
     margin-left:-.1rem;
 }
+.weixin_login{
+    margin-top:1rem;
+    text-align:center;
+}
+.weixin_text{
+    font-size:.24rem;
+    color:#999999;
+    position:relative;
+}
+.weixin_text:before,.weixin_text:after{
+    width:2.2rem;
+    content:'';
+    position:absolute;
+    border-top:1px solid #EEEEEE;
+    top:50%;
+    transform:translate(0,-50%);
+}
+.weixin_text:before{
+    left:.4rem;
+}
+.weixin_text:after{
+    right:.4rem;
+}
+.weixin_img{
+    width:.44rem;
+    margin-top:.5rem;
+}
 </style>

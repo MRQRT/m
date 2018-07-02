@@ -634,6 +634,7 @@ import store from '@/store'
     .fillInOrder{
         background-color: #fff;
         padding-top:.88rem;
+        height:100vh;
     }
     .produce-name{
        height:2.22rem;

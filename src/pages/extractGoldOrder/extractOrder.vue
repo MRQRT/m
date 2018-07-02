@@ -50,6 +50,7 @@
   import whale from '../../components/whale/whale.vue';
   import {queryPhysical} from '@/service/getData'
   import default1 from '@/images/defaltExtract.png'
+  import { mapState } from 'vuex'
 	export default {
 		data(){
 			return {
@@ -69,11 +70,16 @@
 			}
 		},
 		created(){
-			 this.queryPhysical();//进入页面加载第一页数据
+			 this.token ? this.queryPhysical() : '';//进入页面加载第一页数据
 		},
 		mounted() {
         
-		},
+    },
+    computed:{
+      ...mapState([
+        'token'
+      ])
+    },
     filters: {
           formatPrice(val){
               if(!val) return;
@@ -195,6 +201,9 @@
       $route(to,from){
         this.from=from.path
       },
+      token(){
+        this.token ? this.queryPhysical() : '';//进入页面加载第一页数据
+      }
     },
     activated: function () {
       if(this.from=='/extractOrderDetail'){

@@ -38,6 +38,7 @@ axios.interceptors.response.use(
         const res = response
         //401:Token 过期了,未登录授权
         if (res.data.code === 401) {
+            window.logOut()
             store.commit('CLEAR_TOKEN')
             store.commit('CLEAR_USERINFO')
             //页面有登录和未登录两种状态的不做重新登录弹框
@@ -69,12 +70,14 @@ axios.interceptors.response.use(
                     });
                     break;
                 case 401:
+                    window.logOut()
+                    store.commit('CLEAR_TOKEN')
+                    store.commit('CLEAR_USERINFO')
                     //返回 401 清除token信息并跳转到登录页面
                     MessageBox.alert('用户身份信息已失效，请重新登录', {
                         confirmButtonText: '重新登录',
                         type: 'warning'
                     }).then(() => {
-                        store.commit('CLEAR_TOKEN')
                         router.replace({path:'/loginIn'})
                     })
                     break;

@@ -52,6 +52,7 @@
 	import headTop from '../../components/header/head.vue';
     import { queryPageRegular } from '@/service/getData.js';
     import { InfiniteScroll,Indicator } from 'mint-ui';
+    import {mapState} from 'vuex'
 	export default {
 		data(){
 			return {
@@ -71,11 +72,20 @@
 			document.querySelector('.my-investment-order').style.height=hgt+'px';
 		},
 		computed:{
-			
+			...mapState([
+                'token',
+			]),
 		},
         filters:{
             regularAmount_3:function(val){
                 return (val=='— —')?'— —':Math.ceil(parseInt(val*1000))/1000
+            }
+        },
+        watch:{
+            token(){
+                if(this.token){
+                    this.loadMore()
+                }
             }
         },
 		methods:{
@@ -96,6 +106,7 @@
 			},
             //加载更多
             async loadMore(){
+                if(!this.token) return
                 this.loading = false;
                 const res=await queryPageRegular(this.pageParmas.pageNum++,this.pageParmas.pageSize);
                 //返回正确

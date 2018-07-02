@@ -71,7 +71,7 @@ import { Button,Popup,Toast,Indicator } from 'mint-ui'
 import { queryMyProfil,queryIntegralBalance,queryIntegralList,queryProductId } from '@/service/getData'
 import smrz from '@/images/smrz.png'//未实名
 import hasSm from '@/images/hasSm.png'//未实名
-
+import	{mapState} from 'vuex'
     export default {
         data() {
             return {
@@ -91,10 +91,10 @@ import hasSm from '@/images/hasSm.png'//未实名
             }
         },
         mounted() {
-           this.queryMyProfil()
-           this.queryIntegralBalance()
-           this.queryIntegralList()
-           this.queryProductId()
+           this.token ? this.queryMyProfil() : ''
+           this.token ? this.queryIntegralBalance() : ''
+           this.token ? this.queryIntegralList() : ''
+           this.token ? this.queryProductId() : ''
         },
         methods:{
             //查询鲸鱼币产品ID
@@ -187,7 +187,17 @@ import hasSm from '@/images/hasSm.png'//未实名
             },
         },
         watch:{
-            
+           token(){
+                this.token ? this.queryMyProfil() : ''
+                this.token ? this.queryIntegralBalance() : ''
+                this.token ? this.queryIntegralList() : ''
+                this.token ? this.queryProductId() : ''
+           } 
+        },
+        computed:{
+            ...mapState([
+			    'token'
+		    ]),
         },
         components: {
             headTop,

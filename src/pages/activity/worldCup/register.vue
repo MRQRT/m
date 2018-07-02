@@ -115,6 +115,12 @@
                 return
             }
         },
+        watch:{
+            token(){
+                this.token ? this.queryUserLikeInFo() : ''
+                this.token ? this.queryMyProfil() : ''
+            }
+        },
         computed:{
             ...mapState([
                 'token'
@@ -183,13 +189,17 @@
             },
             goBack(){
                 Indicator.close()
-                window.toApp();
                 var ua = navigator.userAgent.toLowerCase();
-                if (/iphone|ipad|ipod/.test(ua)) {
-		    		window.location.href='http://itunes.apple.com/cn/app/jie-zou-da-shi/id1028299545?mt=8'
-				} else if (/android/.test(ua)) {
-					window.location.href='http://android.myapp.com/myapp/detail.htm?apkName=com.mz.chamberlain'	
-				}
+			    if(localStorage.getItem('isWebview')=='andriod' || localStorage.getItem('isWebview')=='ios'){
+				    window.toApp();
+                    this.$router.push('/buyGold')
+			    }else{ //在普通浏览器或微信里
+	    		    if (/iphone|ipad|ipod/.test(ua)) {
+		    		    window.location.href='http://itunes.apple.com/cn/app/jie-zou-da-shi/id1028299545?mt=8'
+				    } else if (/android/.test(ua)) {
+					    window.location.href='http://android.myapp.com/myapp/detail.htm?apkName=com.mz.chamberlain'	
+				    }
+			    }
             },
             goRule(){
                 this.$router.push('/rule')

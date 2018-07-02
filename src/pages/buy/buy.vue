@@ -187,8 +187,8 @@ import { Toast,Indicator,Popup } from 'mint-ui'
 			this.setup_price=(this.currentPrice-0+0.5).toFixed(2)
 			this.iptEle=document.querySelector('#sp')
 			this.hasUsedCoupon=false;
-			this.queryMyProfil(); 
-			this.queryCoupons();
+			this.token ? this.queryMyProfil() : ''; 
+			this.token ? this.queryCoupons() : '';
 			this.bizCloseCheck()
 		},
 		filters:{
@@ -431,7 +431,8 @@ import { Toast,Indicator,Popup } from 'mint-ui'
 		computed:{
 			...mapState([
                 'currentPrice',
-                'selectCouponId'
+				'selectCouponId',
+				'token'
             ]),
             //买金输入时预估克重或预估金额
 			calAmount() {
@@ -494,6 +495,10 @@ import { Toast,Indicator,Popup } from 'mint-ui'
 			},
 		},
 		watch:{
+			token(){
+				this.token ? this.queryMyProfil() : ''; 
+				this.token ? this.queryCoupons() : '';
+			},
 			//设置的最大买入价
 			setup_price(val){
 				if(this.currentPrice-this.setup_price>20){

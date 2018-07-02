@@ -157,7 +157,7 @@ export default [{
             component: benefit,//生金页
             meta:{
                 // keepAlive:true
-                keepAlive:false
+                // keepAlive:false
             }
         },
         {

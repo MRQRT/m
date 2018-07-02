@@ -37,6 +37,7 @@
 	import headTop from '../../components/header/head.vue';
     import { queryCoupons } from '@/service/getData'
     import { getStore } from '@/config/mUtils'
+    import {mapState} from 'vuex'
 	export default {
 		data(){
 			return {
@@ -52,8 +53,12 @@
 			}
 		},
         created(){
-            this.userId=getStore("token","local").split("_")[0];
-            this.queryCoupons();
+            this.token ? this.queryCoupons() : '';
+        },
+        computed:{
+            ...mapState([
+                'token'
+            ])
         },
 		mounted() {
            var t=this;
@@ -80,6 +85,7 @@
                 this.$router.push('/mine');
             },
             async queryCoupons(){  //请求优惠券信息
+                this.userId=getStore("token","local").split("_")[0];
                 var res1=await queryCoupons(this.searchCondition.pageNo,this.searchCondition.pageSize,this.userId,"1");
                 if(res1.code==100){
                     if(res1.content.total==0) return;
@@ -102,6 +108,9 @@
             },
             counpon1(val){
                  this.CouponList=this.CouponList.concat(val);
+            },
+            token(){
+                this.token ? this.queryCoupons() : '';
             }
         },
         components:{

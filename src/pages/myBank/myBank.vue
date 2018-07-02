@@ -94,13 +94,18 @@ import { Popup,Toast } from 'mint-ui'
 			}
 		},
 		mounted() {
-            this.queryBankCard()
+            this.token ? this.queryBankCard() : ''
             let agent=checkAgent();
             this.equipment=agent//手机系统识别
-		},
+        },
+        watch:{
+            token(){
+                this.token ? this.queryBankCard() : ''
+            }
+        },
 		computed:{
 			...mapState([
-                'userInfo'
+                'userInfo','token'
             ]),
             singleHigh(){
                 return ((parseInt(this.singleHighest/10000))>=1)?parseFloat(this.singleHighest/10000)+'w':parseFloat(this.singleHighest);

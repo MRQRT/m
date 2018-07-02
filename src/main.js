@@ -9,7 +9,7 @@ import 'mint-ui/lib/style.css'
 import App from './App.vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { checkAgent } from '@/config/mUtils'
-import { bizCloseCheck } from '@/service/getData'
+import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import QRCode from 'qrcode'
 import './style/common.css'
@@ -57,7 +57,13 @@ function tradeTimeCheck(bizCode) {//交易时间判断
         return resolve(res);
     })
 }
-
+//获取用户信息
+function takeUserInfor() {
+    var res=queryMyProfil();
+    promise = new Promise(function (resolve, reject) {
+        return resolve(res);
+    })
+}
 router.beforeEach((to, from, next) => {
     if (to.matched.some(r => r.meta.requireAuth)) {
         if (store.state.token) {
@@ -175,6 +181,7 @@ if(agent=='And'){
     window.toApp=function(){
         if(window.stub&&window.stub.closeWindow){
             window.stub.closeWindow();
+            return true
         }
     }
     //传送userid到app
@@ -247,6 +254,7 @@ if(agent=='And'){
      window.toApp=function(){
         if(!window.closeWindow) return;
         window.closeWindow();
+        return true
     }
     //传送userid到app
     window.sendUserId=function(userId,token){

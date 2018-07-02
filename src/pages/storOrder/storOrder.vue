@@ -74,6 +74,12 @@ export default{
 			return arrTime.splice(0,arrTime.length-1).join(':')
 		}
 	},
+	watch:{
+		token(){
+			this.token ? window.sendUserId(this.token.split('_')[0],this.token.split('_')[1]) : window.sendUserId('')
+			this.token ? this.queryRecycleOrder() : ''
+		}
+	},
 	methods:{
 		async queryRecycleOrder(){
 			Indicator.open({

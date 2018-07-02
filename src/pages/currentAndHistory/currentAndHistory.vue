@@ -203,12 +203,15 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
 		},
         computed:{
             ...mapState([
-              'currentPrice',
+              'currentPrice','token'
            ]),
         },
         watch:{
             currentPrice(val){
                 return val
+            },
+            token(){
+                this.token ? this.userCmt('auto') : ''
             }
         },
 		methods:{

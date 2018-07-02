@@ -73,13 +73,16 @@ export default{
 		}
 	},
 	mounted(){
-		this.getUserInfo();
-		const personHomepage = document.getElementById('personHomepage');
-		personHomepage.style.minHeight = this.clientHeight+'px';
+		this.token ? this.getUserInfo() : '';
+	},
+	watch:{
+		token(){
+			this.token ? this.getUserInfo() : '';
+		}
 	},
 	computed: {
 		...mapState([
-			'userInfo'
+			'userInfo','token'
 		]),
 		comRealnamed: function(){
 			if(this.userInfo){
@@ -213,7 +216,7 @@ export default{
 	font-family:PingFang-SC-Regular;
 }
 #personHomepage{
-	width:100%;	background-color: #f5f5f5;position: absolute;
+	width:100%;	background-color: #f5f5f5;position: absolute;height:100vh;
 }
 #personHomepage>.headPho{
 	width: 100%;

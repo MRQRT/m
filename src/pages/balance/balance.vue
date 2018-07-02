@@ -69,13 +69,20 @@
 			}
 		},
 		mounted(){
-			this.queryCashCommonOrder();
-			this.queryBankCard();//获取用户的银行卡信息
-			this.queryUserInfo();//获取用户基本信息
+			this.token ? this.queryCashCommonOrder() : '';
+			this.token ? this.queryBankCard() : '';//获取用户的银行卡信息
+			this.token ? this.queryUserInfo() : '';//获取用户基本信息
+		},
+		watch:{
+			token(){
+				this.token ? this.queryCashCommonOrder() : '';
+				this.token ? this.queryBankCard() : '';//获取用户的银行卡信息
+				this.token ? this.queryUserInfo() : '';//获取用户基本信息
+			}
 		},
 		computed: {
 			...mapState([
-                'balaEye','userInfo'
+                'balaEye','userInfo','token'
 			]),
 			eyeImg: function(){
 				return (this.balaEye == 1)?open:close

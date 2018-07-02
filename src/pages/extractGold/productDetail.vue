@@ -135,7 +135,7 @@ import { mapState } from 'vuex'
 		},
 		mounted() {
 		    this.getProduceDetail();//进入页面即加载商品详情
-            this.queryMyProfil();
+            this.token ? this.queryMyProfil() : '';
             this.queryGoodsWeightList();//请求商品克重规格
 		},
         filters:{
@@ -150,7 +150,7 @@ import { mapState } from 'vuex'
         },
 		computed:{
             ...mapState([
-                'currentPrice'
+                'currentPrice','token'
             ]),
 			formatPrice(){
                 if(!this.productObj.minPrice) return;
@@ -364,6 +364,9 @@ import { mapState } from 'vuex'
                 if(val) return;
                 this.physicalId=null;
                 this.extractNum=1;
+            },
+            token(){
+                this.token ? this.queryMyProfil() : '';
             }
         },
 		components:{

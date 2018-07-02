@@ -110,14 +110,14 @@
 			
 		},
 		mounted() {
-            this.userInforma();//获取用户信息
-            this.floatingAverage()//成本均价和浮动盈亏
-            this.queryAllInterest()//累计收取克重
-            this.queryRate()//查询利息图表
+            this.token ? this.userInforma() : '';//获取用户信息
+            this.token ? this.floatingAverage() : ''//成本均价和浮动盈亏
+            this.token ? this.queryAllInterest() : ''//累计收取克重
+            this.token ? this.queryRate() : ''//查询利息图表
 		},
 		computed: {
 			...mapState([
-                'eye','currentPrice',
+                'eye','currentPrice','token'
 			]),
 			eyeImg: function(){
 				return (this.eye == 1)?open:close
@@ -132,6 +132,12 @@
 		watch:{
 			currentPrice(val){
 				return val
+			},
+			token(){
+				this.token ? this.userInforma() : '';//获取用户信息
+            	this.token ? this.floatingAverage() : ''//成本均价和浮动盈亏
+            	this.token ? this.queryAllInterest() : ''//累计收取克重
+            	this.token ? this.queryRate() : ''//查询利息图表
 			}
 		},
 		methods:{

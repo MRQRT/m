@@ -283,6 +283,16 @@ import { queryInterest,queryMessagUnreadCount,interestByUser,addAccount,queryMyP
 				if(this.hasTasks){
 					this.noBuyGold=false; //任务金收取提示框和未买金提示框显示一个 优先显示任务金收取提示框
 				}
+			},
+			token(){
+				this.token?this.login=1:this.login=0; //登录状态
+				this.token?this.queryInterest():'';//查询利息收取情况
+				this.token?this.queryMessagUnreadCount():'';//查看消息中心消息
+				this.token?this.queryAwardOrder():'';//查看用户赠金情况
+				this.token?this.queryActivity():this.queryActivityTask();//查看用户参与的活动
+			},
+			login(){
+				this.changeBg(this.login);
 			}
 		},
 		computed:{
@@ -728,6 +738,7 @@ import { queryInterest,queryMessagUnreadCount,interestByUser,addAccount,queryMyP
 								this.text='生长中...';
 								this.growing=true;
 								this.hasMature=false;
+								this.loginBuy=false;
 								this.mature=false;
 								this.hasnotGold=true;//闭合的豌豆图片展示
 								this.hasWeight=true;//预计收取文本展示
@@ -739,6 +750,7 @@ import { queryInterest,queryMessagUnreadCount,interestByUser,addAccount,queryMyP
 								this.growing=false;
 								this.hasWeight=false;
 								this.hasMature=true;
+								this.loginBuy=false;
 								this.hasnotGold=false;//闭合的豌豆图片展示
 
 							}
@@ -749,6 +761,7 @@ import { queryInterest,queryMessagUnreadCount,interestByUser,addAccount,queryMyP
 							this.growing=true;
 							this.hasWeight=false;
 							this.hasMature=false;
+							this.loginBuy=false;
 							this.hasnotGold=true;//闭合的豌豆图片展示
 						}
 					}

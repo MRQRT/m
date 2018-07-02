@@ -77,6 +77,9 @@
             }
             this.token ? this.queryUserRank() : ''
         },
+        watch(){
+            this.token ? this.queryUserRank() : ''
+        },
         computed:{
             ...mapState([
                 'token'
