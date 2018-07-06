@@ -32,12 +32,16 @@
 			</div>
 		</div>
 		<!--遮罩-->
-		<div class="mask" v-show="needBankShow"></div>
+		<div class="mask" v-show="bankTipShow || bankTelShow"></div>
 		<!--解除银行卡盒子-->
-		<div class="unbundleBank" :class="{'animateUp':animateUp,'animateDown':animateDown}">
-			<p class="unbundle-p1" @click="confirmUnbundle">解除银行卡</p>
-			<p class="unbundle-p2" @click="confirmCancel">取消</p>
-		</div>
+        <mt-popup
+        v-model="needBankShow"
+        position="bottom" id="popupVisibleExtractJB">
+            <div class="unbundleBank">
+			    <p class="unbundle-p1" @click="confirmUnbundle">解除银行卡</p>
+			    <p class="unbundle-p2" @click="confirmCancel">取消</p>
+		    </div>
+        </mt-popup>
 		<!--解除银行卡（异常或账户不为零）时提示的小盒子-->
 		<div class="unbundleBankTip" v-show="bankTipShow">
 			<h4>提示</h4>
@@ -75,8 +79,6 @@ import { Popup,Toast } from 'mint-ui'
 				needBankShow: false,//遮罩层显示控制
 				 bankTipShow: false,//账户余额不为0的时候的提示框
 				 bankTelShow: false,//拨打电话小提示
-				   animateUp: false,//解绑银行卡提示框向上动画
-				 animateDown: false,//解绑银行卡提示框向下动画
                   noBankShow: true, //是否绑卡 true为没有绑卡，false为已绑卡
                   bankCardNo: '',//银行卡号
                     bankName: '',//银行卡名字
@@ -131,8 +133,6 @@ import { Popup,Toast } from 'mint-ui'
             //解绑银行卡
 			unbundling(){//调用接口去判断是否可以直接解绑卡
 				this.needBankShow=true;//遮罩层控制变量
-				this.animateUp=true;//弹出层向上动画
-				this.animateDown=false;//弹出层向下动画
 			},
             //客服电话弹出层的取消按钮
 			cancelTel(){
@@ -170,21 +170,16 @@ import { Popup,Toast } from 'mint-ui'
                         position: 'bottom',
                         duration: 4000
                     });
-                    this.animateUp=false;//弹出层向上动画
-                    this.animateDown=true;//弹出层向下动画
                     this.needBankShow=false;//遮罩层控制变量
                     this.queryBankCard();//解绑成功重新请求银行卡
                 }else{
                     this.contactServer = res.message
-                    this.animateUp=false;//弹出层向上动画
-                    this.animateDown=true;//弹出层向下动画
+                    this.needBankShow=false;//遮罩层控制变量
                     this.bankTipShow=true;//账户余额不为0的时候的提示框
                 }
 			},
             //解绑银行卡弹出层取消按钮
 			confirmCancel(){
-				this.animateUp=false;//弹出层向上动画
-				this.animateDown=true;//弹出层向下动画
 				this.needBankShow=false;//遮罩层控制变量
 			},
             //获取用户银行卡
@@ -251,6 +246,9 @@ import { Popup,Toast } from 'mint-ui'
     	width:.48rem;
     	height:.14rem;
     	top:.4rem;
+    }
+    .mint-popup#popupVisibleExtractJB{
+        width:100%;
     }
     /*银行卡内容区域*/
     .my-bank-container{
@@ -330,9 +328,6 @@ import { Popup,Toast } from 'mint-ui'
 		height:2.2rem;
 		background-color: #fff;
 		width:100%;
-		position: fixed;
-		bottom:-2.2rem;
-		z-index:250;
     }
     .my-bank-container .unbundleBank p{
     	height:1.1rem;
@@ -349,10 +344,10 @@ import { Popup,Toast } from 'mint-ui'
     .my-bank-container .bankTele{
     	width:4.92rem;
     	background-color: #fff;
-    	border-radius:10px;
         -webkit-border-radius:10px;
         -moz-border-radius:10px;
         -o-border-radius:10px;
+        border-radius:10px;
     	left:50%;
     	margin-left:-2.46rem;
     	top:4.3rem;
@@ -396,37 +391,6 @@ import { Popup,Toast } from 'mint-ui'
     .my-bank-container .bankTele h4{
 		font-size:.34rem;
 		text-align: center;
-    }
-    /*解除银行卡底部的盒子动画*/
-     @keyframes mymoveUp
-    {
-    	from {bottom:-2.2rem;}
-    	to {bottom:0;}
-    }
-    @keyframes mymoveDown
-    {
-    	from {bottom:0;}
-    	to {bottom:-2.2rem;}
-    }
-    .unbundleBank.animateUp{
-    	animation: mymoveUp 0.2s linear;
-        -webkit-animation: mymoveUp 0.2s linear;
-        -moz-animation: mymoveUp 0.2s linear;
-        -o-animation: mymoveUp 0.2s linear;
-    	animation-fill-mode:forwards;
-        -webkit-animation-fill-mode:forwards;
-        -moz-animation-fill-mode:forwards;
-        -o-animation-fill-mode:forwards;
-    }
-    .unbundleBank.animateDown{
-    	animation: mymoveDown 0.2s linear;
-        -webkit-animation: mymoveDown 0.2s linear;
-        -moz-animation: mymoveDown 0.2s linear;
-        -o-animation: mymoveDown 0.2s linear;
-    	animation-fill-mode:forwards;
-        -webkit-animation-fill-mode:forwards;
-        -moz-animation-fill-mode:forwards;
-        -o-animation-fill-mode:forwards;
     }
     .my-bank-container .noBank{
         text-align: center;
