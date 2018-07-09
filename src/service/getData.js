@@ -1,5 +1,8 @@
 import {fetch} from '../config/fetch.js'
-import {getStore,openAPI} from '../config/mUtils.js'
+import {openAPI,checkAndroAgent,iosVersion} from '../config/mUtils.js'
+const andVerson = checkAndroAgent();
+const iosVerson = iosVersion();
+
 /**
  * 发送短信验证码
  */
