@@ -771,7 +771,7 @@
 				var xhr_send=(val)=>{
 					// 新建请求
 					const xhr = new XMLHttpRequest()
-					xhr.open('POST', val.url, true)
+					xhr.open('POST', val.apiUrl, true)
 					xhr.send(formData)
 					xhr.onload = () => {
 						if (xhr.status === 200 || xhr.status === 304) {
@@ -779,7 +779,7 @@
 							if(datas.code==100){
 							// 存储返回的地址
 								datas.content.forEach((item)=> {
-									val.order.urls.push(item)
+									val.order.picUrls.push(item)
 									val.files = [] // 清空文件缓存
 									Indicator.close()
 								})
