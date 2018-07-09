@@ -14,7 +14,7 @@
 			<div class="order_item">
 				<content class="item_row item_row_1">
 					<span>黄金类型</span>
-					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType">{{item.name}}</span>
+					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType" :key="index">{{item.name}}</span>
 				</content>
 				<content class="item_row item_row_2" @click="checkGramFun()">
 					<span>黄金克重</span>
@@ -28,7 +28,7 @@
 				<h3 class="title_two">存金图片<span style="color:#999999;font-size: .28rem;">（请上传实物、发票等相关图片，最多9张）</span></h3>
 				<div class="uploadPho_photo">
 					<div class="upload_image_preview">
-						<section v-for="(item, index) in order.images">
+						<section v-for="(item, index) in order.images" :key="index">
 							<img :src="item" class="modify_img">
 							<span @click='delImage(index)' class="del_image"></span>
 						</section>
@@ -105,7 +105,7 @@
 		<mt-popup position="bottom"  closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
 			<!-- 黄金品牌选择 -->
 			<div class="brand_box" v-if="popInputType=='brand_frame'">
-				<section class="brandItem" v-for="item in brandArray" @click="brandCheck(item)">{{item | brandTran}}</section>
+				<section class="brandItem" v-for="(item,index) in brandArray" @click="brandCheck(item)" :key="index">{{item | brandTran}}</section>
 				<section style="text-align:center;padding-top:.2rem;">
 					<input type="text" placeholder="其他品牌" v-model="zidingyiBrand" class="user-defined"><span @click="zidingyiFun" class="confirm">确定</span>
 				</section>
@@ -129,7 +129,7 @@
 	import { queryRecycleProduct,queryRecycleOrderDetail,updateRecycleOrder,xmlUploadImg,withDrawMax,queryMyProfil,queryChildDictionary,queryBankCard } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
-	import { getRem,openAPI } from "@/config/mUtils"
+	import { getRem,openAPI,checkAndroAgent,iosVersion } from "@/config/mUtils"
 	import '../../config/ruler.js'
 	export default{
 		data () {
@@ -179,6 +179,8 @@
 					    canAdd: true, //添加图片加号是否显示
 						   url: '',//重新选择idCard图片的地址
 					  btn_lock: '',//频繁操作开关
+				   AndroVerson: checkAndroAgent(),
+				     iosVerson: iosVersion(),
  			}
 		},
 		created(){
@@ -364,19 +366,20 @@
 					return;
 				}
 				Indicator.open();
-				var t=this;
+				var _this=this;
+				var targetFile = e.target.files[0];
 				var reader = new FileReader();
 				reader.readAsDataURL(e.target.files[0]);
 				reader.onload = function(evt) {
 					Indicator.close();
-					t.photo=evt.target.result;
-					t.uploadRecyclePic(evt.target.result);
+					_this.photo=evt.target.result;
+					_this.uploadRecyclePic(evt.target.result,targetFile);
                 }
 			},
 			//图片上传
-			uploadRecyclePic(value) {
-				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值
- 				xmlUploadImg(this,value,'',Indicator,Toast)
+			uploadRecyclePic(value,value2) {
+				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值，参数八表示选中的图片文件
+ 				xmlUploadImg(this,value,'',Indicator,Toast,'','',value2)
             },
 			//选择是否变现
 			checkCash(val){
@@ -732,57 +735,61 @@
 				let formData = new FormData()
         		this.files.forEach((item, index) => {
           			var img_size=item.size
-                		var img = new Image,
-                    	canvas = document.createElement("canvas"),
-                    	ctx = canvas.getContext("2d");
-						img.crossOrigin = "Anonymous";
-						img.src = item.src
-                		img.onload =() => {
-                        	var width = img.width;
-                        	var height = img.height;
-                        	// 最大上传不得查过500k
+					var img = new Image,
+					canvas = document.createElement("canvas"),
+					ctx = canvas.getContext("2d");
+					img.crossOrigin = "Anonymous";
+					img.src = item.src
+					if(this.AndroVerson>4||this.iosVerson>10){
+						img.onload =() => {
+							var width = img.width;
+							var height = img.height;
+							// 最大上传不得查过500k
 							var rate = (img_size/(1024*500)).toFixed(1)
 							if(rate*1>1){
 								var real_rate = (width<height ? width/height : height/width)/rate;
-                        		canvas.width = width*real_rate;
-                        		canvas.height = height*real_rate;
-                        		ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
-                        		var src1 = canvas.toDataURL("image/jpg");
+								canvas.width = width*real_rate;
+								canvas.height = height*real_rate;
+								ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
+								var src1 = canvas.toDataURL("image/jpg");
 								var blob=dataURLToBlob(src1)
 								formData.append('files', blob,'image.jpg')
 							}else{
 								formData.append('files', item.file)
 							}
-							
 							if(index==(this.files.length-1)){ //formdata已创建完
-								xhr_send()
+								xhr_send(this)
 							} 
-                		}
-				  	})
-				  
-				  	var xhr_send=()=>{
-					    // 新建请求
-      					const xhr = new XMLHttpRequest()
-				 		 xhr.open('POST', this.apiUrl, true)
-      					xhr.send(formData)
-      					xhr.onload = () => {
-        					if (xhr.status === 200 || xhr.status === 304) {
-          						let datas = JSON.parse(xhr.responseText)
-								// console.log('response: ', datas)
-								if(datas.code==100){
-									// 存储返回的地址
-          							datas.content.forEach((item)=> {
-										this.order.picUrls.push(item)
-										this.files = [] // 清空文件缓存
-										Indicator.close()
-									})
-        						} else {
-									  this.$toast('请求错误')
-									  Indicator.close()
-								}
+						}
+					}else{
+						formData.append('files', item.file)
+						if(index==(this.files.length-1)){ //formdata已创建完
+							xhr_send(this)
+						}
+					}
+				})
+				var xhr_send=(val)=>{
+					// 新建请求
+					const xhr = new XMLHttpRequest()
+					xhr.open('POST', val.url, true)
+					xhr.send(formData)
+					xhr.onload = () => {
+						if (xhr.status === 200 || xhr.status === 304) {
+							let datas = JSON.parse(xhr.responseText)
+							if(datas.code==100){
+							// 存储返回的地址
+								datas.content.forEach((item)=> {
+									val.order.urls.push(item)
+									val.files = [] // 清空文件缓存
+									Indicator.close()
+								})
+							} else {
+								val.$toast('请求错误')
+								Indicator.close()
 							}
-      					}
-				  	}
+						}
+					}
+				}
     		},
 		},
 		activated: function () {

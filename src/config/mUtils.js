@@ -310,3 +310,25 @@ export function checkAgent(){
     if(isAndroid) return 'And';
     else return 'IOS';
 }
+
+//检测安卓版本号
+export function checkAndroAgent(){
+    var userAgent = navigator.userAgent;
+    var index = userAgent.indexOf("Android")
+    if(index >= 0){
+        var androidVersion = parseFloat(userAgent.slice(index+8));
+        return androidVersion
+    }
+}
+
+//检测IOS版本号
+export function iosVersion(){
+    var str= navigator.userAgent.toLowerCase(); 
+    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+    if(!ver){
+        return null
+    }else{
+        var asa = ver[1].replace(/_/g,".").split('.')[0]
+        return asa
+    }
+}

@@ -11,10 +11,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { checkAgent } from '@/config/mUtils'
 import { bizCloseCheck } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
-import QRCode from 'qrcode'
 import './style/common.css'
 // import './config/vconsole.min.js'
-import Vuex from 'vuex'
 
 Vue.use(MintUI)
 Vue.use(vueRouter)

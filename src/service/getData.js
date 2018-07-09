@@ -114,74 +114,79 @@ export const putAvatar = (avatar) => fetch('/v3/member/putAvatar',{'avatar':avat
 /*
 * 原生xml上传头像
 */
-//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示,参数六是缩小的比例,参数七表示订单数组的索引值
-export const xmlUploadImg=(current,src,method,Indicator,Toast,myrate,fa_index)=>{
+//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示,参数六是缩小的比例,参数七表示订单数组的索引值，参数八表示图片文件
+export const xmlUploadImg=(current,src,method,Indicator,Toast,myrate,fa_index,file)=>{
     //myrate为4是上传头像 2是上传证件照和其他存金图片
-            if(myrate){
-                var myrate=myrate;
-            }else{
-                var myrate=2;
-            }
-            if(Indicator){
-                Indicator.open();
-            }
-            var img = new Image,
-                canvas = document.createElement("canvas"),
-                ctx = canvas.getContext("2d");
+    if(myrate){
+        var myrate=myrate;
+    }else{
+        var myrate=2;
+    }
+    if(Indicator){
+        Indicator.open();
+    }
+    var img = new Image,
+    canvas = document.createElement("canvas"),
+    ctx = canvas.getContext("2d");
 
-                img.crossOrigin = "Anonymous";
-
-                var dataURLToBlob=function(url){
-                    var arr=url.split(','),mime=arr[0].match(/:(.*?);/)[1],
-                    bstr=atob(arr[1]),n=bstr.length,u8arr=new Uint8Array(n);
-                    while(n--){
-                        u8arr[n]=bstr.charCodeAt(n);
-                   }
-                    return new Blob([u8arr],{type:mime});
+    img.crossOrigin = "Anonymous";
+    var dataURLToBlob=function(url){
+        var arr=url.split(','),mime=arr[0].match(/:(.*?);/)[1],
+        bstr=atob(arr[1]),n=bstr.length,u8arr=new Uint8Array(n);
+        while(n--){
+            u8arr[n]=bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr],{type:mime});
+    }
+    var form=new FormData();
+    if(andVerson>4||iosVerson>10){
+        img.onload = function() {
+            var width = img.width;
+            var height = img.height;
+            // 按比例压缩4倍
+            var rate = (width<height ? width/height : height/width)/myrate;
+            canvas.width = width*rate;
+            canvas.height = height*rate;
+            ctx.drawImage(img,0,0,width,height,0,0,width*rate,height*rate);
+            var src1 = canvas.toDataURL("image/jpg");
+            var blob=dataURLToBlob(src1)
+            form.append("file",blob,'image.jpg')
+            xhr_send();
+        };
+    }else{
+        form.append('files',file)
+    }
+    img.src = src;
+    function xhr_send(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", openAPI()+"/v3/member/uploadFile");
+        xhr.send(form);
+        var that=current;
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                if(xhr.status==200){
+                    if(Indicator){
+                        Indicator.close();
+                    }
+                    var res=JSON.parse(xhr.responseText);
+                    var uploadUrl=res.content;
+                    that.url=uploadUrl;
+                    if(that.order && that.order.idPic){
+                        that.order.idPic=uploadUrl;
+                    }
+                    if(method){
+                        that[method](fa_index);
+                    }
+                }else if(xhr.status==500){
+                    Toast({
+                        message:'服务器出错',
+                        position: 'bottom',
+                        duration: 3000
+                    })
                 }
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        // 按比例压缩4倍
-                        var rate = (width<height ? width/height : height/width)/myrate;
-                        canvas.width = width*rate;
-                        canvas.height = height*rate;
-                        ctx.drawImage(img,0,0,width,height,0,0,width*rate,height*rate);
-                        var src1 = canvas.toDataURL("image/jpg");
-                        var blob=dataURLToBlob(src1)
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", openAPI()+"/v3/member/uploadFile");
-                        var form=new FormData();
-                        form.append("file",blob,'image.jpg')
-                        xhr.send(form);
-                        
-                        var that=current;
-                        xhr.onreadystatechange=function(){
-                            if(xhr.readyState==4){
-                                if(xhr.status==200){
-                                    if(Indicator){
-                                        Indicator.close();
-                                    }
-                                    var res=JSON.parse(xhr.responseText);
-                                    var uploadUrl=res.content;
-                                    that.url=uploadUrl;
-                                    if(that.order && that.order.idPic){
-                                        that.order.idPic=uploadUrl;
-                                    }
-                                    if(method){
-                                       that[method](fa_index);
-                                    }
-                                }else if(xhr.status==500){
-                                    Toast({
-                                        message:'服务器出错',
-                                        position: 'bottom',
-                                        duration: 3000
-                                    })
-                                }
-                            }
-                        }
-                    };
-                    img.src = src;
+            }
+        }
+    }    
 }
 
 /**
