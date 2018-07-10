@@ -139,7 +139,7 @@ window.Indicat=function(){
 }
 //获取微信登入成功后的参数
 window.getWeParams=function(userid){
-    console.log(userid)
+    // console.log(userid)
     var arr=userid.split('_')
     localStorage.setItem('userId',arr[0])
     localStorage.setItem('token',userid)
@@ -147,12 +147,17 @@ window.getWeParams=function(userid){
     store.state.userId=arr[0]
     takeUserInfor()//调用获取用户信息接口
     promise.then(function(res){
-        console.log(res)
+        // console.log(res)
         if(res.code==100){
             store.state.userInfo = res.content
             localStorage.setItem('userInfo',res.content)
         }
     })
+}
+
+//微信登入入口显示
+window.showWX=function(){
+    document.querySelector('.weixin_login').style.display="block"
 }
 /*
  与原生交互API

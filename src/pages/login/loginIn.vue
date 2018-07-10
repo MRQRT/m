@@ -62,7 +62,7 @@
         <mt-button type="default" :class="{'hasActived':highLight,'noActived':dark}">登录</mt-button>
     </div>
     <!--微信登入-->
-    <div class="weixin_login" style="display:block;">
+    <div class="weixin_login" style="display:none;">
         <p class="weixin_text">其他登录方式</p>
         <img src="../../images/weixinLogin.png" class="weixin_img" @click="weixinLogin">
     </div>
