@@ -15,7 +15,7 @@
 			<div class="order_item">
 				<content class="item_row item_row_1">
 					<span>黄金类型</span>
-					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType">{{item.name}}</span>
+					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType" :key="index">{{item.name}}</span>
 				</content>
 				<content class="item_row item_row_2" @click="checkGramFun()">
 					<span>黄金克重</span>
@@ -81,7 +81,7 @@
 		<mt-popup position="bottom"  closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
 			<!-- 黄金品牌选择 -->
 			<div class="brand_box" v-if="popInputType=='brand_frame'">
-				<section class="brandItem" v-for="item in brandArray" @click="brandCheck(item)">{{item | brandTran(this.$data)}}</section>
+				<section class="brandItem" v-for="(item,index) in brandArray" @click="brandCheck(item)" :key="index">{{item | brandTran(this.$data)}}</section>
 				<section style="text-align:center;padding-top:.2rem;">
 					<input type="text" placeholder="其他品牌" v-model="zidingyiBrand" class="user-defined"><span @click="zidingyiFun()" class="confirm">确定</span>
 				</section>
@@ -101,11 +101,11 @@
 <script type="text/javascript">
 	import headTop from '@/components/header/head.vue'
 	import ruler from '@/components/ruler/ruler.vue'
-	import { clearNoNum } from '../../config/mUtils.js'
+	import { clearNoNum, formatDate } from '../../config/mUtils.js'
 	import { queryRecycleProduct,queryRecycleOrderDetail,queryChildDictionary } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
-	import { getRem,openAPI } from "@/config/mUtils"
+	import { getRem,openAPI,checkAndroAgent,iosVersion } from "@/config/mUtils"
 	import '../../config/ruler.js'
 
 	export default{
@@ -136,12 +136,15 @@
 							   brandName: '',//自定义品牌
 	   			 			 	},
 		         editOrderId: null, //需要重新填写的订单编号
+		       estimatePrice: null, //预估金价
 				screenHeight: document.documentElement.clientHeight,//记录高度值(这里是给到了一个默认值)
 				       files: [], // 文件缓存（上传图片）
       			       index: 0, // 序列号 可记录一共上传了多少张
       			   maxLength: 9, // 图片最大数量
 						 url: openAPI()+'/v3/recycleOrder/uploadRecyclePic2',
-					  canAdd: true //添加图片加号是否显示
+					  canAdd: true, //添加图片加号是否显示
+				 AndroVerson: checkAndroAgent(),
+				   iosVerson: iosVersion(),
 
  			}
 		},
@@ -156,11 +159,10 @@
 			}
 		},
 		mounted(){
-			//计算预估克重（正常H5不需要，与APP交互）
-			this.estimatePrice=this.order.applyWeight*this.currentPrice;
 			this.queryRecycleProduct();//查询存金产品列表
 			this.queryChildDictionary();//查询存金产品品牌
 			this.orderChange();//计算克重
+			// document.getElementsByClassName('stor_box')[0].style.height=(this.clientHeight-(0.88*this.rem))+'px';
 			document.getElementsByClassName('stor_box')[0].style.height=this.clientHeight+'px';
 			//是从订单详情页跳转过来，需要重新填写订单
 		    if(this.$route.query.from=='storOrderDet'){
@@ -180,10 +182,7 @@
 			currentPrice: state => state.currentPrice,
 		   recycleParams: state => state.recycleParams,
 		   	   rulerData: state => state.rulerData
-			}),
-			estimatePrice(){
-				return this.currentPrice*this.order.applyWeight
-			}
+    		})
 		},
 		watch:{
 			//监听品牌选择
@@ -240,9 +239,8 @@
 			goBack(){
 				this.RECORD_RECYCLEPARAMS('')
 				this.set_initRulerData(Number(10));//修改ruler的初始值
-				window.toApp();
-				Indicator.close();
-				this.$router.push('/storeGold');
+				this.$router.push('/storeGold')
+				Indicator.close()
 			},
 			//查询存金产品列表
 			async queryRecycleProduct(){
@@ -478,63 +476,67 @@
                     	u8arr[n]=bstr.charCodeAt(n);
                 	}
                 	return new Blob([u8arr],{type:mime});
-				}  //base64转换成二进制文件
+				}  
+				//base64转换成二进制文件
 				let formData = new FormData()
         		this.files.forEach((item, index) => {
           			var img_size=item.size
-                		var img = new Image,
-                    	canvas = document.createElement("canvas"),
-                    	ctx = canvas.getContext("2d");
-						img.crossOrigin = "Anonymous";
-						img.src = item.src
-
-                		img.onload =() => {
-                        	var width = img.width;
-                        	var height = img.height;
-                        	// 最大上传不得查过500k
+					var img = new Image,
+					canvas = document.createElement("canvas"),
+					ctx = canvas.getContext("2d");
+					img.crossOrigin = "Anonymous";
+					img.src = item.src
+					if(this.AndroVerson>4||this.iosVerson>10){
+						img.onload =() => {
+							var width = img.width;
+							var height = img.height;
+							// 最大上传不得查过500k
 							var rate = (img_size/(1024*500)).toFixed(1)
 							if(rate*1>1){
 								var real_rate = (width<height ? width/height : height/width)/rate;
-                        		canvas.width = width*real_rate;
-                        		canvas.height = height*real_rate;
-                        		ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
-                        		var src1 = canvas.toDataURL("image/jpg");
+								canvas.width = width*real_rate;
+								canvas.height = height*real_rate;
+								ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
+								var src1 = canvas.toDataURL("image/jpg");
 								var blob=dataURLToBlob(src1)
 								formData.append('files', blob,'image.jpg')
 							}else{
 								formData.append('files', item.file)
 							}
-							
 							if(index==(this.files.length-1)){ //formdata已创建完
-								xhr_send()
-							} 
-                		}
-				  	})
-				  
-				  	var xhr_send=()=>{
-						  const token = this.token;
-					    // 新建请求
-      					const xhr = new XMLHttpRequest()
-						xhr.open('POST', this.url, true)
-						xhr.setRequestHeader("Authorization",token)
-      					xhr.send(formData)
-      					xhr.onload = () => {
-        					if (xhr.status === 200 || xhr.status === 304) {
-          						let datas = JSON.parse(xhr.responseText)
-								if(datas.code==100){
-									// 存储返回的地址
-          							datas.content.forEach((item)=> {
-										this.order.urls.push(item)
-										this.files = [] // 清空文件缓存
-										Indicator.close()
-									})
-        						} else {
-									  this.$toast('请求错误')
-									  Indicator.close()
-								}
+								xhr_send(this)
 							}
-      					}
-				  	}
+						}
+					}else{
+						formData.append('files', item.file)
+						if(index==(this.files.length-1)){ //formdata已创建完
+							xhr_send(this)
+						}
+					}
+					
+				})
+				function xhr_send(val){
+					// 新建请求
+					const xhr = new XMLHttpRequest()
+					xhr.open('POST', val.url, true)
+					xhr.send(formData)
+					xhr.onload = () => {
+						if (xhr.status === 200 || xhr.status === 304) {
+							let datas = JSON.parse(xhr.responseText)
+							if(datas.code==100){
+								// 存储返回的地址
+								datas.content.forEach((item)=> {
+									val.order.urls.push(item)
+									val.files = [] // 清空文件缓存
+									Indicator.close()
+								})
+							} else {
+								val.$toast('请求错误')
+								Indicator.close()
+							}
+						}
+					}
+				}
     		},
 		},
 		activated: function () {

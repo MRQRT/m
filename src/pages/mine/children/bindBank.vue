@@ -354,7 +354,8 @@
 								}
 							})
 						}else{
-							this.$router.replace('/buyGold')
+							window.toApp();
+							this.$router.replace('/buyGold');
 						}
 					}else{
 						MessageBox({
