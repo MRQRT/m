@@ -154,7 +154,7 @@ window.getWeParams=function(userid){
 }
 
 //微信登入入口显示
-window.showWX=function(){
+window.hasWe=function(){
     document.querySelector('.weixin_login').style.display="block"
 }
 /*
