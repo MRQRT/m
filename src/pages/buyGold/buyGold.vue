@@ -148,7 +148,7 @@
 			<p>订单号：{{orderDetail.code || '--'}}</p>
 			<p>实测总毛重：{{orderDetail.realGrossWeight || '--'}}克</p>
 			<p>实测总净重：{{orderDetail.realNetWeight || '--'}}克</p>
-			<p>产品成色：{{orderDetail.productCondition || '--'}}‰</p>
+			<p>产品成色：{{orderDetail.productCondition | formatPoint}}‰</p>
 			<p>检测人：{{orderDetail.verifyBy || '--'}}</p>
 			<p>检测时间：{{orderDetail.verifyTime || '--'}}</p>
 			<p>检测说明：{{orderDetail.verifyRemark || '--'}}</p>
@@ -255,6 +255,12 @@ export default {
     		}
     	}
     },
+	filters:{
+		formatPoint(val){
+			if(!val) return '--'
+			return (val*1).toFixed(1)
+		}
+	},
     methods: {
     	...mapMutations([
     		'RECORD_REGULARPRODUCTS','RECORD_REGULARPRODUCTPARAMS'
