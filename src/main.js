@@ -153,10 +153,6 @@ window.getWeParams=function(userid){
     })
 }
 
-//微信登入入口显示
-window.hasWe=function(){
-    document.querySelector('.weixin_login').style.display="block"
-}
 /*
  与原生交互API
  */
@@ -236,6 +232,12 @@ if(agent=='And'){
         if(!window.stub) return;
         window.stub.cancleDialog(value)
     }
+    //判断是否在app里么
+    window.isApp=function(){
+        if(!window.stub) return false
+        window.stub.isAPP() 
+        localStorage.setItem('isWebview','andriod')
+    }
 }else{
     //微信登入
     window.openWeChat=function(){
@@ -290,6 +292,12 @@ if(agent=='And'){
     window.phone=function(value){
         if(!window.phoneUp) return;
         window.phoneUp(value)
+    }
+    //判断是否在app里么
+    window.isApp=function(){
+        if(!window.isAPP) return false
+        window.isAPP()
+        localStorage.setItem('isWebview','ios')
     }
     // //接收消息(测试中)
     // window.receive=function(val){

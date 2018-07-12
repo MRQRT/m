@@ -126,9 +126,13 @@
 			}
 		},
         created() {
-
+            
         },
 		mounted() {
+            window.isApp()
+            if(localStorage.getItem('isWebview')){
+                document.querySelector('.weixin_login').style.display="block"
+            }
             //从世界杯活动进来
             var obj=this.$route.query
             if(obj && obj.activityId){
@@ -527,9 +531,6 @@
 </script>
 
 <style scoped>
-    .loginIn{
-        padding-bottom: 40px;
-    }
     input{
         caret-color: #333333;
     }
