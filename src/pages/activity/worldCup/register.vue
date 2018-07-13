@@ -20,14 +20,15 @@
                 </p>
                 <p class="my_regist">我的点赞:&nbsp;{{myCount}}</p>
                 <!--签到按钮-->
-                <div class="operate_regist">
+                <!-- <div class="operate_regist">
                     <p class="operate_regist_btn1" :class="{'white':!registImg,'actived':!registImg}" @touchstart="regist" @touchmove="regist" @touchend="registEnd">
                         {{btn1Txt}}
                         <img :src="registImg" v-show="registImg" :class="{'zan':!imgBoolean}">
                     </p>
                     <p class="operate_regist_btn2" @click="inviteOrElse">{{hasElse?'好友点赞X'+elseCount:btn2Txt}}</p>
-                </div>
-                <p class="warm_tip">注：为了让更多的朋友拿到奖品，点赞榜每周结算一次，活动持续5周！</p>
+                </div> -->
+                <!-- <p class="warm_tip">注：为了让更多的朋友拿到奖品，点赞榜每周结算一次，活动持续5周！</p> -->
+                <p class="warm_tip">活动已结束</p>
                 <p class="divide_line"></p>
                 <!--奖项设置-->
                 <div class="award_setup">
@@ -599,10 +600,11 @@
         font-weight:bold;
     }
     .warm_tip{
-        font-size:.18rem;
+        font-size:.24rem;
         color:#737373;
-        padding-left:.38rem;
+        // padding-left:.38rem;
         padding-top:.26rem;
+        text-align:center;
     }
     .for_worldCup{
         width:2.8rem;
