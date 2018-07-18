@@ -416,10 +416,10 @@ import { Popup,Toast } from 'mint-ui'
         font-size:.3rem;
         color:#fff;
         background-color:#F2B643;
-        border-radius: 3px;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
         -o-border-radius: 3px;
+        border-radius: 3px;
         margin-top:.38rem;
     }
 </style>
