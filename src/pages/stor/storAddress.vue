@@ -479,7 +479,6 @@
 }
 .title>span:nth-child(2){
 	float: right;
-	display: inline-block;
 	width: 25%;
 	height: 1rem;
 	line-height: 1rem;
@@ -493,13 +492,11 @@
 	background-color: #ffffff;
 }
 .addr_left{
-	display: inline-block;
 	width: 94%;
 	height: 1.4rem;
 	float: left;
 }
 .addr_right{
-	display: inline-block;
 	width: 6%;
 	height: 1.4rem;
 	float: left;
@@ -697,11 +694,4 @@ strong{
 .submit_btn:active{
 	background-color: #e4b864;
 }
-.no_submit{
-	/* background: #ffdb95; */
-}
-/* .storAddress #head_top{
-	position: absolute;
-	top:0;
-} */
 </style>
