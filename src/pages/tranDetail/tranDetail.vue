@@ -16,7 +16,7 @@
             </div>
             <!-- 所有业务交易明细列表 -->
             <div class="allBox" v-show="selected=='all'">
-                <div class="list_item" v-for="item in dataList1" @click="toInfo(item.id,item.type)">
+                <div class="list_item" v-for="(item,index) in dataList1" @click="toInfo(item.id,item.type)" :key="index">
                     <div class="item_top">
                         <!--买、卖、存、挂单、生息交易明细业务标题-->
                         <span class="item_top_left" v-if="item.type==1 || item.type==2 || item.type==4 || item.type==7 || item.type==9 || item.type==10">{{(item.type==1 || item.type==9) ? '黄金买入' : ((item.type==2 || item.type==10) ? '黄金卖出' : (item.type==4 ? '黄金回购' : '生息' ))}}</span>
@@ -98,7 +98,7 @@
             </div>
             <!-- 黄金回购交易明细 -->
             <div class="buyBackBox" v-show="selected=='buyBack'">
-                <div class="list_item" v-for="item in dataList3" @click="toDetailInfo(item.id,4)">
+                <div class="list_item" v-for="(item,index) in dataList3" @click="toDetailInfo(item.id,4)" :key="index">
                     <div class="item_top">
                         <span class="item_top_left">黄金回购</span>
                         <span class="item_top_right" :class="{'failColor':item.status==1||item.status==5||item.status==9||item.status==10||item.status==11||item.status==12?true:false}">+{{item.applyWeight}}g</span>
@@ -112,7 +112,7 @@
             </div>
             <!-- 爱有金交易明细 -->
             <div class="tijinBox" v-show="selected=='tijin'">
-                <div class="list_item"  v-for="item in dataList4" @click="toDetailInfo(item.id,5)">
+                <div class="list_item"  v-for="(item,index) in dataList4" @click="toDetailInfo(item.id,5)" :key="index">
                     <div class="item_top">
                         <span class="item_top_left">爱有金-{{item.name}}</span>
                         <span class="item_top_right"  :class="{'failColor':item.status==2||item.status==5?true:false}">-{{item.weight*item.quantity}}g</span>
@@ -236,7 +236,8 @@
 					this.$router.push({
 						path:'/storOrderDet',
 						query:{
-							id:id,
+                            id:id,
+                            from:'tranDetail'
 						}
 					})
 					return;
@@ -264,7 +265,8 @@
 					this.$router.push({
 						path:'/storOrderDet',
 						query:{
-							id:id,
+                            id:id,
+                            from:'tranDetail'
 						}
 					})
 					return;

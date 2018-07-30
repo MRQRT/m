@@ -14,7 +14,7 @@
     </div>
     <!--订单状态-->
     <div class="state_text" v-if="stateShow">
-       <div v-for="(item,index) in states" class="each_status" :id="index" :state="item.state" v-join @click="viewStateInfo($event)">
+       <div v-for="(item,index) in states" class="each_status" :id="index" :state="item.state" v-join @click="viewStateInfo($event)" :key="index">
          <img :src="item.imgUrl">
          <p>{{item.text}}</p>
        </div>
@@ -103,9 +103,9 @@
     <div class="store_info">
       <h4>存金信息</h4>
       <p class="valuation">存金方式：<span>{{orderDetail.isCash==2?'存入克重':'直接变现'}}</span></p>
-      <p class="other_info">{{orderDetail.brandType==1?'周大福':(orderDetail.brandType==2?'老凤祥':(orderDetail.brandType==3?'菜百':(orderDetail.brandType==4?'周生生':(orderDetail.brandType==5?'周大生':(orderDetail.brandType==6?'老庙':(orderDetail.brandType==7?'中国黄金':(orderDetail.brandType==8?'山东黄金':(orderDetail.brandType==9?'中金':orderDetail.brandName))))))))}}{{(orderDetail.brandType==10 && !orderDetail.brandName)? '':'/'}}{{orderDetail.productName}}/{{orderDetail.applyWeight || '--'}}克</p>
+      <p class="other_info">{{orderDetail.brandType==1?'周大福':(orderDetail.brandType==2?'老凤祥':(orderDetail.brandType==3?'菜百':(orderDetail.brandType==4?'周生生':(orderDetail.brandType==5?'周大生':(orderDetail.brandType==6?'老庙':(orderDetail.brandType==7?'中国黄金':(orderDetail.brandType==8?'山东黄金':(orderDetail.brandType==9?'中金':orderDetail.brandName))))))))}}{{(orderDetail.brandType==10 && !orderDetail.brandName)? '':'/'}}{{orderDetail.productName}}：{{orderDetail.realNetWeight || orderDetail.realGrossWeight||orderDetail.applyWeight || '--'}}克</p>
       <div class="picture_container">
-        <img v-for="item in storePics" :src="item" @click="enlargeImg(item)">
+        <img v-for="(item,index) in storePics" :src="item" @click="enlargeImg(item)" :key="index">
       </div>
     </div>
     <!--查看物流-->
@@ -114,7 +114,7 @@
      position="bottom" id="logistics" v-if="logisticsShow">
         <section class='logistics_container'>
            <h3 class="logistics_title">物流信息</h3>
-           <div v-for="(item,index) in logistics" class="each_logistics" :class="{'gray':index!=0}">
+           <div v-for="(item,index) in logistics" class="each_logistics" :class="{'gray':index!=0}" :key="index">
               <div class="logistics_time">
                 <p style="font-size:.2rem;">{{item.time | formatExpressTime(1)}}</p>
                 <p style="font-size:.18rem;">{{item.time | formatExpressTime(2)}}</p>
@@ -142,7 +142,7 @@
        <section class="view_report">
            <h3 class="report_title">检测报告</h3>
            <p>订单号：{{orderDetail.code || '--'}}</p>
-           <p>实测总毛重：{{orderDetail.realGrossWeight || '--'}}克</p>
+           <p>实测总毛重：{{orderDetail.realNetWeight || orderDetail.realGrossWeight || '--'}}克</p>
            <p>实测总净重：{{orderDetail.realNetWeight || '--'}}克</p>
            <p>产品成色：{{orderDetail.productCondition | formatPoint}}‰</p>
            <p>检测人：{{orderDetail.verifyBy || '--'}}</p>
@@ -347,7 +347,11 @@
       //返回上一级
       toBack(){
         Indicator.close();
-        this.$router.push('/storOrder')
+        if(this.$route.query.from || this.$route.query.from=='tranDetail'){
+          this.$router.push('/tranDetail')
+        }else{
+          this.$router.push('/storOrder')
+        }
       },
       //查询用户订单详情
       async orderDet(){

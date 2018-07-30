@@ -6,7 +6,7 @@
 		</head-top>
 		<mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false"  ref="loadmore" class="loadmore orderInfo" v-if="hasStor">
 			<div class="all_order" v-if="storList.length">
-				<section v-for="item in storList" class="order_container" @click="$router.push({path:'/storOrderDet',query:{id:item.id}})">
+				<section v-for="(item,index) in storList" class="order_container" @click="$router.push({path:'/storOrderDet',query:{id:item.id}})" :key="index">
 					<img :src="item.imageUrl">
 					<div class="order_desc">
 						<p class="order_p1">
@@ -17,7 +17,7 @@
 							<span class="order_p2_span1">{{item.productName}}</span>
 						</p>
 						<p class="order_p3">
-							<span class="order_p3_span1">克重&nbsp;:&nbsp;&nbsp;{{item.applyWeight}}克</span>
+							<span class="order_p3_span1">克重&nbsp;:&nbsp;&nbsp;{{item.realNetWeight || item.realGrossWeight || item.applyWeight}}克</span>
 							<span class="order_p3_span2">{{item.createTime | formatTime}}</span>
 						</p>
 					</div>
