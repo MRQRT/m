@@ -48,11 +48,16 @@
 		},
 		filters:{
 			tran_time(val){
-				let a = val.split(" ");
-				let b = a[0].split("-");
-				let c = Number(b[2])+1;
-				let nextDay = b[0]+'-'+b[1]+'-'+c
-				return nextDay
+				var date = new Date();
+				function formate(val){
+					let next = val.setDate(date.getDate()+1);
+					return new Date(next)
+				}
+				var nextDate = formate(date);
+				let year = nextDate.getFullYear();
+				let month = nextDate.getMonth()+1>9?nextDate.getMonth()+1:'0'+(nextDate.getMonth()+1);
+				let day = nextDate.getDate()>9?nextDate.getDate():'0'+nextDate.getDate();
+				return year+'-'+month+'-'+day
 			}
 		},
 		methods:{
