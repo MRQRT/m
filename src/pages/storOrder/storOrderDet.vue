@@ -142,7 +142,7 @@
        <section class="view_report">
            <h3 class="report_title">检测报告</h3>
            <p>订单号：{{orderDetail.code || '--'}}</p>
-           <p>实测总毛重：{{orderDetail.realNetWeight || orderDetail.realGrossWeight || '--'}}克</p>
+           <p>实测总毛重：{{orderDetail.realGrossWeight || '--'}}克</p>
            <p>实测总净重：{{orderDetail.realNetWeight || '--'}}克</p>
            <p>产品成色：{{orderDetail.productCondition | formatPoint}}‰</p>
            <p>检测人：{{orderDetail.verifyBy || '--'}}</p>
