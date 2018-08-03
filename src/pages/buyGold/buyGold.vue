@@ -12,7 +12,7 @@
 		</div>
 		<div class="swiper-container swiper-container-1">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide swiper-slide-1" v-for="(item, val, index) in banner" :style="{ backgroundImage: 'url(' + item.imgUrl + ')' }" @click="link(item.hrefUrl)"></div>
+				<div class="swiper-slide swiper-slide-1" v-for="(item, val, index) in banner" :style="{ backgroundImage: 'url(' + item.imgUrl + ')' }" @click="link(item.hrefUrl)" :key="index"></div>
 			</div>
 			<div class="swiper-pagination swiper-pagination-white"></div>
 		</div>
@@ -40,7 +40,7 @@
 			<router-link to="/infoList" class="infor_Entr_right" tag="div" prevent="false" showIndicators="false">
 				<div class="swiper-container swiper-container-3">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide swiper-slide-3" v-for="item in news"><span></span>{{item.title}}</div>
+						<div class="swiper-slide swiper-slide-3" v-for="(item,index) in news" :key="index"><span></span>{{item.title}}</div>
 					</div>
 				</div>
 			</router-link>
@@ -52,7 +52,7 @@
 			</router-link>
 			<div class="swiper-container swiper-container-2">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide swiper-slide-2" v-for="item in goods" :style="{ backgroundImage: 'url(' + item.imageUrl + ')' }" :id='item.id'  @click="$router.push({path:'/productDetail',query:{id:item.id}})">
+					<div class="swiper-slide swiper-slide-2" v-for="(item,index) in goods" :style="{ backgroundImage: 'url(' + item.imageUrl + ')' }" :id='item.id'  @click="$router.push({path:'/productDetail',query:{id:item.id}})" :key="index">
 						<p></p>
 						<p style="padding-left:.2rem;padding-right:.2rem;overflow:hidden;line-height:.32rem;height:.28rem;">{{item.name}}</p>
 					</div>
@@ -66,7 +66,7 @@
 					<span style="float: right;padding-right:.2rem;font-weight: normal;font-size: .26rem;color:#666666;">更多</span>
 				</p>
 			</router-link>
-			<div class="dingtou_list" v-for="item in productLists" @click="goTo_set(item.id)">
+			<div class="dingtou_list" v-for="(item,index) in productLists" @click="goTo_set(item.id)" :key="index">
 				<span class="already" v-if="item.isJoin==1">已加入</span>
 				<img :src="item.thumbPath">
 				<h4>{{item.name}}</h4>
@@ -87,13 +87,13 @@
 			<p>已累计为用户管理黄金</p>
 			<div class="manager_gold">
 				<div v-if="ton">
-					<span v-for="item in ton">{{item}}</span><strong>吨</strong>
+					<span v-for="(item,index) in ton" :key="index">{{item}}</span><strong>吨</strong>
 				</div>
 				<div v-if="kilogram">
-					<span v-for="item in kilogram">{{item}}</span><strong>千克</strong>
+					<span v-for="(item,index) in kilogram" :key="index">{{item}}</span><strong>千克</strong>
 				</div>
 				<div v-if="gram">
-					<span v-for="item in gram">{{item}}</span><strong style="margin-right:0;">克</strong>
+					<span v-for="(item,index) in gram" :key="index">{{item}}</span><strong style="margin-right:0;">克</strong>
 				</div>
 			</div>
 		</footer>
@@ -463,24 +463,6 @@ export default {
     				that.news_swiper()
     			},500)
     		}
-    // 		if(res.code==100){
-    // 			that.news = res.content;
-    // 			var daojishi = setTimeout(function(){
-    // 				var container = document.getElementsByClassName("info_list_ul")[0],
-		  //       		a = 38,
-		  //   			ulHeight = container.offsetHeight;
-				// var scroll = function(){
-				// 	a--;
-				// 	if(a<=ulHeight*(-1)){
-				// 		a = 38;
-				// 	}
-		  //   		container.style.position = 'absolute';
-  		// 			container.style.top = a/50+'rem';
-  		// 			container.style.left = 0+'rem';
-				// }
-				// setInterval(scroll, 100);
-    // 			},100)
-    // 		}
     	},
     	//banner活动链接跳转
     	link(value){  
@@ -634,6 +616,7 @@ export default {
 		width: 2.5rem;
 		height: 2.85rem;
 		background-size: 100%;
+		background-repeat: no-repeat;
 		box-shadow: 6px 0px 7px 6px #f5f5f5;
 	    -webkit-box-shadow: 6px 0px 7px 6px #f5f5f5;
         -moz-box-shadow: 6px 0px 7px 6px #f5f5f5;
@@ -652,7 +635,6 @@ export default {
         white-space: nowrap;
 	}
 	.swiper-container-3 .swiper-slide-3>span{
-		display: inline-block;
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
@@ -797,39 +779,6 @@ export default {
 		height: .92rem;
 		margin-top: .02rem;
 	}
-	/*.info_list{
-		position: relative;
-		float: left;
-		list-style: none;
-		width: 88%;
-		height: .8rem;
-		overflow-y: hidden;
-		text-indent: 0;
-		padding-top: .05rem;
-	}*/
-	/*.info_list ul{
-		left: 0;
-		right: 0;
-	}*/
-	/*.info_list li{
-		position: relative;
-		padding-left: .5rem;
-		height: .33rem;
-		line-height: .33rem;
-		overflow: hidden;
-    	text-overflow: ellipsis;
-    	white-space: nowrap;
-	}*/
-	/*.info_list li:before{
-		content: '';
-		width: .07rem;
-		height: .07rem;
-		background-color: #000;
-		border-radius: .035rem;
-		position: absolute;
-		top: .15rem;
-		left: .30rem;
-	}*/
 	.goods_list{
 		width: 100%;
 		height: 4.35rem;
@@ -1097,7 +1046,6 @@ export default {
     @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5){
 		.goods_list:before{
 			content: '';
-			display: inline-block;
 			width: 100%;
 			border-bottom: 1px solid #eeeeee;
 			-webkit-transform: scaleY(0.7);
@@ -1106,22 +1054,10 @@ export default {
 			transform:scaleY(0.7);
 			float: left;
 		}
-		/*.dingtou:before{
-			content: '';
-			display: inline-block;
-			width: 100%;
-			border-bottom: 1px solid #eeeeee;
-			-webkit-transform: scaleY(0.7);
-			-o-transform: scaleY(0.7);
-			-moz-transform: scaleY(0.7);
-			transform:scaleY(0.7);
-			float: left;
-		}*/
 	}
 	@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 		.goods_list:before{
 			content: '';
-			display: inline-block;
 			width: 100%;
 			border-bottom: 1px solid #eeeeee;
 			-webkit-transform: scaleY(0.5);
@@ -1130,17 +1066,6 @@ export default {
 			transform:scaleY(0.5);
 			float: left;
 		}
-		/*.dingtou:before{
-			content: '';
-			display: inline-block;
-			width: 100%;
-			border-bottom: 1px solid #eeeeee;
-			-webkit-transform: scaleY(0.5);
-			-o-transform: scaleY(0.5);
-			-moz-transform: scaleY(0.5);
-			transform:scaleY(0.5);
-			float: left;
-		}*/
 	}
   #popupVisibleReport{
     padding-top:.34rem;
@@ -1175,7 +1100,6 @@ export default {
     margin-top:.4rem;
   }
   .view_report .report_btns p{
-    display: inline-block;
     width:50%;
     float:left;
     text-align: center;
