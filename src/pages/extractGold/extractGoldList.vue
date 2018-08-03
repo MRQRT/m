@@ -9,7 +9,7 @@
 				<ul>
 					<router-link :to="{'path':'/productDetail',query:{
 					  'id':item.id
-					}}" v-for="item in goods" tag="li" :key='item.id' :style="{backgroundImage: 'url(' + item.imageUrl + ')'}" style="backgroune-repeat:no-repeat;">
+					}}" v-for="item in goods" tag="li" :key='item.id' :style="{backgroundImage: 'url(' + item.imageUrl + ')'}" style="background-repeat:no-repeat;">
 					    <span>{{item.name}}</span>
 					</router-link>
 				</ul>
