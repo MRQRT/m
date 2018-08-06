@@ -10,17 +10,15 @@
                 <whale :top-status="topStatus">
                 </whale>
             </div>
-
             <section  v-for="item in list" class="list" :key="item.id">
                 <router-link :to="{path:'infoList/infoDetail', query:{id:item.id,title:item.title}}" class="content" tag="div">
-                  <img :src="item.imageUrl" class="listImg">
+                  <section :style="{ backgroundImage: 'url(' + item.imageUrl + ')' }" class="listImg"></section>
                   <p class="title">{{item.title}}</p>
                   <p class="time">{{item.createTime | formatTime}}</p>
                 </router-link>
             </section>
         </mt-loadmore>
       </div>
-
      <transition name="router-slid" mode="out-in">
        <router-view></router-view>
      </transition>
@@ -201,9 +199,10 @@ export default {
     margin-top:0.88rem;
   }
   .listImg {
-  	width:2rem;
+  	width:2.3rem;
   	height:1.3rem;
-    vertical-align: top;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   .title {
     width:5.6rem;
