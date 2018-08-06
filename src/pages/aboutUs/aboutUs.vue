@@ -78,8 +78,8 @@
                         </div>
                         <div class="swiper-slide">
                            <!--头像-->
-                            <img src="../../images/person2.png" style="width:1.5rem;height:1.5rem;display: block;margin:0 auto;margin-top:.25rem;">
-                            <p class="all-position" style="margin-top:.2rem;">
+                            <img src="../../images/person2.png" style="width:1.5rem;height:1.5rem;display: block;margin:0 auto;margin-top:.2rem;">
+                            <p class="all-position" style="margin-top:.1rem;">
                                <span class="name">张盈盈</span>
                                <span class="position">黄金管家 CRO</span>
                             </p>
@@ -298,7 +298,7 @@
         color:#eda835;
         font-size:.24rem;
         height:.24rem;
-        margin-bottom:.2rem;
+        margin-bottom:.1rem;
     }
     .event{
         font-size:.28rem;
@@ -316,15 +316,15 @@
         animation: mySliderLine 1s linear;
         animation-fill-mode:forwards;
     }
-    .swiper-slide2 .part1,.swiper-slide2 .part2,.swiper-slide2 .part3,.swiper-slide2 .part4,.swiper-slide2 .part5,.swiper-slide2 .part6,.swiper-slide2 .part7,.swiper-slide2 .part8{
+    .part1,.part2,.part3,.part4,.part5,.part6,.part7,.part8{
         position: relative;
     }
-    .swiper-slide2 .part2,.swiper-slide2 .part3,.swiper-slide2 .part4,.swiper-slide2 .part5,.swiper-slide2 .part6,.swiper-slide2 .part7,.swiper-slide2 .part8{
+    .part2,.part3,.part4,.part5,.part6,.part7,.part8{
         opacity: 1;
         margin-top:.26rem;
     }
-    .swiper-slide2 .part2.animate3,.swiper-slide2 .part3.animate3,.swiper-slide2 .part4.animate3,.swiper-slide2 .part5.animate3,.swiper-slide2 .part6.animate3,.swiper-slide2 .part7.animate3,.swiper-slide2 .part8.animate3{
-        animation: mySilder 1s linear;
+    .part2.animate3,.part3.animate3,.part4.animate3,.part5.animate3,.part6.animate3,.part7.animate3,.part8.animate3{
+        /* animation: mySilder 1s linear; */
         animation-fill-mode:forwards;
     }
      .swiper-slide2 .part1:before,.swiper-slide2 .part2:before, .swiper-slide2 .part3:before,.swiper-slide2 .part4:before,.swiper-slide2 .part5:before,.swiper-slide2 .part6:before,.swiper-slide2 .part7:before,.swiper-slide2 .part8:before{
@@ -342,7 +342,7 @@
         box-shadow: -2px 2px 7px 5px rgba(236, 233, 233, 0.5);
         padding-left:.54rem;
         padding-right:.5rem;
-        height:8.1rem;
+        height:8rem;
         background-color: #fff;
     }
     .upPic{
@@ -377,13 +377,13 @@
             height:0;
         }
         to{
-           height:10rem;
+           height:8.5rem;
         }
     }
     @keyframes mySilder{
         from{
             opacity:0;
-            margin-top:1.8rem;
+            margin-top:1rem;
         }
         to{
             opacity:1;
