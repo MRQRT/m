@@ -65,7 +65,6 @@
 					<h4 class="bc">核心团队</h4>
                     <div class="small-swiper-container">
                       <div class="swiper-wrapper small-swiper-wrapper">
-
                         <div class="swiper-slide">
                             <!--头像-->
                             <img src="../../images/person1.png" style="width:1.9rem;height:1.9rem;display: block;margin:0 auto;margin-top:.4rem;">
@@ -77,24 +76,20 @@
                                国家注册黄金投资分析师。历任招金和信副总经理、多边金都金融投资事业部总经理、IDB《财富周刊》副主编。2007年，发起国内首支黄金私募基金；2010年，发起设计国内首支黄金生息产品，并积极推动“黄金积存”业务互联网化。
                             </p>
                         </div>
-                        
                         <div class="swiper-slide">
                            <!--头像-->
-                            <img src="../../images/person2.png" style="width:1.9rem;height:1.9rem;display: block;margin:0 auto;margin-top:.4rem;">
-                            <p class="all-position">
+                            <img src="../../images/person2.png" style="width:1.5rem;height:1.5rem;display: block;margin:0 auto;margin-top:.25rem;">
+                            <p class="all-position" style="margin-top:.2rem;">
                                <span class="name">张盈盈</span>
                                <span class="position">黄金管家 CRO</span>
                             </p>
-                            <p class="briefDesc">
+                            <p class="briefDesc" style="margin-top:0;">
                                CFA（特许金融分析师）持证人，英国格拉斯大学国际金融学硕士，拥有上海黄金交易所交易员资格、期货从业资格和期货投资咨询资格。历任银河期货有限公司首席贵金属分析师、风控经理。2009年，荣获上海期货交易所优秀黄金分析师及《证券时报》全国最佳黄金期货分析师。在《中国外汇》、《中国黄金报》及《期货日报》等业内知名报刊杂志发表关于贵金属及外汇市场研究报告近百篇，长期担任CCTV、新华社及中央人民广播电台等业内主流媒体的特约嘉宾和评论员，曾参与编译《保守型投资者的期权交易策略》一书。
                             </p>
                         </div>
-
-                        
-
                         <div class="swiper-slide">
                             <!--头像-->
-                            <img src="../../images/person4.png" style="width:1.9rem;height:1.9rem;display: block;margin:0 auto;margin-top:.4rem;">
+                            <img src="../../images/person4.png" style="width:1.5rem;height:1.5rem;display: block;margin:0 auto;margin-top:.4rem;">
                             <p class="all-position">
                                <span class="name">朱桐</span>
                                <span class="position">副总裁</span>
@@ -111,7 +106,6 @@
 		</div>
 	</div>
 </template>
-
 <script type="text/javascript" src="@/plugins/swiper.min.js"></script>
 <script>
 	import headTop from '../../components/header/head.vue';
@@ -130,7 +124,7 @@
 
 		},
 		mounted() {
-			var hgt=window.innerHeight;
+			var hgt=window.innerHeight;//window的窗口高度
 			var that=this;
 			var topHgt=this.$refs.topHead.$el.offsetHeight;
 			this.$refs.swiperWrapper.style.height=hgt-topHgt+'px';
@@ -190,12 +184,12 @@
         background-color: #fff;
     }
     .aboutUs-container .swiper-slide1,.aboutUs-container .swiper-slide2,.aboutUs-container .swiper-slide3{
-        padding-top:.48rem;
+        padding-top:.1rem;
         position: relative;
     }
     .aboutUs-container .swiper-slide1 h4.bc,.aboutUs-container .swiper-slide2 h4.bc,.aboutUs-container .swiper-slide3 h4.bc{
         font-size:.34rem;
-        height:.92rem;
+        height:.62rem;
         text-align: center;
         position: relative;
         font-weight: bold;
@@ -293,20 +287,20 @@
         width:.02rem;
         background-color: #F2B643;
         position: absolute;
-        top:1.62rem;
+        top:1rem;
         left:.6rem;
     }
-    .swiper-slide1 .leftLine.animate2{
+    .leftLine.animate2{
         animation: myLine 1s linear;
         animation-fill-mode:forwards;
     }
-    .swiper-slide2 .time{
+    .time{
         color:#eda835;
         font-size:.24rem;
         height:.24rem;
         margin-bottom:.2rem;
     }
-    .swiper-slide2 .event{
+    .event{
         font-size:.28rem;
         color:#333333;
     }
@@ -315,7 +309,7 @@
         width:.02rem;
         background-color: #F2B643;
         position: absolute;
-        top:1.62rem;
+        top:.85rem;
         left:.6rem;
     }
     .swiper-slide2 .leftLine.animate4{
@@ -348,7 +342,7 @@
         box-shadow: -2px 2px 7px 5px rgba(236, 233, 233, 0.5);
         padding-left:.54rem;
         padding-right:.5rem;
-        height:9.42rem;
+        height:8.1rem;
         background-color: #fff;
     }
     .upPic{
@@ -357,7 +351,7 @@
         position: absolute;
         left:50%;
         margin-left:-.12rem;
-        bottom:1.2rem;
+        bottom:2rem;
         animation: myArrow 1s linear infinite alternate;
     }
     @keyframes myText{
@@ -372,10 +366,10 @@
     }
     @keyframes myLine{
         from{
-            height:0;
+            height:.5rem;
         }
         to{
-           height:7.8rem; 
+           height:7rem;
         }
     }
     @keyframes mySliderLine{
@@ -383,7 +377,7 @@
             height:0;
         }
         to{
-           height:10.12rem; 
+           height:10rem;
         }
     }
     @keyframes mySilder{
