@@ -252,7 +252,7 @@ export default {
 					this.orderCheckMsg=res.content.msg;
 				}else{
 					this.serviceCharge=res.content.sellFee?res.content.sellFee:0//手续费
-					this.deduct_sercharge=this.estimate-this.serviceCharge
+					this.deduct_sercharge=(this.estimate-this.serviceCharge).toFixed(2)
 				}
 			}
 		},
