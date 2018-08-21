@@ -45,7 +45,7 @@
 				<div class='order_list'><span>卖出克重</span><span>{{sellWeight}}克</span></div>
 				<div class='order_list'><span>卖出手续费</span><span>{{serviceCharge}}元</span></div>
 				<div class='order_list_border'></div>
-				<div class='order_list_last'><span>预估卖出金额</span><span>（已扣除手续费）</span><span>{{estimate}}元</span></div>
+				<div class='order_list_last'><span>预估卖出金额</span><span>（已扣除手续费）</span><span>{{deduct_sercharge}}元</span></div>
 				<div class="submit_btn"><div @click="sell_submit()">订单提交</div></div>
 			</div>
 		</mt-popup>
@@ -83,7 +83,7 @@ export default {
 			popupVisible: false,//订单的弹出层
 			zhan: null,//占位符
 			btnText:null,//立即卖出/挂单卖出切换
-
+			deduct_sercharge:'',//扣除手续费的预估克重
 		}
 	},
 	mounted() {
@@ -252,6 +252,7 @@ export default {
 					this.orderCheckMsg=res.content.msg;
 				}else{
 					this.serviceCharge=res.content.sellFee?res.content.sellFee:0//手续费
+					this.deduct_sercharge=this.estimate-this.serviceCharge
 				}
 			}
 		},
