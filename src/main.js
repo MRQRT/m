@@ -18,6 +18,7 @@ Vue.use(MintUI)
 Vue.use(vueRouter)
 Vue.use(VueAwesomeSwiper)
 import { MessageBox,Indicator } from 'mint-ui'
+import { setStore } from "./config/mUtils";
 const router = new vueRouter({
     routes,
     'linkActiveClass': 'active',
@@ -152,6 +153,12 @@ window.getWeParams=function(userid){
         }
     })
 }
+//appresource
+window.appStoreSource=function(val){
+    setStore('appsource',val,'local')
+}
+var agent = checkAgent();
+console.log(agent)
 
 /*
  与原生交互API
