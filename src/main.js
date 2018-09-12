@@ -159,6 +159,8 @@ window.appStoreSource=function(val){
 }
 var agent = checkAgent();
 console.log(agent)
+var userAgent = window.navigator.userAgent;
+alert(userAgent)
 
 /*
  与原生交互API
