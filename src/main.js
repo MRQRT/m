@@ -8,7 +8,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App.vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import { checkAgent,check } from '@/config/mUtils'
+import { checkAgent,check,getStore,setStore } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
@@ -18,7 +18,6 @@ Vue.use(MintUI)
 Vue.use(vueRouter)
 Vue.use(VueAwesomeSwiper)
 import { MessageBox,Indicator } from 'mint-ui'
-import { setStore } from "./config/mUtils";
 const router = new vueRouter({
     routes,
     'linkActiveClass': 'active',
@@ -157,8 +156,8 @@ window.getWeParams=function(userid){
 window.appStoreSource=function(val){
     setStore('appsource',val,'local')
 }
-var agent = check();
-setStore('agent',agent,'local')
+var browser = check();
+setStore('browser',browser,'local')
 
 /*
  与原生交互API
@@ -242,7 +241,7 @@ if(agent=='And'){
     //判断是否在app里么
     window.isApp=function(){
         if(!window.stub) return false
-        window.stub.isAPP() 
+        window.stub.isAPP()
         localStorage.setItem('isWebview','andriod')
     }
 }else{

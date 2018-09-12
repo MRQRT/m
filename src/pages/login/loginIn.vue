@@ -89,7 +89,7 @@
 	</div>
 </template>
 <script>
-    import {setCookie,getCookie,openAPI,checkAgent,getStore} from '@/config/mUtils.js'
+    import {setCookie,getCookie,openAPI,checkAgent,getStore,removeStore} from '@/config/mUtils.js'
     import {mapMutations,mapState} from 'vuex'
     import {sendSms,quickLogin,quickLogin2,login,picCheck,queryMyProfil} from '@/service/getData.js'
     import { Toast,Button } from 'mint-ui'
@@ -318,28 +318,31 @@
                     }else if(this.activityId){
                         var reObj = await quickLogin(phone,code,this.inviteCode,this.activityId);
                     }else{
-                        if(localStorage.getItem('isWebview')){//项目在app中
+                        if(getStore('isWebview','local')){//项目在app中
                             if(this.agent=='And'){//项目在安卓
-                                let code=getStore('appsource','local');
-                                let source='ZYPT_Android_appstore-'+code+'_#';
+                                let appsource=getStore('appsource','local');
+                                let source='ZYPT_Android_appstore-'+appsource+'_#';
                                 var reObj=await quickLogin2(phone,code,source);
                             }else if(this.agent=='IOS'){//项目在ios
                                 var reObj=await quickLogin2(phone,code,'ZYPT_IOS_appleStore_#');
                             }
                         }else{//项目不在app中
-                            if(getStore('tg','local')){//推广用户
+                            if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
                                 var tg=getStore('tg','local');
-                                var ag=getStore('agent','local')
-                                let source='TG_H5_'+tg+'_'+ag
+                                var browser=getStore('browser','local');
+                                let source='TG_H5_'+tg+'_'+browser;
                                 var reObj = await quickLogin2(phone,code,source);
                             }else{//自营平台的用户
-                            var ag=getStore('agent','local')
-                                let source='ZYPT_H5_#_'+ag
+                                var browser=getStore('browser','local');
+                                let source='ZYPT_H5_#_'+browser;
                                 var reObj = await quickLogin2(phone,code,source);
                             }
                         }
                     }
                     if(reObj.code=='-1005'){//用户未设置登录密码
+                        removeStore('tg','local')
+                        removeStore('browser','local')
+                        removeStore('appsource','local')
                         this.RECORD_TOKEN(reObj.content)
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
                         window.sendUserId(reObj.content.userId,reObj.content.token);//给APP传userId和token
@@ -382,6 +385,9 @@
                             });
 
                     }else if(reObj.code=='100'){
+                        removeStore('tg','local')
+                        removeStore('browser','local')
+                        removeStore('appsource','local')
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
                         //登录成功后获取用户基本概况
                         this.userInforma();

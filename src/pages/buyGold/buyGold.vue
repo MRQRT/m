@@ -220,6 +220,8 @@ export default {
 		setStore('tg',tg,'local');
 	},
     mounted() {
+		var tg = this.$route.query.source;
+		setStore('tg',tg,'local');
 		new Swiper('.swiper-container-4', {
 			slidesPerView: 2.5,
 			spaceBetween: 30,

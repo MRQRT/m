@@ -286,7 +286,7 @@ export const queryChildDictionary = () => fetch('/v3/recycleOrder/queryChildDict
  * 添加存金订单
  */
 
-export const addRecycleOrder = (rOrder,contact,telephone,address,isCash,idPic) => fetch('/v3/recycleOrder/addRecycleOrder',{'rOrder':rOrder,'contact':contact,'telephone':telephone,'address':address,'isCash':isCash,'idPic':idPic},'post')
+export const addRecycleOrder = (rOrder,contact,telephone,address,isCash,idPic,source) => fetch('/v3/recycleOrder/addRecycleOrder',{'rOrder':rOrder,'contact':contact,'telephone':telephone,'address':address,'isCash':isCash,'idPic':idPic,'source':source},'post')
 
 /**
  * 修改存金订单
