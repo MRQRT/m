@@ -332,3 +332,48 @@ export function iosVersion(){
         return asa
     }
 }
+
+//检测浏览器环境
+export function check(){
+    var ua = navigator.userAgent.toLocaleLowerCase();
+    var browserType=null;
+    if (ua.match(/msie/) != null || ua.match(/trident/) != null) {
+        browserType = "IE";
+        browserVersion = ua.match(/msie ([\d.]+)/) != null ? ua.match(/msie ([\d.]+)/)[1] : ua.match(/rv:([\d.]+)/)[1];
+    } else if (ua.match(/firefox/) != null) {
+        browserType = "firefox";
+    }else if (ua.match(/ucbrowser/) != null) {
+        browserType = "UC";
+    }else if (ua.match(/opera/) != null) {
+        browserType = "opera";
+    } else if (ua.match(/baidubrowser/) != null) {
+        browserType = "baidu";
+    }else if (ua.match(/sogoumse/) != null) {
+        browserType = "sougou";
+    }else if (ua.match(/tencenttraveler/) != null || ua.match(/qqbrowse/) != null) {
+        browserType = "QQ";
+    }else if (ua.match(/maxthon/) != null) {
+        browserType = "aoyou";
+    }else if (ua.match(/liebao/) != null) {
+        browserType = "liebao";
+    }else if (ua.match(/chrome/) != null) {
+        var is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+        function _mime(option, value) {
+            var mimeTypes = navigator.mimeTypes;
+            for (var mt in mimeTypes) {
+                if (mimeTypes[mt][option] == value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(is360){
+            browserType = '360';
+        }else{
+            // $('html').css("zoom",".80");
+        }
+    }else if (ua.match(/safari/) != null) {
+        browserType = "Safari";
+    }
+    return browserType
+}

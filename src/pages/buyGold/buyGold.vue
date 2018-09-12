@@ -174,7 +174,7 @@ import activity from '@/images/activity.png'
 import activity2 from '@/images/activity2.png'
 import newText from '@/images/new.png'
 import {mapState,mapMutations} from 'vuex'
-import { getRem,checkAgent } from '@/config/mUtils.js'
+import { getRem,checkAgent,setStore } from '@/config/mUtils.js'
 import logo from '@/images/myLogo@2x.png'
 import { Popup } from 'mint-ui';
 export default {
@@ -216,7 +216,8 @@ export default {
 		}
 	},
 	created() {
-		
+		var tg = this.$route.query.source;
+		setStore('tg',tg,'local');
 	},
     mounted() {
 		new Swiper('.swiper-container-4', {

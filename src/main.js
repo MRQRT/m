@@ -8,7 +8,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App.vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import { checkAgent } from '@/config/mUtils'
+import { checkAgent,check } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
@@ -157,10 +157,8 @@ window.getWeParams=function(userid){
 window.appStoreSource=function(val){
     setStore('appsource',val,'local')
 }
-var agent = checkAgent();
-console.log(agent)
-var userAgent = window.navigator.userAgent;
-alert(userAgent)
+var agent = check();
+setStore('agent',agent,'local')
 
 /*
  与原生交互API

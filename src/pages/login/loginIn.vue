@@ -89,9 +89,9 @@
 	</div>
 </template>
 <script>
-    import {setCookie,getCookie,openAPI} from '@/config/mUtils.js'
+    import {setCookie,getCookie,openAPI,checkAgent,getStore} from '@/config/mUtils.js'
     import {mapMutations,mapState} from 'vuex'
-    import {sendSms,quickLogin,login,picCheck,queryMyProfil} from '@/service/getData.js'
+    import {sendSms,quickLogin,quickLogin2,login,picCheck,queryMyProfil} from '@/service/getData.js'
     import { Toast,Button } from 'mint-ui'
 	export default {
 		data(){
@@ -123,13 +123,16 @@
                 params:null, //邀请好友链接带进来的邀请码
                 inviteCode:null,//世界杯的邀请码
                 activityId:null,//世界杯的活动id
+                agent:'',//安卓和ios判断
 			}
 		},
         created() {
             
         },
 		mounted() {
-            window.isApp()
+            window.isApp();//是否在app
+            var ag=checkAgent();//安卓和ios判断
+            this.agent=ag;//
             if(localStorage.getItem('isWebview')){
                 document.querySelector('.weixin_login').style.display="block"
             }
@@ -315,9 +318,27 @@
                     }else if(this.activityId){
                         var reObj = await quickLogin(phone,code,this.inviteCode,this.activityId);
                     }else{
-                        var reObj = await quickLogin(phone,code);
+                        if(localStorage.getItem('isWebview')){//项目在app中
+                            if(this.agent=='And'){//项目在安卓
+                                let code=getStore('appsource','local');
+                                let source='ZYPT_Android_appstore-'+code+'_#';
+                                var reObj=await quickLogin2(phone,code,source);
+                            }else if(this.agent=='IOS'){//项目在ios
+                                var reObj=await quickLogin2(phone,code,'ZYPT_IOS_appleStore_#');
+                            }
+                        }else{//项目不在app中
+                            if(getStore('tg','local')){//推广用户
+                                var tg=getStore('tg','local');
+                                var ag=getStore('agent','local')
+                                let source='TG_H5_'+tg+'_'+ag
+                                var reObj = await quickLogin2(phone,code,source);
+                            }else{//自营平台的用户
+                            var ag=getStore('agent','local')
+                                let source='ZYPT_H5_#_'+ag
+                                var reObj = await quickLogin2(phone,code,source);
+                            }
+                        }
                     }
-                    
                     if(reObj.code=='-1005'){//用户未设置登录密码
                         this.RECORD_TOKEN(reObj.content)
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据

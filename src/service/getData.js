@@ -22,6 +22,12 @@ export const checkSms = (telephone,code) => fetch('/v3/member/checkSmsCaptcha',{
 
 export const quickLogin = (telephone,code,invitedBy,activityId) => fetch('/v3/member/quickLogin',{'telephone':telephone,'code':code,'invitedBy':invitedBy,'activityId':activityId},'post');
 
+/**
+ * 快捷登入2
+ */
+
+export const quickLogin2 = (telephone,code,source) => fetch('/v3/member/quickLogin',{'telephone':telephone,'code':code,'source':source},'post');
+
 
 /**
  * 密码登入
