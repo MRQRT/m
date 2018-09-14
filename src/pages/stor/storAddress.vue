@@ -434,12 +434,12 @@
 					}else{//项目不在app中
 						if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
 							var tg=getStore('tg','local');
-							var browser=getStore('browser','local');
+							var browser=getStore('browser','local')?getStore('browser','local'):'#';
 							let source='TG_H5_'+tg+'_'+browser;
 							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
 							this.fanhuidata(res);
 						}else{//自营平台的用户
-							var browser=getStore('browser','local');
+							var browser=getStore('browser','local')?getStore('browser','local'):'#';
 							let source='ZYPT_H5_#_'+browser;
 							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
 							this.fanhuidata(res);
@@ -453,9 +453,6 @@
 				this.RECORD_RECYCLEPARAMS('')
 				this.RECORD_ADDRESS('')
 				if(res.code==100){
-					removeStore('tg','local')
-					removeStore('browser','local')
-					removeStore('appsource','local')
 					Indicator.close()
 					const or = {
 						contact: this.realName,

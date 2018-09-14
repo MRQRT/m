@@ -329,20 +329,17 @@
                         }else{//项目不在app中
                             if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
                                 var tg=getStore('tg','local');
-                                var browser=getStore('browser','local');
+                                var browser=getStore('browser','local')?getStore('browser','local'):'#';
                                 let source='TG_H5_'+tg+'_'+browser;
                                 var reObj = await quickLogin2(phone,code,source);
                             }else{//自营平台的用户
-                                var browser=getStore('browser','local');
+                                var browser=getStore('browser','local')?getStore('browser','local'):'#';
                                 let source='ZYPT_H5_#_'+browser;
                                 var reObj = await quickLogin2(phone,code,source);
                             }
                         }
                     }
                     if(reObj.code=='-1005'){//用户未设置登录密码
-                        removeStore('tg','local')
-                        removeStore('browser','local')
-                        removeStore('appsource','local')
                         this.RECORD_TOKEN(reObj.content)
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
                         window.sendUserId(reObj.content.userId,reObj.content.token);//给APP传userId和token
@@ -385,9 +382,6 @@
                             });
 
                     }else if(reObj.code=='100'){
-                        removeStore('tg','local')
-                        removeStore('browser','local')
-                        removeStore('appsource','local')
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
                         //登录成功后获取用户基本概况
                         this.userInforma();
