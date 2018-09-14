@@ -350,7 +350,9 @@ export function check(){
         browserType = "BAIDU";
     }else if (ua.match(/sogoumse/) != null) {
         browserType = "SOUGOU";
-    }else if (ua.match(/tencenttraveler/) != null || ua.match(/qqbrowse/) != null) {
+    }else if (ua.match(/micromessenger/) != null) {
+        browserType = 'WEIXIN'
+    }else if (ua.match(/mqqbrowser/) != null) {
         browserType = "QQ";
     }else if (ua.match(/maxthon/) != null) {
         browserType = "AOYOU";
@@ -369,11 +371,9 @@ export function check(){
         }
         if(is360){
             browserType = 'QIHU360';
-        }else{
-            // $('html').css("zoom",".80");
         }
     }else if (ua.match(/safari/) != null) {
-        browserType = "SAFARI";
+        browserType = "SAFARI"
     }
     return browserType
 }
