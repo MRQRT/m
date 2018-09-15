@@ -399,6 +399,11 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
+                        var authorization=res.content.userId+'_'+res.content.token
+                        if(path=='http://192.168.1.114:8082/'){
+                            window.location.href='http://192.168.1.114:8082/#/lottery?authorization='+authorization
+                            return
+                        }
                         if(path!='' && id==''){
                             this.$router.replace({
                                 path:path
@@ -451,6 +456,11 @@
                         }
                         if(this.$route.query.id){
                             id=this.$route.query.id
+                        }
+                        var authorization=res.content.userId+'_'+res.content.token
+                        if(path=='http://192.168.1.114:8082/'){
+                            window.location.href='http://192.168.1.114:8082/#/lottery?authorization='+authorization
+                            return
                         }
                         if(path!=''&&id==''){
                             this.$router.replace({
