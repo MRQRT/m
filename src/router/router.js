@@ -107,8 +107,8 @@ const attorn = r => require.ensure([], () => r(require('../pages/myJiFen/attorn'
 const myPutUp = r => require.ensure([], () => r(require('../pages/putUping/putUp')), 'myPutUp')
 
 export default [{
-    path: '/', 
-    component: App, 
+    path: '/',
+    component: App,
         children: [
         {
             path: '',
@@ -123,11 +123,11 @@ export default [{
             meta:{
                 keepAlive:true
             }
-        }, 
+        },
         {
             path: '/spring', //活动
             component: spring
-        }, 
+        },
         {
             path: '/putupDetail', //活动
             component: putupDetail
@@ -146,14 +146,14 @@ export default [{
             component: rule
         },
         {
-            path: '/storeGold', 
+            path: '/storeGold',
             component: storeGold,//导航存金页
             meta:{
                 keepAlive:true
             }
-        }, 
+        },
         {
-            path: '/benefit', 
+            path: '/benefit',
             component: benefit,//生金页
             meta:{
                 // keepAlive:true
@@ -161,42 +161,42 @@ export default [{
             }
         },
         {
-            path: '/benefitNewest', 
+            path: '/benefitNewest',
             component: benefitNewest //生金页之最新动态
         },
         {
-            path: '/benefitHelp', 
+            path: '/benefitHelp',
             component: benefitHelp//生金攻略页
         },
         {
-            path: '/mine', 
+            path: '/mine',
             component: mine//我的页面
         },
         {
-            path: '/myPutUp', 
+            path: '/myPutUp',
             component: myPutUp//我的挂单
         },
         {
-            path: '/jiFen', 
+            path: '/jiFen',
             component: jiFen,//我的积分页面
             meta: {
                 requireAuth: true,
             }
         },
         {
-            path: '/inviteFriend', 
+            path: '/inviteFriend',
             component: inviteFriend,//邀请好友页面
         },
         {
-            path: '/invitePage', 
+            path: '/invitePage',
             component: invitePage,//邀请好友打开页面
         },
         {
-            path: '/attorn', 
+            path: '/attorn',
             component: attorn,//转让积分页面
         },
         {
-            path: '/myCoupon', 
+            path: '/myCoupon',
             component: myCoupon,//我的页面之优惠券
             // meta:{
             //     keepAlive:true
@@ -227,7 +227,7 @@ export default [{
                         requireAuth: true,
                     },
                 },
-                {    
+                {
                     path: 'addAddress',//添加地址
                     component: addAddress,
                     meta: {
@@ -342,7 +342,7 @@ export default [{
             path: '/storResult', //存金
             component: storResult,
         },
-        {    
+        {
             path:'/buyResult', //买金成功页
             component: buyResult
         },

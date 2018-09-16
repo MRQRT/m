@@ -4,6 +4,13 @@ const andVerson = checkAndroAgent();
 const iosVerson = iosVersion();
 
 /**
+ * 获取福利券信息
+ */
+
+export const coupons = (activityId) => fetch('/v3/lottery/mine/coupons?activityId='+activityId,{},'get')
+
+
+/**
  * 发送短信验证码
  */
 
@@ -189,7 +196,7 @@ export const xmlUploadImg=(current,src,method,Indicator,Toast,myrate,fa_index,fi
                 }
             }
         }
-    }    
+    }
 }
 
 /**
