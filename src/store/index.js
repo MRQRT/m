@@ -28,7 +28,8 @@ const state = {
 	idCardUrl:null,//身份证地址
 	returnRecycleOrder:null,//存金成功后返回的订单信息(需要放到订单成功页)
 	rulerData: '10', //标尺刻度初始值为10，标尺刻度
-	initRulerData:10 //标尺默认的值
+	initRulerData:10, //标尺默认的值
+	activityId:'ff808081653c50790165adf0b8ce0292',//抽奖活动ID
 }
 
 export default new Vuex.Store({

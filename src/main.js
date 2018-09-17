@@ -18,6 +18,14 @@ Vue.use(MintUI)
 Vue.use(vueRouter)
 Vue.use(VueAwesomeSwiper)
 import { MessageBox,Indicator } from 'mint-ui'
+
+// 通过url获取参数的函数
+Vue.prototype.GetQueryString = function (name){
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if(r!=null)return  unescape(r[2]); return null;
+}
+
 const router = new vueRouter({
     routes,
     'linkActiveClass': 'active',
@@ -88,7 +96,7 @@ router.beforeEach((to, from, next) => {
                     }
 
                })
-                
+
             }else{
                 next(true)
             }
@@ -116,7 +124,7 @@ router.beforeEach((to, from, next) => {
                     }
 
                })
-                
+
         }else{
             next(true)
         }

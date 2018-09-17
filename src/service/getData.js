@@ -3,8 +3,15 @@ import {openAPI,checkAndroAgent,iosVersion} from '../config/mUtils.js'
 const andVerson = checkAndroAgent();
 const iosVerson = iosVersion();
 
+
 /**
- * 获取福利券信息
+* 活动时间(抽奖活动)
+*/
+
+export const activityInfo = (activityId) => fetch('/v3/lottery/activity/info?activityId='+activityId,{},'get')
+
+/**
+ * 获取福利券信息(抽奖活动)
  */
 
 export const coupons = (activityId) => fetch('/v3/lottery/mine/coupons?activityId='+activityId,{},'get')
