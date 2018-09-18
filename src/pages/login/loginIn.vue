@@ -96,6 +96,7 @@
 	export default {
 		data(){
 			return {
+				lotteryUrl:'http://test.activity.au32.cn', //抽奖活动地址
                 openAPI:openAPI()+'/v3/member/captcha',
                 fast:true,
                 pwd:false,
@@ -400,8 +401,8 @@
                             id=this.$route.query.id
                         }
                         var authorization=res.content.userId+'_'+res.content.token
-                        if(path=='http://test.activity.au32.cn'){
-                            window.location.href='http://test.activity.au32.cn/#/lottery?authorization='+authorization
+                        if(path==this.lotteryUrl){
+                            window.location.href = this.lotteryUrl + '/#/lottery?authorization='+authorization
                             return
                         }
                         if(path!='' && id==''){
@@ -458,8 +459,8 @@
                             id=this.$route.query.id
                         }
                         var authorization=res.content.userId+'_'+res.content.token
-                        if(path=='http://test.activity.au32.cn'){
-                            window.location.href='http://test.activity.au32.cn/#/lottery?authorization='+authorization
+                        if(path==this.lotteryUrl){
+                            window.location.href = this.lotteryUrl + '/#/lottery?authorization='+authorization
                             return
                         }
                         if(path!=''&&id==''){
