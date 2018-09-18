@@ -25,6 +25,23 @@
 					<span>选择品牌</span>
 					<span><span style="color:#999999;" v-show="checkBrand">选填</span><span v-show="!checkBrand"  style="color:#333333;">{{order.brandType | brandTran}}</span></span>
 				</content>
+
+				<!-- 只在活动日期+10期间显示 -->
+				<!-- 无福利券或未登录情况下显示 -->
+				<div class="" v-if="welfareStatus">
+					<content class="item_row item_row_4" v-if="!token || !hasWelfare">
+						<span>福利券</span>
+						<span>暂无福利券可用</span>
+					</content>
+					<content class="item_row item_row_5" v-else>
+						<span>福利券</span>
+						<div class="has-coupon">
+							<p>{{welfareNum}}张福利券可用</p>
+							<p>以实测毛重自动匹配福利券</p>
+						</div>
+					</content>
+				</div>
+
 				<!-- 选择图片 -->
 				<h3 class="title_two">存金图片<span style="color:#999999;font-size: .28rem;">（请上传实物、发票等相关图片,最多9张）</span></h3>
 				<div class="uploadPho_photo">
@@ -102,7 +119,7 @@
 	import headTop from '@/components/header/head.vue'
 	import ruler from '@/components/ruler/ruler.vue'
 	import { clearNoNum, formatDate } from '../../config/mUtils.js'
-	import { queryRecycleProduct,queryRecycleOrderDetail,queryChildDictionary } from '@/service/getData.js'
+	import { queryRecycleProduct,queryRecycleOrderDetail,queryChildDictionary,coupons,activityInfo } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
 	import { getRem,openAPI,checkAndroAgent,iosVersion } from "@/config/mUtils"
@@ -111,6 +128,9 @@
 	export default{
 		data () {
 			return {
+				hasWelfare:false,  //是否有可用福利券
+				welfareNum:'',     //可使用福利券张数
+				welfareStatus:true,//福利券是否展示
 				  checkBrand: true,//黄金品牌是否选择 true没有选择 false选择
 				    canPhoto: false,//可以拍照
 		             noPhoto: true, //不可以拍照
@@ -175,13 +195,20 @@
 				this.estimatePrice=this.order.applyWeight*this.currentPrice
 				this.set_initRulerData(this.recycleParams.applyWeight)
 			}
+			//登录状态下请求福利券
+			if(this.token){
+				this.coupons();
+			}
+			//根据活动时间判断是否显示福利券信息
+			this.showWelfare();
 		},
 		computed:{
 			...mapState({
 				   token: state => state.token,
 			currentPrice: state => state.currentPrice,
 		   recycleParams: state => state.recycleParams,
-		   	   rulerData: state => state.rulerData
+		   	   rulerData: state => state.rulerData,
+			  activityId: state => state.activityId,
     		})
 		},
 		watch:{
@@ -239,7 +266,11 @@
 			goBack(){
 				this.RECORD_RECYCLEPARAMS('')
 				this.set_initRulerData(Number(10));//修改ruler的初始值
-				this.$router.push('/storeGold')
+				if(this.$route.query.from){
+					this.$router.push('/myCoupon')
+				}else{
+					this.$router.push('/storeGold')
+				}
 				Indicator.close()
 			},
 			//查询存金产品列表
@@ -247,7 +278,7 @@
 				const res = await queryRecycleProduct()
 				this.productType=res.content
 				if(this.recycleParams && this.recycleParams!='' || this.$route.query.id){
-					
+
 				}else{
 					this.order.checkType = res.content[res.content.length-1].name//加载选中第一个的name值
 					this.order.productId = res.content[res.content.length-1].id//加载选中第一个的id值
@@ -271,6 +302,31 @@
 					}
 				}
 				this.brandArray = this.brand1
+			},
+			// 福利券数量
+			async coupons(){
+				var res = await coupons(this.activityId);
+				if(res.code==100){
+					if(res.content.usable.length==0){
+						this.hasWelfare = false;
+					}else{
+						this.hasWelfare = true;
+						this.welfareNum = res.content.usable.length;
+					}
+				}
+			},
+			// 控制福利券显示与隐藏
+			async showWelfare(){
+				var res = await activityInfo(this.activityId);
+				if(res.code==100){
+					var date1 = new Date(res.content.endTime.replace(/-/g,"/"));
+					var date2 = date1.setDate(date1.getDate() + 10);
+					if(Date.parse(new Date()) > date2){
+						this.welfareStatus =  false;
+					}else{
+						 this.welfareStatus = true;
+					}
+				}
 			},
 			//投资金还是首饰
 			checkTypeFun(id, name, index){
@@ -361,7 +417,7 @@
 						return;
 					}
 					this.selectImgs(e.target.files)
-				} 
+				}
 			},
 			/*删除图片*/
 			delImage: function(index){
@@ -476,7 +532,7 @@
                     	u8arr[n]=bstr.charCodeAt(n);
                 	}
                 	return new Blob([u8arr],{type:mime});
-				}  
+				}
 				//base64转换成二进制文件
 				let formData = new FormData()
         		this.files.forEach((item, index) => {
@@ -513,7 +569,7 @@
 							xhr_send(this)
 						}
 					}
-					
+
 				})
 				function xhr_send(val){
 					// 新建请求
@@ -540,11 +596,11 @@
     		},
 		},
 		activated: function () {
-			
+
 		},
 		components:{
 			headTop: headTop,
-			  ruler: ruler 
+			  ruler: ruler
 		}
 
 	}
@@ -563,7 +619,7 @@
 .stor_content{
 	padding: 0;
 	margin-top: .88rem;
-	padding-bottom: .8rem;
+	padding-bottom: 2rem;
 }
 /*金价*/
 .price{
@@ -741,6 +797,41 @@
     line-height: 1.1rem;
     padding-right: .4rem;
 }
+.item_row_4{
+	width: 92%;
+	height: 1.1rem;
+	margin-left: 4%;
+}
+.item_row_4>span:nth-of-type(2){
+	float: right;
+	color: #999999;
+    display: inline-block;
+    height: 1.1rem;
+    line-height: 1.1rem;
+}
+.item_row_5{
+	width: 92%;
+	margin-left: 4%;
+	height: 1.4rem;
+	padding:.4rem 0;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+.item_row_5>span{
+	height: 1.4rem;
+	line-height: normal;
+}
+.item_row_5 .has-coupon{
+	float: right;
+	color: #999;
+	font-size: .24rem;
+	text-align: right;
+}
+.item_row_5 .has-coupon>p:nth-of-type(1){
+	color: #EDA835;
+	font-size: .28rem;
+}
 /*上传图片*/
 .uploadPho_photo{
 	width: 100%;
@@ -798,7 +889,7 @@ width: 100%;
 	width: 2.1rem;
 	height: 2.1rem;
 	border: 1px solid #eaeaea;
-}	         
+}
 .upload_image_preview>section>.del_image{
 	width: .35rem;
 	height: .35rem;
