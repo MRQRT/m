@@ -99,6 +99,16 @@
             <p>您的黄金克重提现失败，{{cashAmount || '0.00'}}元已经存入黄金现金账户！</p>
         </div>
     </div>
+    <div class="distance"></div>
+    <!-- 福利券 -->
+    <div class="welfare">
+        <span>福利券<b @click="showCoupon()"></b></span>
+        <span class="no-use" v-if="orderDetail.status==1 || orderDetail.status==5 ||orderDetail.status==9 || orderDetail.status==10">未使用</span>
+        <span class="no-use" v-else-if="(orderDetail.status==6 || orderDetail.status==8) && couponAmount===''">未使用</span>
+        <span class="price" v-else-if="(orderDetail.status==6 || orderDetail.status==8) && couponAmount!=''">{{couponAmount}}元</span>
+        <span v-else>订单成交时，系统自动匹配</span>
+    </div>
+    <div class="distance"></div>
     <!--存金信息-->
     <div class="store_info">
       <h4>存金信息</h4>
@@ -150,6 +160,23 @@
            <p>检测说明：{{orderDetail.verifyRemark || '--'}}</p>
            <p>检测结果：{{orderDetail.verifyResult==0?'通过':'不通过'}}</p>
            <img :src="checkImg">
+           <!-- 福利券 -->
+           <div class="popup-welfare">
+               <h4>福利券</h4>
+               <p class="sub-title">确认订单后生效</p>
+               <div class="bottom-img">
+                   <div class="left-price">
+                       <p class="price"><span>¥</span>{{couponAmount}}</p>
+                       <p class="name">福利券</p>
+                   </div>
+                   <div class="right-info">
+                       <p>存金实测毛重≥{{parseFloat(couponLimit)}}g</p>
+                       <p>有效期至{{couponTime | changeTime}}</p>
+                       <p>*仅限存金回购业务使用</p>
+                   </div>
+               </div>
+           </div>
+           <!-- 操作按钮 -->
            <div class="report_btns">
                <p style="border-right:1px solid #EEEEEE;" @click="confirmStor" :class="{'hasConfirm':orderDetail.status==8}" v-if="orderDetail.status==6 || orderDetail.status==8">{{orderDetail.status==8?'已确认':'确认订单'}}</p>
                <p @click="tele" :class="{'contact':orderDetail.status!=6 && orderDetail.status!=8}">联系客服</p>
@@ -162,7 +189,7 @@
 </template>
 <script type="text/javascript">
   import headTop from '@/components/header/head.vue'
-  import { Button,Popup,Indicator,Toast } from 'mint-ui';
+  import { Button,Popup,Indicator,Toast,MessageBox } from 'mint-ui';
   import deliverying from '@/images/deliverying.png' //物流中
   import examining from '@/images/examining.png' //待审核
   import finished from '@/images/finished.png' //订单确认
@@ -174,7 +201,7 @@
   import testing from '@/images/testing.png' //监测中
   import testSuccess from '@/images/testSuccess.png' //审核通过
   import waitingDeli from '@/images/waitingDeli.png' //待物流
-  import waitingTest from '@/images/waitingTest.png' //待检测 
+  import waitingTest from '@/images/waitingTest.png' //待检测
   import deliveryFail from '@/images/deliveryFail.png' //取货物流失败
   import current from '@/images/current.png' //最新物流信息
   import old from '@/images/old.png' //旧的物流信息
@@ -226,6 +253,9 @@
         checkImg:null,//检测报告图片
         comfirmLimit:true,//确认按钮避免重复提交
         cashAmount:null,//提现金额
+        couponAmount:'',//福利券金额
+        couponLimit:'', //福利券最小克重
+        couponTime:'2018-10-25 12:12:12', //福利券有效期
       }
     },
     mounted(){
@@ -286,7 +316,7 @@
       fit:{
         bind:function(el,binding,vnode){
             setTimeout(function(){
-                var myreg=/[1][3,4,5,7,8][0-9]{9}/g;  
+                var myreg=/[1][3,4,5,7,8][0-9]{9}/g;
                 if(!el.parentNode) return
                 var parentId=el.parentNode.id;
                 var text=vnode.context.logistics[parentId].text
@@ -303,7 +333,7 @@
                     }
                     var a=document.createElement('a')
                     var tel=result[0]
-                    var length=text.length-1-11  
+                    var length=text.length-1-11
                     a.style.color='#EDA835'
                     a.innerHTML=result[0];
                     a.onclick=vnode.context.tele;
@@ -341,9 +371,30 @@
       formatPoint(val){
 			  if(!val) return '--'
 			  return (val*1).toFixed(1)
-		  }
+		},
+        /* 改变时间样式(月-日 时-分) */
+        changeTime(val){
+            var arr=val.split(' ');
+
+            var timeArr1=arr[0].split('-');
+            timeArr1=timeArr1.join('-');
+
+            var timeArr2=arr[1].split(':');
+            timeArr2.pop();
+            timeArr2=timeArr2.join(':');
+            return timeArr1;
+        }
     },
     methods: {
+        // 点击问号显示福利券说明
+        showCoupon(){
+            var html = '<div style="font-size:.26rem;text-align:left;color:#333">系统已根据存金检验结果自动为您匹配最优福利券。<div>'
+            MessageBox({
+              title: '提示',
+              message:html ,
+              confirmButtonText: '知道了'
+            })
+        },
       //返回上一级
       toBack(){
         Indicator.close();
@@ -360,6 +411,11 @@
         if (res.code == 100) {
           this.orderDetail = res.content
           this.isCash=res.content.isCash
+          if(res.content.couponAmount){ //福利券金额
+            this.couponAmount = res.content.couponAmount;
+            this.couponLimit = res.content.couponUseLimit;
+            this.couponTime = res.content.couponExpireTime;
+          }
           if(this.isCash==4) this.cashAmount=res.content.cashAmount
           var arrDocument=res.content.recycleDocumentVos;
           for(var i=0,length=arrDocument.length;i<length;i++){
@@ -371,7 +427,7 @@
             }
           }
           switch(this.orderDetail.status){  //绘制状态
-            case 0://待审核 
+            case 0://待审核
             this.states[0].imgUrl=examining;
             this.states[0].text='订单审核'
             this.states[0].state=0
@@ -558,7 +614,7 @@
             this.popupVisible=true
             this.logisticsShow=true
         }else{
-           Indicator.close(); 
+           Indicator.close();
         }
       },
       //查看检测报告
@@ -666,6 +722,14 @@
     }
   }
 </script>
+
+<style media="screen">
+    .mint-msgbox{
+        width:4.9rem !important;
+        border-radius: 0 !important;
+    }
+</style>
+
 <style type="text/css" scoped>
   * {
     margin: 0;
@@ -745,6 +809,7 @@
     text-align: left;
     margin:0 auto;
     margin-top:.24rem;
+    margin-bottom: .4rem;
     border-radius: 2px;
   }
   .tipWindow .tip_text{
@@ -780,6 +845,40 @@
   .tipWindow.four:before{
     left:6.48rem;
   }
+  /* 福利券 */
+  .distance{
+      width: 100%;
+      height: .2rem;
+      background-color: #f5f5f5;
+  }
+  .welfare{
+    width: 100%;
+    height: 1.1rem;
+    padding:0 .3rem;
+    color: #333;
+    line-height: 1.1rem;
+    font-size: .28rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .welfare>span:nth-of-type(1) b{
+      display: inline-block;
+      width: .24rem;
+      height: .24rem;
+      vertical-align: -.01rem;
+      margin-left:.1rem;
+      background:url('../../images/definitions.png') no-repeat;
+      background-size: 100%;
+   }
+   .welfare>span:nth-of-type(2){
+       color: #999;
+   }
+   .welfare .price{
+       color: #EDA835 !important;
+   }
+   .welfare .no-use{
+       color: #333 !important;
+   }
   .store_info{
     margin-top:.84rem;
     padding-left:.3rem;
@@ -896,6 +995,10 @@
     width:5.64rem;
     height:3.8rem;
   }
+  .view_report{
+      max-height: 9rem;
+      overflow: scroll;
+  }
   .view_report .report_title{
     font-size:.32rem;
     color:#000000;
@@ -913,6 +1016,62 @@
     margin-left:.4rem;
     display: block;
     margin-top:.32rem;
+  }
+  .view_report .popup-welfare{
+      width: 100%;
+      text-align: center;
+      margin-top:.5rem;
+  }
+  .popup-welfare h4{
+      color: #333;
+      font-size: .32rem;
+      font-weight: bold;
+  }
+  .popup-welfare .sub-title{
+      padding-left: 0;
+  }
+  .popup-welfare p{
+      font-size: .22rem;
+      color: #999;
+  }
+  .popup-welfare .bottom-img{
+      width: 100%;
+      height: 2.2rem;
+      padding:.5rem .3rem 0;
+      background: url('../../images/popup-wel.png') no-repeat;
+      background-size:100%;
+      display: flex;
+  }
+  .bottom-img .left-price .price{
+      font-size: .7rem;
+      color: #EF3B20;
+      font-weight: 600;
+  }
+  .left-price .price span{
+      color: #EF3B20;
+      font-size: .26rem;
+  }
+  .bottom-img .left-price .name{
+      color: #666;
+      margin-top:-.1rem;
+  }
+  .bottom-img .right-info p{
+      text-align: left;
+      padding-left:.7rem;
+      padding-bottom: 0 !important;
+  }
+  .bottom-img .right-info>p:nth-of-type(1){
+      color: #333;
+      font-size: .3rem;
+      font-weight: 500;
+  }
+  .bottom-img .right-info>p:nth-of-type(2){
+      color: #666;
+      font-size: .24rem;
+  }
+  .bottom-img .right-info>p:nth-of-type(3){
+      color: #EDA835;
+      font-size: .22rem;
   }
   .view_report .report_btns{
     height:.9rem;
