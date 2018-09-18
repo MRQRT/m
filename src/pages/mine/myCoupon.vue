@@ -64,7 +64,7 @@
 	export default {
 		data(){
 			return {
-				publicUrl:'http://activitytest.au32.cn/',//活动链接
+				publicUrl:'http://test.activity.au32.cn',//活动链接
 				CouponList:[],
 				hasCoupon:true,
                 searchCondition: {  //分页属性
