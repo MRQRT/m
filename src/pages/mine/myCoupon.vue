@@ -135,8 +135,9 @@
             //返回首页
             goBack(){
                 window.toApp();
-				if(this.GetQueryString('from')=='lottery'){ //从活动页活来再跳转回去
+				if(this.$route.query.from=='lottery'){ //从活动页活来再跳转回去
 					window.location.href = this.publicUrl;
+					// window.history.back(-1);
 				}else{
 					this.$router.push('/mine');
 				}
