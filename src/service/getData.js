@@ -36,6 +36,12 @@ export const checkSms = (telephone,code) => fetch('/v3/member/checkSmsCaptcha',{
 
 export const quickLogin = (telephone,code,invitedBy,activityId) => fetch('/v3/member/quickLogin',{'telephone':telephone,'code':code,'invitedBy':invitedBy,'activityId':activityId},'post');
 
+/**
+ * 快捷登入2
+ */
+
+export const quickLogin2 = (telephone,code,source) => fetch('/v3/member/quickLogin',{'telephone':telephone,'code':code,'source':source},'post');
+
 
 /**
  * 密码登入
@@ -294,7 +300,7 @@ export const queryChildDictionary = () => fetch('/v3/recycleOrder/queryChildDict
  * 添加存金订单
  */
 
-export const addRecycleOrder = (rOrder,contact,telephone,address,isCash,idPic) => fetch('/v3/recycleOrder/addRecycleOrder',{'rOrder':rOrder,'contact':contact,'telephone':telephone,'address':address,'isCash':isCash,'idPic':idPic},'post')
+export const addRecycleOrder = (rOrder,contact,telephone,address,isCash,idPic,source) => fetch('/v3/recycleOrder/addRecycleOrder',{'rOrder':rOrder,'contact':contact,'telephone':telephone,'address':address,'isCash':isCash,'idPic':idPic,'source':source},'post')
 
 /**
  * 修改存金订单

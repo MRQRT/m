@@ -8,7 +8,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App.vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import { checkAgent } from '@/config/mUtils'
+import { checkAgent,check,getStore,setStore } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
@@ -160,6 +160,12 @@ window.getWeParams=function(userid){
         }
     })
 }
+//appresource
+window.appStoreSource=function(val){
+    setStore('appsource',val,'local')
+}
+var browser = check();
+setStore('browser',browser,'local')
 
 /*
  与原生交互API
@@ -243,7 +249,7 @@ if(agent=='And'){
     //判断是否在app里么
     window.isApp=function(){
         if(!window.stub) return false
-        window.stub.isAPP() 
+        window.stub.isAPP()
         localStorage.setItem('isWebview','andriod')
     }
 }else{

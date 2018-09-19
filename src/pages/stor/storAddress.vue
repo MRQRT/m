@@ -82,7 +82,7 @@
 	import { queryBankCard, withDrawMax, queryMyProfil, xmlUploadImg, addRecycleOrder, queryAddress } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { addHandId } from '@/images/addHandId.png'
-	import { getRem, setStore, getStore, removeStore } from '@/config/mUtils.js'
+	import { getRem, setStore, getStore, removeStore,checkAgent } from '@/config/mUtils.js'
 	export default{
 		data(){
 			return {
@@ -104,7 +104,8 @@
 	           bank_show: false,
 	                 rem: '',
 	         rightTelNum: '',//电话号正确的标记
-	            btn_lock: false,//防止表单重复提交的锁
+				btn_lock: false,//防止表单重复提交的锁
+				   agent: '',//
 			}
 		},
 		created(){
@@ -118,6 +119,9 @@
 		    }
 		},
 		mounted(){
+			window.isApp();//是否在app
+            var ag=checkAgent();//安卓和ios判断
+            this.agent=ag;//
 			this.queryMyProfil();//获取用户的信息
 			this.queryBankCard();////获取用户银行卡
 			if(this.$route.query.from && this.$route.query.from=='storArg' || this.$route.query.from && this.$route.query.from=='bindBank'){
@@ -414,40 +418,70 @@
 	            	removeStore('obj','session')
 					removeStore('obj2','session')
 					this.set_initRulerData(Number(10))//将ruler的初始值设置为10
-    	        	const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url)
-					this.RECORD_RECYCLEPARAMS('')
-					this.RECORD_ADDRESS('')
-        	    	if(res.code==100){
-        	    		Indicator.close()
-        	    		const or = {
-        	    			contact: this.realName,
-        	    			telephone: this.telNum,
-        	    			address: this.addr,
-        	    			bankCardNo: this.bankCardNo,
-        	    			isWithDraw: this.direct?1:0,
-        	    			orderArray: res.content.vo,
-        	    		}
-        	    		this.RECORD_RETURNRECYCLEORDER(or)
-        	    		this.$router.push({
-        	    			path: '/storResult',
-        	    		})
-        	    		this.btn_lock=false
-        	    	}else if(res.code==2004){
-        	    		Indicator.close()
-        	    		Toast({
-        	    			message: '操作过于频繁',
-        	    			position: 'bottom'
-						})
-        	    	}else{
-						Indicator.close();
-						this.btn_lock=false
-						Toast({
-        	    			message: res.message,
-        	    			position: 'bottom'
-						})
-        	    	}
+
+
+					//添加下单推广渠道，手机浏览器、appcode
+					if(getStore('isWebview','local')){//项目在app中
+						if(this.agent=='And'){//项目在安卓
+							let appsource=getStore('appsource','local');
+							let source='ZYPT_Android_appstore-'+appsource+'_#';
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
+							this.fanhuidata(res);								
+						}else if(this.agent=='IOS'){//项目在ios
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,'ZYPT_IOS_appleStore_#')
+							this.fanhuidata(res);
+						}
+					}else{//项目不在app中
+						if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
+							var tg=getStore('tg','local');
+							var browser=getStore('browser','local')?getStore('browser','local'):'#';
+							let source='TG_H5_'+tg+'_'+browser;
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
+							this.fanhuidata(res);
+						}else{//自营平台的用户
+							var browser=getStore('browser','local')?getStore('browser','local'):'#';
+							let source='ZYPT_H5_#_'+browser;
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
+							this.fanhuidata(res);
+						}
+					}
+    	        	// const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url)
             	}
-            },
+			},
+			//接口请求完处理返回信息
+			fanhuidata(res){
+				this.RECORD_RECYCLEPARAMS('')
+				this.RECORD_ADDRESS('')
+				if(res.code==100){
+					Indicator.close()
+					const or = {
+						contact: this.realName,
+						telephone: this.telNum,
+						address: this.addr,
+						bankCardNo: this.bankCardNo,
+						isWithDraw: this.direct?1:0,
+						orderArray: res.content.vo,
+					}
+					this.RECORD_RETURNRECYCLEORDER(or)
+					this.$router.push({
+						path: '/storResult',
+					})
+					this.btn_lock=false
+				}else if(res.code==2004){
+					Indicator.close()
+					Toast({
+						message: '操作过于频繁',
+						position: 'bottom'
+					})
+				}else{
+					Indicator.close();
+					this.btn_lock=false
+					Toast({
+						message: res.message,
+						position: 'bottom'
+					})
+				}
+			}
 		},
 		components:{
 			headTop: headTop,
