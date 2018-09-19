@@ -861,11 +861,15 @@
     display: flex;
     justify-content: space-between;
   }
+  .welfare>span:nth-of-type(1){
+      display: inline-block;
+      height: 1.1rem;
+  }
   .welfare>span:nth-of-type(1) b{
       display: inline-block;
       width: .24rem;
       height: .24rem;
-      vertical-align: -.01rem;
+      /* vertical-align: -.01rem; */
       margin-left:.1rem;
       background:url('../../images/definitions.png') no-repeat;
       background-size: 100%;
