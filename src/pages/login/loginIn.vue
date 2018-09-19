@@ -391,9 +391,11 @@
                         this.RECORD_TOKEN(reObj.content)
                         //调用与app交互的传userid方法
                         window.sendUserId(reObj.content.userId,reObj.content.token);//给APP传userId和token
-                        var path="", id="";
+                        var path="", id="",lotteryUrl="";
                         if(this.$route.query.redirect){
-                            path=this.$route.query.redirect
+                            path=this.$route.query.redirect;
+							var arr = path.split('/');
+							lotteryUrl = '/'+arr[arr.length-1];
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
@@ -402,8 +404,8 @@
                             id=this.$route.query.id
                         }
                         var authorization=res.content.userId+'_'+res.content.token
-                        if(path==this.lotteryUrl){
-                            window.location.href = this.lotteryUrl + '?authorization='+authorization
+                        if(lotteryUrl=='/lottery'){
+                            window.location.href = path + '?authorization='+authorization
                             return
                         }
                         if(path!='' && id==''){
@@ -449,9 +451,12 @@
                         this.RECORD_TOKEN(res.content)
                         //调用与app交互的传userid方法
                         window.sendUserId(res.content.userId,res.content.token);//给APP传userId和token
-                        var path="",id="";
+						var path="", id="",lotteryUrl="";
+
                         if(this.$route.query.redirect){
-                            path=this.$route.query.redirect
+                            path=this.$route.query.redirect;
+							var arr = path.split('/');
+							lotteryUrl = '/'+arr[arr.length-1];
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
@@ -462,8 +467,8 @@
 						console.log('path---',path)
 
                         var authorization=res.content.userId+'_'+res.content.token
-                        if(path==this.lotteryUrl){
-                            window.location.href = this.lotteryUrl + '?authorization='+authorization
+                        if(lotteryUrl=='/lottery'){
+                            window.location.href = path + '?authorization='+authorization
                             return
                         }
                         if(path!=''&&id==''){
