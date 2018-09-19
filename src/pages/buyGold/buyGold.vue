@@ -299,7 +299,7 @@ export default {
             		that.popupVisibleReport=false
             	}
             },300)
-            
+
         },
          tele(){  //拨打电话
          	if(this.equipment=="IOS"){
@@ -345,7 +345,7 @@ export default {
     					this.kilogram=a;
     					this.gram=Math.ceil(this.weightTotal-a*1000)+''
     				}
-    			  
+
     			}else{ //克重可到达吨
     				this.ton=parseInt(this.weightTotal/1000/1000)+''
     				this.kilogram=parseInt(this.weightTotal/1000)-this.ton*1000+'';
@@ -363,7 +363,7 @@ export default {
 				}
 			})
         },
-    	//查询用户未读消息数量	
+    	//查询用户未读消息数量
     	async queryMessagUnreadCount(){
     		var res=await queryMessagUnreadCount();
     		if(res.code==100){
@@ -468,12 +468,14 @@ export default {
     		}
     	},
     	//banner活动链接跳转
-    	link(value){  
+    	link(value){
+			var lotteryUrl = value;
     		var arr=value.split('/')
 			var value='/'+arr[arr.length-1]
-			if(value!='/spring' && value!='/putupDetail' && value!='/extractGoldList' && value!='/register') return;
-			if(value=='/spring'){
-				this.$router.push('spring')
+			if(value!='/lottery' && value!='/putupDetail' && value!='/extractGoldList' && value!='/register') return;
+			if(value=='/lottery'){
+				// this.$router.push('spring')
+				window.location.href = lotteryUrl
 			}else if(value=='/putupDetail'){
 				this.$router.push('putupDetail')
 			}else if(value=='/register'){
@@ -667,14 +669,14 @@ export default {
 		background-image: url(../../images/gradient.png);
 		background-size: cover;
 	}
-	.gold_price_content{ 
+	.gold_price_content{
 		width: 94%;
 		height: 2.6rem;
 		background-color: #fff;
 		box-shadow: 0px 8px 5px #f7f6f6;
 		-webkit-box-shadow: 0px 8px 5px #f7f6f6;
-        -moz-box-shadow:0 5px 8px #f7f6f6; 
-        -o-box-shadow:0 5px 8px #f7f6f6;  
+        -moz-box-shadow:0 5px 8px #f7f6f6;
+        -o-box-shadow:0 5px 8px #f7f6f6;
         padding: 0 .3rem 0 .3rem;
 	}
 	.gold_tendency{
@@ -728,7 +730,7 @@ export default {
 	@keyframes myImg {
     from { transform: rotate(0deg)  rotate(720deg); }
     to   { transform: rotate(0deg)  rotate(-720deg); }
-	}	
+	}
 	.goldEntrance p{
 		display: inline-block;
 		position: absolute;
@@ -1143,7 +1145,7 @@ export default {
     -o-border-radius: 0;
     background-color:#FFFFFF;
     opacity:0.4;
-} 
+}
 .swiper-pagination-bullet-active{
     background-color:#FFFFFF;
     opacity:1;
