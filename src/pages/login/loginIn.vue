@@ -403,7 +403,7 @@
                         }
                         var authorization=res.content.userId+'_'+res.content.token
                         if(path==this.lotteryUrl){
-                            window.location.href = this.lotteryUrl + '#/lottery?authorization='+authorization
+                            window.location.href = this.lotteryUrl + 'lottery?authorization='+authorization
                             return
                         }
                         if(path!='' && id==''){
@@ -463,7 +463,7 @@
 
                         var authorization=res.content.userId+'_'+res.content.token
                         if(path==this.lotteryUrl){
-                            window.location.href = this.lotteryUrl + '#/lottery?authorization='+authorization
+                            window.location.href = this.lotteryUrl + 'lottery?authorization='+authorization
                             return
                         }
                         if(path!=''&&id==''){
