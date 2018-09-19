@@ -388,7 +388,7 @@
     methods: {
         // 点击问号显示福利券说明
         showCoupon(){
-            var html = '<div style="font-size:.26rem;text-align:left;color:#333">系统已根据存金检验结果自动为您匹配最优福利券。<div>'
+            var html = '<div style="font-size:.26rem;text-align:left;color:#333;padding-left:.2rem">系统已根据存金检验结果自动为您匹配最优福利券。</div><div style="font-size:.26rem;text-align:left;color:#333;padding-left:.2rem">福利券会在卖金时为您加价。</div>'
             MessageBox({
               title: '提示',
               message:html ,
