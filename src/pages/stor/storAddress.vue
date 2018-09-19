@@ -140,7 +140,7 @@
 		},
 		computed:{
 			...mapState([
-                'userInfo','token','recycleParams','address'
+                'userInfo','token','recycleParams','address','activityId'
             ]),
 		},
 		watch:{
@@ -219,7 +219,7 @@
       							this.addr=res.content[i].address
 							  }
 						  }
-						  
+
       				}
 				}
 				//如果是从地址页过来的，将用户上传的身份证照片地址和是否变现重新绑定
@@ -332,7 +332,7 @@
             		   addr: this.addr,
             		 direct: this.direct,
 						 bg: this.bg,
-					  photo: this.url, 
+					  photo: this.url,
             	}
             	setStore('obj',ob,'session')
                	if(this.userInfo.realnamed!=1){
@@ -425,10 +425,10 @@
 						if(this.agent=='And'){//项目在安卓
 							let appsource=getStore('appsource','local');
 							let source='ZYPT_Android_appstore-'+appsource+'_#';
-							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
-							this.fanhuidata(res);								
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
+							this.fanhuidata(res);
 						}else if(this.agent=='IOS'){//项目在ios
-							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,'ZYPT_IOS_appleStore_#')
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,'ZYPT_IOS_appleStore_#',this.activityId)
 							this.fanhuidata(res);
 						}
 					}else{//项目不在app中
@@ -436,12 +436,12 @@
 							var tg=getStore('tg','local');
 							var browser=getStore('browser','local')?getStore('browser','local'):'#';
 							let source='TG_H5_'+tg+'_'+browser;
-							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
 						}else{//自营平台的用户
 							var browser=getStore('browser','local')?getStore('browser','local'):'#';
 							let source='ZYPT_H5_#_'+browser;
-							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source)
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
 						}
 					}
