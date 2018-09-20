@@ -868,7 +868,7 @@
   .welfare>span:nth-of-type(1) b{
       display: inline-block;
       width: .24rem;
-      height: .24rem;
+      height: .25rem;
       /* vertical-align: -.01rem; */
       margin-left:.1rem;
       background:url('../../images/definitions.png') no-repeat;
