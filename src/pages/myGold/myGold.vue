@@ -4,7 +4,7 @@
 			<img slot='head_goback' src='../../images/back.png' class="head_goback" @click="goBack()">
 			<router-link slot='custom' class="custom"  tag="span" to="tranDetail">交易记录</router-link>
 		</head-top>
-		<div v-show="firstShow">			
+		<div v-show="firstShow">
 			<p class="myGold_title">&nbsp;&nbsp;&nbsp;&nbsp;黄金总资产（克）<img :src="eyeImg" v-on:touchstart="check"></p>
 			<p class="myGold_gram" ref="refe">{{computeGram}}</p>
 			<p class="estimated">黄金市值(元)：<span>{{estimated}}</span></p>
@@ -78,7 +78,7 @@
 	import { Popup  } from 'mint-ui'//alert框
 	import {mapState,mapMutations} from 'vuex'//
 	import {formatDate} from "@/config/mUtils"//格式化时间
-	
+
 	import open from '@/images/open.png'
 	import close from '@/images/close.png'
 	import question from '@/images/definitions.png'
@@ -107,7 +107,7 @@
 			}
 		},
 		created: function(){
-			
+
 		},
 		mounted() {
             this.token ? this.userInforma() : '';//获取用户信息
@@ -147,7 +147,12 @@
 			//返回按钮
 			goBack(){
 				window.toApp();
-				this.$router.push('/mine');
+				if(this.$route.query.from=='lottery'){ //从活动页活来再跳转回去
+					window.location.href = this.$route.query.lotteryUrl;
+					return
+				}else{
+					this.$router.push('/mine');
+				}
 			},
 			//调往实时金价
 			goCurrent(){
@@ -543,7 +548,7 @@
 	float: left;
 	color: #ffffff;
     background-color: #f2b643;
-    box-shadow: none;	
+    box-shadow: none;
 	border-radius: 0px;
     width: 50%;
     height: .9rem;
@@ -564,7 +569,7 @@
 	float: left;
 	color: #ffffff;
     background-color: #ff6d39;
-    box-shadow: none;	
+    box-shadow: none;
 	border-radius: 0px;
     width: 50%;
     height: .9rem;

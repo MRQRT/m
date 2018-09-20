@@ -64,7 +64,6 @@
 	export default {
 		data(){
 			return {
-				publicUrl:'http://test.activity.au32.cn',//活动链接
 				CouponList:[],
 				hasCoupon:true,
                 searchCondition: {  //分页属性
@@ -136,8 +135,8 @@
             goBack(){
                 window.toApp();
 				if(this.$route.query.from=='lottery'){ //从活动页活来再跳转回去
-					window.location.href = this.publicUrl;
-					// window.history.back(-1);
+					window.location.href = this.$route.query.lotteryUrl;
+					return
 				}else{
 					this.$router.push('/mine');
 				}
