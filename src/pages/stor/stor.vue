@@ -266,8 +266,10 @@
 			goBack(){
 				this.RECORD_RECYCLEPARAMS('')
 				this.set_initRulerData(Number(10));//修改ruler的初始值
-				if(this.$route.query.from){
+				if(this.$route.query.from=='coupon'){
 					this.$router.push('/myCoupon')
+				}else if(this.$route.query.from=='lottery'){
+					window.location.href = this.$route.query.redirect;
 				}else{
 					this.$router.push('/storeGold')
 				}
