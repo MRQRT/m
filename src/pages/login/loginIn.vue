@@ -403,7 +403,7 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
-                        var authorization=res.content.userId+'_'+res.content.token
+                        var authorization=reObj.content.userId+'_'+reObj.content.token
                         if(lotteryUrl=='/lottery'){
                             window.location.href = path + '?authorization='+authorization
                             return
