@@ -179,6 +179,8 @@
 			}
 		},
 		mounted(){
+			console.log(this.$route.query.from)
+			console.log(this.$route.query.lotteryUrl)
 			this.queryRecycleProduct();//查询存金产品列表
 			this.queryChildDictionary();//查询存金产品品牌
 			this.orderChange();//计算克重
@@ -269,7 +271,8 @@
 				if(this.$route.query.from=='coupon'){
 					this.$router.push('/myCoupon')
 				}else if(this.$route.query.from=='lottery'){
-					window.location.href = this.$route.query.redirect;
+					window.location.href = this.$route.query.lotteryUrl;
+					return
 				}else{
 					this.$router.push('/storeGold')
 				}
