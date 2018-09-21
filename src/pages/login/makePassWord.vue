@@ -103,6 +103,10 @@
                     this.$router.replace('ranking')
                     return
                 }
+				if(this.$route.query.from=='lottery'){ //该用户是经由转盘抽奖活动注册的新用户
+					window.location.href = this.$route.query.lotteryUrl + '?authorization=' + this.token;
+					return
+				}
                 window.toApp()
             }
 		},
