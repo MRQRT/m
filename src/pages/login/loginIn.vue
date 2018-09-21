@@ -349,7 +349,21 @@
                         if(this.$route.query.from){
                             var path=this.$route.query.from
                         }
-                        if(path=='register'){ //该用户是经由世界杯活动注册的新用户
+						if(this.$route.query.redirect){
+                            var lotteryUrl = this.$route.query.redirect;
+							var arr = lotteryUrl.split('/');
+							var path = '/'+arr[arr.length-1];
+                        }
+
+						if(path=='/lottery'){
+							this.$router.push({
+                                path:'/makePwd',
+                                query:{
+                                    from:'lottery',
+									lotteryUrl:lotteryUrl
+                                }
+                            })
+						}else if(path=='register'){ //该用户是经由世界杯活动注册的新用户
                             this.$router.push({
                                 path:'/makePwd',
                                 query:{

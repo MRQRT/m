@@ -6,13 +6,13 @@
         </head-top>
         <!--温馨提示区-->
         <p class="orangeTip"><img src="../../images/yellowGTH.png">设置密码后,您就可以使用手机号+密码登录</p>
-        
+
         <!--设置密码区-->
         <section class="makePwd">
             <div class="core">
                 <input type="password" v-if="close" class="makePwdPart" placeholder="请输入密码(6-20位数字、字母或组合)"  v-model="pwd" maxlength="20">
                 <input v-else type="text"   placeholder="请输入密码(6-20位数字、字母或组合)" class="makePwdPart" v-model="pwd" maxlength="20">
-                
+
                 <span class="visible" v-show="close" @click="toggleClose"><img src="../../images/close.png" style="width:.36rem;height:.15rem;"></span>
                 <span class="visible" v-show="!close" @click="toggleOpen"><img src="../../images/open.png" style="width:.36rem;height:.22rem;"></span>
             </div>
@@ -26,6 +26,8 @@
 	import headTop from '../../components/header/head.vue'
     import { addPwd } from '@/service/getData.js'
     import { Toast } from 'mint-ui'
+	import {mapState} from 'vuex'
+
 	export default {
 		data(){
 			return {
@@ -33,6 +35,11 @@
                 pwd:''
 			}
 		},
+		computed:{
+	       ...mapState([
+	       	  'token'
+	       	])
+	    },
 		methods:{
 			toggleClose(){
                 this.close=false;
@@ -70,6 +77,12 @@
                             },2200)
                             return
                         }
+						if(this.$route.query.from=='lottery'){ //该用户是经由转盘抽奖活动注册的新用户
+							setTimeout(function(){
+                                window.location.href = that.$route.query.lotteryUrl + '?authorization=' + that.token;
+                            },2200)
+                            return
+						}
                         window.toApp();//回APP
                         this.$router.push({path:'/buyGold'})
                     }else{
@@ -124,7 +137,7 @@
     .makePwd{
         margin-top:.56rem;
         height:1.08rem;
-        line-height:1.08rem; 
+        line-height:1.08rem;
         padding-left:.3rem;
         padding-right:.3rem;
     }
