@@ -33,7 +33,7 @@
 				<div class="right-wrap">
 					<div class="right-info">
 						<h4>存金实测毛重≥{{parseFloat(item.useLimit)}}g</h4>
-						<p class="date" v-if="item.expireTime">有效期至{{item.expireTime | changeTime}}</p>
+						<p class="date" v-if="item.expireTime">有效期至<a href="javascript:void(0);">{{item.expireTime | changeTime}}</a></p>
 						<p class="use-limit">*仅限存金回购业务使用</p>
 					</div>
 					<!-- 使用情况 -->
@@ -253,6 +253,9 @@
 	  }
 	  .welfare .right-info .date{
 	  	color: #999;
+	  }
+	  .welfare .right-info .date a{
+	  	color:#999;
 	  }
 	  .welfare .right-info .use-limit{
 	  	color: #EDA835;
