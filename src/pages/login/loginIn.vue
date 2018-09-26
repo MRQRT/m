@@ -131,7 +131,7 @@
 
         },
 		mounted() {
-			console.log(this.$route.query.redirect)
+			// console.log(this.$route.query.redirect)
             window.isApp();//是否在app
             var ag=checkAgent();//安卓和ios判断
             this.agent=ag;//
@@ -315,32 +315,30 @@
                         this.codeWrong=true;
                         return;
                     }
-                    if(this.params){
-                        var reObj = await quickLogin(phone,code,this.params);
-                    }else if(this.activityId){
-                        var reObj = await quickLogin(phone,code,this.inviteCode,this.activityId);
-                    }else{
-                        if(getStore('isWebview','local')){//项目在app中
-                            if(this.agent=='And'){//项目在安卓
-                                let appsource=getStore('appsource','local');
-                                let source='ZYPT_Android_appstore-'+appsource+'_#';
-                                var reObj=await quickLogin2(phone,code,source);
-                            }else if(this.agent=='IOS'){//项目在ios
-                                var reObj=await quickLogin2(phone,code,'ZYPT_IOS_appleStore_#');
-                            }
-                        }else{//项目不在app中
-                            if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
-                                var tg=getStore('tg','local');
-                                var browser=getStore('browser','local')?getStore('browser','local'):'#';
-                                let source='TG_H5_'+tg+'_'+browser;
-                                var reObj = await quickLogin2(phone,code,source);
-                            }else{//自营平台的用户
-                                var browser=getStore('browser','local')?getStore('browser','local'):'#';
-                                let source='ZYPT_H5_#_'+browser;
-                                var reObj = await quickLogin2(phone,code,source);
-                            }
+                    
+                    var tg=getStore('tg','local')?getStore('tg','local'):'#';
+                    var browser=getStore('browser','local')?getStore('browser','local'):'#';
+                    var yw=getStore('yw','local')?getStore('yw','local'):"#";
+
+                    if(getStore('isWebview','local')){//项目在app中
+                        if(this.agent=='And'){//项目在安卓
+                            let appsource=getStore('appsource','local');
+                            let source='ZYPT_#_ANDROID_appstore-'+appsource;
+                            var reObj=await quickLogin2(phone,code,source);
+                        }else if(this.agent=='IOS'){//项目在ios
+                            let source='ZYPT_#_IOS_appleStore';
+                            var reObj=await quickLogin2(phone,code,source);
+                        }
+                    }else{//项目不在app中
+                        if(getStore('yw','local')!='undefined'&&getStore('yw','local')!=null){//业务类型为非自营
+                            let source=yw+'_'+tg+'_'+'H5'+'_'+browser;
+                            var reObj=await quickLogin2(phone,code,source);
+                        }else{//业务类型为自营
+                            let source='ZYPT'+'_'+tg+'_'+'H5'+'_'+browser;
+                            var reObj=await quickLogin2(phone,code,source);
                         }
                     }
+
                     if(reObj.code=='-1005'){//用户未设置登录密码
                         this.RECORD_TOKEN(reObj.content)
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据

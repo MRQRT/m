@@ -421,26 +421,28 @@
 
 
 					//添加下单推广渠道，手机浏览器、appcode
+					var tg=getStore('tg','local')?getStore('tg','local'):'#';
+					var browser=getStore('browser','local')?getStore('browser','local'):'#';
+					var yw=getStore('yw','local')?getStore('yw','local'):"#";
+
 					if(getStore('isWebview','local')){//项目在app中
 						if(this.agent=='And'){//项目在安卓
 							let appsource=getStore('appsource','local');
-							let source='ZYPT_Android_appstore-'+appsource+'_#';
+							let source='ZYPT_#_ANDROID_appstore-'+appsource;
 							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
 						}else if(this.agent=='IOS'){//项目在ios
-							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,'ZYPT_IOS_appleStore_#',this.activityId)
+							let source='ZYPT_#_IOS_appleStore';
+							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
 						}
 					}else{//项目不在app中
-						if(getStore('tg','local')!='undefined'&&getStore('tg','local')!=null){//推广用户
-							var tg=getStore('tg','local');
-							var browser=getStore('browser','local')?getStore('browser','local'):'#';
-							let source='TG_H5_'+tg+'_'+browser;
+						if(getStore('yw','local')!='undefined'&&getStore('yw','local')!=null){//业务类型为非自营
+							let source=yw+'_'+tg+'_'+'H5'+'_'+browser;
 							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
-						}else{//自营平台的用户
-							var browser=getStore('browser','local')?getStore('browser','local'):'#';
-							let source='ZYPT_H5_#_'+browser;
+						}else{//业务类型为自营
+							let source='ZYPT'+'_'+tg+'_'+'H5'+'_'+browser;
 							const res = await addRecycleOrder(bb,this.realName,this.telNum,this.addr,isCash,this.url,source,this.activityId)
 							this.fanhuidata(res);
 						}

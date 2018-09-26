@@ -215,10 +215,6 @@ export default {
 		  canCheck:false,//判断是否可以监听pop渲染下一张
 		}
 	},
-	created() {
-		var tg = this.$route.query.source;
-		setStore('tg',tg,'local');
-	},
     mounted() {
 		var tg = this.$route.query.source;
 		setStore('tg',tg,'local');
