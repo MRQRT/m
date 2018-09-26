@@ -217,7 +217,9 @@ export default {
 	},
     mounted() {
 		var tg = this.$route.query.source;
-		setStore('tg',tg,'local');
+		var yw = this.$route.query.channel;
+		tg?setStore('tg',tg,'local'):'';
+		yw?setStore('yw',yw,'local'):'';
 		new Swiper('.swiper-container-4', {
 			slidesPerView: 2.5,
 			spaceBetween: 30,
