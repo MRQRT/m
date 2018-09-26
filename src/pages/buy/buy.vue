@@ -419,13 +419,13 @@ import { Toast,Indicator,Popup } from 'mint-ui'
                  });
 			},
 			goCoupon(){
-				this.$router.push({
-					path:'/buy/coupon',
-					query:{
-						default:this.defaultCoupon,
-						canOthers:this.canUsedCoupon
-					}
-				});
+				// this.$router.push({
+				// 	path:'/buy/coupon',
+				// 	query:{
+				// 		default:this.defaultCoupon,
+				// 		canOthers:this.canUsedCoupon
+				// 	}
+				// });
 			},
 		},
 		computed:{
