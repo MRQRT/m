@@ -216,12 +216,12 @@ export default {
 		}
 	},
 	created() {
-		var tg = this.$route.query.source;
-		setStore('tg',tg,'local');
 	},
     mounted() {
+		var yw = this.$route.query.channel;
 		var tg = this.$route.query.source;
-		setStore('tg',tg,'local');
+		yw?setStore('yw',yw,'local'):'';
+		tg?setStore('tg',tg,'local'):'';
 		new Swiper('.swiper-container-4', {
 			slidesPerView: 2.5,
 			spaceBetween: 30,

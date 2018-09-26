@@ -153,7 +153,6 @@ window.getWeParams=function(userid){
     store.state.userId=arr[0]
     takeUserInfor()//调用获取用户信息接口
     promise.then(function(res){
-        // console.log(res)
         if(res.code==100){
             store.state.userInfo = res.content
             localStorage.setItem('userInfo',res.content)
