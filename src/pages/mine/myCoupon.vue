@@ -96,7 +96,7 @@
 				if(t.couponList.length==0){
                     t.hasCoupon=false;
                     var hgt=window.innerHeight;
-                    document.querySelector('.noCoupon').style.height=hgt-t.$refs.topHead.$el.offsetHeight+'px';
+                    // document.querySelector('.noCoupon').style.height=hgt-t.$refs.topHead.$el.offsetHeight+'px';
                 }
              })
            },1000)
@@ -153,14 +153,12 @@
                 var res2=await queryCoupons(this.searchCondition.pageNo,this.searchCondition.pageSize,this.userId,"2");
                 if(res2.code==100){
                     if(res2.content.total==0) return;
-
                     this.counpon2=res2.content.list;
-
                 }
             },
 			// 请求福利券信息
 			async coupons(){
-				var res = await coupons(this.activityId)
+				var res = await coupons(4)
 				if(res.code==100){
 					if(res.content.length==0){
 						this.hasCoupon = false;
@@ -173,10 +171,10 @@
 		},
         watch:{
             counpon2(val){
-                 this.CouponList=this.CouponList.concat(val);
+				this.CouponList=this.CouponList.concat(val);
             },
             counpon1(val){
-                 this.CouponList=this.CouponList.concat(val);
+				this.CouponList=this.CouponList.concat(val);
             },
             token(){
                 this.token ? this.queryCoupons() : '';

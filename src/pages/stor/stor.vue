@@ -46,7 +46,7 @@
 				<h3 class="title_two">存金图片<span style="color:#999999;font-size: .28rem;">（请上传实物、发票等相关图片,最多9张）</span></h3>
 				<div class="uploadPho_photo">
 					<div class="upload_image_preview">
-						<section v-for="(image, index) in order.images">
+						<section v-for="(image, index) in order.images" :key="index">
 							<img :src="image.src" class="thing_img">
 							<span @click='delImage(index)' class="del_image"></span>
 						</section>
@@ -179,8 +179,8 @@
 			}
 		},
 		mounted(){
-			console.log(this.$route.query.from)
-			console.log(this.$route.query.lotteryUrl)
+			// console.log(this.$route.query.from)
+			// console.log(this.$route.query.lotteryUrl)
 			this.queryRecycleProduct();//查询存金产品列表
 			this.queryChildDictionary();//查询存金产品品牌
 			this.orderChange();//计算克重
@@ -310,7 +310,7 @@
 			},
 			// 福利券数量
 			async coupons(){
-				var res = await coupons(this.activityId);
+				var res = await coupons(4);//4--交易类型为存金
 				if(res.code==100){
 					if(res.content.usable.length==0){
 						this.hasWelfare = false;

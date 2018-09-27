@@ -5,6 +5,7 @@
 
 export function openAPI(){
     let API=process.env.API_ROOT
+    // let API="http://192.168.1.179:9191";
     return API
 }
 
@@ -14,9 +15,9 @@ export function openAPI(){
  */
 
 export function IP(){
-    // let IP="http://10.88.88.22:8080";
-    let IP="https://waptest.au32.cn";
-    // let IP="https://wap.au32.cn";
+    // let IP="https://waptest.au32.cn";
+    // let IP="http://192.168.1.179:9191";
+    let IP="https://wap.au32.cn";
     return IP
 }
 /**

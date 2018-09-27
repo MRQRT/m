@@ -57,7 +57,7 @@
 	    			<p style="background-color:#fff;position: relative;z-index:4;height:.66rem;line-height:.66rem;">点击收取任务奖励</p>
 	    		</div>
 	    		<!--循环任务金的部分-->
-	    		<div v-for="(item,index) in taskBeans"  class="tasks" @click="goToAnimate($event,index)">
+	    		<div v-for="(item,index) in taskBeans"  class="tasks" @click="goToAnimate($event,index)" :key="index">
 	    			<!--存放具体任务金-->
 	    	    	<input type="hidden" :value="it" v-for="it in item" class="location">
 	    			<img :src="taskGold" class="taskImg">

@@ -14,7 +14,7 @@ export const activityInfo = (activityId) => fetch('/v3/lottery/activity/info?act
  * 获取福利券信息(抽奖活动)
  */
 
-export const coupons = (activityId) => fetch('/v3/lottery/mine/coupons?activityId='+activityId,{},'get')
+export const coupons = (tradeType) => fetch('/v3/lottery/mine/coupons?tradeType='+tradeType,{},'get')
 
 
 /**
@@ -494,7 +494,7 @@ export const orderCheck = (weight,amount,bizType) => fetch('/v3/order/orderCheck
  * 获取用户优惠券
  */
 
-export const queryCoupons = (pageNum,pageSize,userId,type) => fetch('/v3/activity/queryCoupons?pageNum='+pageNum+'&pageSize='+pageSize+'&userId='+userId+'&type='+type,{},'get')
+export const queryCoupons = (pageNum,pageSize,userId,type,tradeType) => fetch('/v3/activity/queryCoupons?pageNum='+pageNum+'&pageSize='+pageSize+'&userId='+userId+'&type='+type+'&tradeType='+tradeType,{},'get')
 
 /**
  * 查询用户活期利息

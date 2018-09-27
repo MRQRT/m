@@ -238,7 +238,7 @@ import { Toast,Indicator,Popup } from 'mint-ui'
 				this.setup_price=(this.setup_price-0+0.1).toFixed(2)
 			},
             async queryCoupons(){  //请求优惠券信息
-            	var result=await queryCoupons(1,600,getStore("token","local").split("_")[0],"1")
+            	var result=await queryCoupons(1,600,getStore("token","local").split("_")[0],"1",1)
             	if(result.code==100){
             		this.coupons=result.content.list;
             		for(var i=0;i<this.coupons.length;i++){
@@ -419,13 +419,13 @@ import { Toast,Indicator,Popup } from 'mint-ui'
                  });
 			},
 			goCoupon(){
-				// this.$router.push({
-				// 	path:'/buy/coupon',
-				// 	query:{
-				// 		default:this.defaultCoupon,
-				// 		canOthers:this.canUsedCoupon
-				// 	}
-				// });
+				this.$router.push({
+					path:'/buy/coupon',
+					query:{
+						default:this.defaultCoupon,
+						canOthers:this.canUsedCoupon
+					}
+				});
 			},
 		},
 		computed:{

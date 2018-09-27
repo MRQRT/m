@@ -120,7 +120,7 @@
             },
             async queryCoupons(){  //请求优惠券信息
                 this.searchCondition.pageNo=1;
-                var res=await queryCoupons(this.searchCondition.pageNo,this.searchCondition.pageSize,this.userId,"1");
+                var res=await queryCoupons(this.searchCondition.pageNo,this.searchCondition.pageSize,this.userId,"1",1);
                 if(res.code==100){
                     if(res.content.total==0){
                         this.hasCoupon=false;
