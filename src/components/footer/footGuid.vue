@@ -7,7 +7,7 @@
         <span class="storeGold">回购</span>
         </router-link>
         <router-link v-bind:to="'/benefit'" class="grow">
-        <span class="growGold">生金</span>
+        <span class="growGold">积分商城</span>
         <span class="redCircle" v-show="show"></span>
         </router-link>
         <router-link v-bind:to="'/mine'" class="mine">
