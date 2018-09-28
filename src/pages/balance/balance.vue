@@ -293,7 +293,6 @@
 @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5){
 	.trans_detail_list>li:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.7);
@@ -303,10 +302,9 @@
 		float: left;
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:1.5){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 	.trans_detail_list>li:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.7);
@@ -378,7 +376,6 @@
 }
 .trans_detail_list>li>div{
 	width: 100%;
-	display: inline-block;	
 	font-size: .25rem;
 	float: left;
 	color: #999999;
@@ -387,7 +384,6 @@
 	display: inline-block;
 }
 .trans_detail_list>li>div>span{
-	display: inline-block;
 	float: right;
 }
 .green{
@@ -424,7 +420,6 @@
 </style>
 <style type="text/css">
 .balance_button{
-	display: inline-block;
 	float: left;
 	color: #ffffff;
     background-color: #f2b643;
@@ -451,7 +446,6 @@
     position: absolute;
 }
 .balance_button2{
-	display: inline-block;
 	float: left;
 	color: #ffffff;
     background-color: #ff6d39;
