@@ -5,14 +5,15 @@ import qs from 'qs'
 import { Toast, MessageBox} from 'mint-ui'
 import store from '../store'
 import { removeCookie,IP }  from '@/config/mUtils.js'
-axios.defaults.baseURL = process.env.API_ROOT   //配置接口地址
+// axios.defaults.baseURL = process.env.API_ROOT   //配置接口地址
+axios.defaults.baseURL = '/api'   //配置接口地址
 // axios.defaults.timeout = 5000; //配置请求的超时时间，超时将被中断
 //POST传参序列化(添加请求拦截器)
 axios.interceptors.request.use((config) => {
     //在发送请求之前将参数序列化
     if(config.method  === 'post' || config.method === 'put') {
         config.data = qs.stringify(config.data);
-        config.params = qs.stringify(config.url)
+        config.params = qs.stringify(config.url);
     }
     if(config.method === 'get') {
         config.params = qs.stringify(config.data)
