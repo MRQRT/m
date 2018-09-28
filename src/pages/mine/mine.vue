@@ -60,11 +60,12 @@
 			<p class="mine_content_p"  @click="togo('bankCard')">
 				<img :src="bank">
 				<span>银行卡</span>
-				<img :src="right_jian">
+				<img :src="right_jian" style="width:.15rem;height:.3rem;float:right;">
+				<span class="isbind" :class="{'isbindcolor':isbind=='绑卡送3mg黄金'}" style="float:right;padding-right:.25rem;">{{isbind}}</span>
 			</p>
 		</div>
 		<div class="mine_content" style="margin-top: 0">
-			<p class="mine_content_p" @click="togo('coupon')">  		
+			<p class="mine_content_p" @click="togo('coupon')">
 				<img :src="coupon">
 				<span>优惠券</span>
 				<img :src="right_jian">
@@ -98,7 +99,7 @@ import foot from '../../components/footer/footGuid.vue'
 import {mapState,mapMutations} from 'vuex'
 import headTop from '../../components/header/head.vue'
 import {getCookie} from '@/config/mUtils'
-import { queryMyProfil,queryMessagUnreadCount,queryIntegralBalance } from '@/service/getData.js'
+import { queryMyProfil,queryMessagUnreadCount,queryIntegralBalance,queryBankCard } from '@/service/getData.js'
 
 
 import open from '@/images/open.png'
@@ -138,6 +139,7 @@ import bank from '@/images/bank.png'
 			 hasUnread: false,//有没有未读的消息
 		  clientHeight: document.documentElement.clientHeight,//
 		  integralAmount:null,//积分持有量
+		       hasBank: false,//是否有银行卡
 			}
 		},
 		created(){
@@ -161,6 +163,7 @@ import bank from '@/images/bank.png'
 			} 
 			this.login?this.userInforma():this.headImg=NOloginH
 			this.token ? this.queryIntegralBalance() : this.integralAmount=0
+			this.token?this.queryBankCard():this.hasBank=false
 		},
 		computed: {
 			...mapState([
@@ -185,6 +188,18 @@ import bank from '@/images/bank.png'
 					return ''
 				}
 			},
+			//是否绑卡
+			isbind(){
+				if(this.token){
+					if(this.hasBank){
+						return '已绑定'
+					}else{
+						return '绑卡送3mg黄金'
+					}
+				}else{
+					return ''
+				}
+			}
 		},
 		methods:{
 			...mapMutations([
@@ -237,6 +252,17 @@ import bank from '@/images/bank.png'
 					this.login=1
 				}
 			},
+			//获取用户银行卡
+            async queryBankCard(){
+                const res = await queryBankCard()
+                if(res.code==100){
+                    if(res.content.length==0){
+                        this.hasBank = false//没有银行卡
+                    }else{
+                        this.hasBank = true//有银行卡
+                    }
+                }
+            },
 			togo(val){
 				if(val=='investment'){
 					if(this.login){
@@ -420,14 +446,12 @@ import bank from '@/images/bank.png'
 }
 .account>span:nth-child(1){
 	float: left;
-	display: inline-block;
 	height: 1.2rem;
 	line-height: 1.2rem;
 	margin-right: .15rem;
 }
 .account>span:nth-child(2){
 	float: left;
-	display: inline-block;
 	height: 1.2rem;
 	line-height: 1.2rem;
 	color: #eda835;
@@ -435,14 +459,12 @@ import bank from '@/images/bank.png'
 }
 .remain>span:nth-child(1){
 	float: left;
-	display: inline-block;
 	height: 1.2rem;
 	line-height: 1.2rem;
 	margin-right: .15rem;
 }
 .remain>span:nth-child(2){
 	float: left;
-	display: inline-block;
 	height: 1.2rem;
 	line-height: 1.2rem;
 	color: #eda835;
@@ -588,5 +610,11 @@ import bank from '@/images/bank.png'
 .integral .link_img img{
 	width: .15rem;
     height: .3rem;
+}
+.isbind{
+	color:#cccccc;
+}
+.isbindcolor{
+	color:#EDA835;
 }
 </style>
