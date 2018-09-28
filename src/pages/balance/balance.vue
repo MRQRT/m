@@ -21,7 +21,7 @@
 		</section>
 		<mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" :bottomPullText="bottomPullText" ref="loadmore">
 		<ul class="trans_detail_list"  v-if="cashArray">
-			<li v-for="item in cashArray">
+			<li v-for="(item,index) in cashArray" :key="index">
 				<p><span v-text="item.type==11?'充值':'提现'"></span><span :class="{'green':item.type==12,'red':item.type==11}" v-text="item.type==11?'+'+item.amount+'元':'-'+item.amount+'元'"></span></p>
 				<div>
 					<p><span>{{item.createTime | formDate}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.createTime | formDateTime}}</span></p><span >{{item.status | stateType(item.type) }}</span>

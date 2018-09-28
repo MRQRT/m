@@ -28,10 +28,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        "/gold": {
-            // target: "http://120.133.0.86:8099/",
-            target: "http://101.201.197.238:8099/",
-            pathRewrite: {"^/gold": ""},
+        "/api": {
+            // target: "http://101.201.197.238:8099/",
+            target: "http://api.test.au32.cn/api/",
+            pathRewrite: {"^/api": ""},
             secure: false,
             changeOrigin: true
         }

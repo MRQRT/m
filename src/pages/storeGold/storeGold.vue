@@ -8,7 +8,7 @@
 			</div>
 		</head-top>
 		<!--存金banner-->
-		<div class="storBanner">
+		<!-- <div class="storBanner">
 			<img src="../../images/storeGoldaBanner.jpg">
 			<img src="../../images/gradient.png" class="gradient">
 			<div class="price_container">
@@ -21,7 +21,23 @@
 					<a class="click_bg"></a>
 				</button>
 			</div>
+		</div> -->
+
+
+		<!-- 存金banner -->
+		<div class="storBanner">
+			<div class="swiper-container swiper-container-1">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide swiper-slide-1" v-for="(item, val, index) in banner" :style="{ backgroundImage: 'url(' + item.imgUrl + ')' }" :key="index"></div>
+					<!-- <div class="swiper-slide swiper-slide-1">
+						<img :src="message" alt="">
+					</div> -->
+				</div>
+				<div class="swiper-pagination swiper-pagination-white"></div>
+			</div>
 		</div>
+
+
 		<!--存金流程-->
 		<div class="store_flow">
 			<h4>存金流程</h4>
@@ -71,7 +87,7 @@
 <script>
 import foot from '@/components/footer/footGuid.vue'
 import headTop from '@/components/header/head.vue'
-import { queryMessagUnreadCount } from '@/service/getData'
+import { queryMessagUnreadCount,getLimit } from '@/service/getData'
 import message from '@/images/message.png'//消息图标白色
 import message2 from '@/images/message2.png'//消息图标黑色
 import {mapState} from 'vuex'
@@ -80,10 +96,11 @@ export default {
 		return {
 			message: message,
 			hasUnread:false,//是否有未读的消息
+			banner:[],//banner
 		}
 	},
 	mounted() {
-
+		this.bannerAxios();
 	},
 	computed:{
        ...mapState([
@@ -103,6 +120,25 @@ export default {
 		}
 	},
 	methods: {
+		//轮播图
+    	async bannerAxios(){
+  			const res = await getLimit(3,3);
+  			if(res.code==100){
+  				this.banner = res.content;
+  				let that = this
+  				setTimeout(function(){
+  					that.banner_swiper()
+  				},1000)
+  			}
+		},
+		//banner的swiper初始化
+    	banner_swiper(){
+    		var swiper = new Swiper('.swiper-container-1', {
+            	// loop:true,
+            	speed: 400,
+            	// autoplay: 3000,
+        	});
+    	},
 		//跳转实时金价
 		toCurrent(){
 			window.localStorage.setItem('page','storeGold'); //记录上一页是存金首页
@@ -352,4 +388,11 @@ img{
 	right:.3rem;
 	top:.18rem;
 }
+.swiper-container-1{
+	height: 5.62rem;
+}
+.swiper-slide-1{
+	height: 5.62rem;
+}
 </style>
+
