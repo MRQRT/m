@@ -502,7 +502,6 @@ import bank from '@/images/bank.png'
 @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5){
 	.account:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -523,7 +522,6 @@ import bank from '@/images/bank.png'
 	}
 	.remain:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -533,10 +531,9 @@ import bank from '@/images/bank.png'
 		float: left;
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:1.5){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 	.account:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);
@@ -558,7 +555,6 @@ import bank from '@/images/bank.png'
 	}
 	.remain:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);

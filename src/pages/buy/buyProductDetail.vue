@@ -56,13 +56,13 @@
                             <p class="detain-text">纯度为99.99%的现货黄金</p>
                         </div>
                     </div>
-                    <div class="detail-per-tip">
+                    <!-- <div class="detail-per-tip">
                         <img src="../../images/interestCompose.png">
                         <div>
                             <p class="detain-title">收益构成</p>
                             <p class="detain-text">{{rate}}%年化黄金收益+金价波动收益，每日手动收取金豆，将获得额外奖励</p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail-per-tip">
                         <img src="../../images/feeImg.png">
                         <div>
@@ -70,7 +70,7 @@
                             <p class="detain-text">买入{{buyFee}}元/克，卖出{{sellFee}}元/克</p>
                         </div>
                     </div>
-                    <div class="detail-per-tip">
+                    <!-- <div class="detail-per-tip">
                         <img src="../../images/interestAccrual.png">
                         <div>
                             <p class="detain-title">计息规则</p>
@@ -79,7 +79,7 @@
                             <p class="detain-text">复利计息，即上一期的本金和利息作为下一期的本金来计算利息</p>
                             <p class="detain-text">若您的持仓克重较少，可能无利息产生哦</p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail-per-tip">
                         <img src="../../images/tradeTime.png">
                         <div>
