@@ -345,7 +345,6 @@
 					const formatBankN = this.bankNum.replace(/\s/g, "")
 					const res = await boundBankCard(formatBankN, this.telNum, this.expiryYear, this.expiryMonth, this.cvvCode, this.validNum)
 					if(res.code==100){
-						Toast('绑定成功')
 						if(this.$route.query.paths){
 							this.$router.push({
 								path: this.$route.query.paths,
