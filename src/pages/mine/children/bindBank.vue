@@ -44,6 +44,15 @@
 		<mt-popup v-model="popupVisible" position="bottom">
 			<mt-picker :slots="slots" @change="onValuesChange" v-if="isShow"></mt-picker>
 		</mt-popup>
+		<!-- 绑卡成功提示赠金成功 -->
+		<mt-popup v-model="popupVisible2" pop-transition="popup-fade" :closeOnClickModal="false">
+			<div class="zengjin">
+				<div class="title"><img src="../../../images/bs.png" alt=""></div>
+				<p class="btips">恭喜您绑卡成功</p>
+				<div class="tips_a">赠送您的3mg黄金已放入您的黄金账户中</div>
+			</div>
+			<div class="tip-button" @click="tonext">我知道了</div>
+		</mt-popup>
 	</div>
 </template>
 <script type="text/javascript">
@@ -101,7 +110,8 @@
                    className: 'slot3',
                    textAlign: 'left'
                    }
-                ]
+				],
+		   popupVisible2: false,//绑卡成功的赠金
 
 			}
 		},
@@ -345,18 +355,8 @@
 					const formatBankN = this.bankNum.replace(/\s/g, "")
 					const res = await boundBankCard(formatBankN, this.telNum, this.expiryYear, this.expiryMonth, this.cvvCode, this.validNum)
 					if(res.code==100){
-						Toast('绑定成功')
-						if(this.$route.query.paths){
-							this.$router.push({
-								path: this.$route.query.paths,
-								query: {
-									from: 'bindBank'
-								}
-							})
-						}else{
-							window.toApp();
-							this.$router.replace('/buyGold');
-						}
+						//绑卡成功提示弹出
+						this.popupVisible2=true
 					}else{
 						MessageBox({
 							title: '提示',
@@ -371,6 +371,20 @@
                         this.second = 60
 						this.iNow=true
 					}
+				}
+			},
+			//点击赠金提示的我知道了按钮
+			tonext(){
+				if(this.$route.query.paths){
+					this.$router.push({
+						path: this.$route.query.paths,
+						query: {
+							from: 'bindBank'
+						}
+					})
+				}else{
+					window.toApp();
+					this.$router.replace('/buyGold');
 				}
 			}
 		},
@@ -411,7 +425,7 @@
 		transform:scaleY(0.7);
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:1.5){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 	.bindBank>.input>section:after{
 		content: '';
 		display: inline-block;
@@ -443,7 +457,6 @@
 	float: left;
 }
 .bindBank>.input>section>.getVerif{
-	display: inline-block;
 	height: .3rem;
 	margin-top: .35rem;
 	font-size: .28rem;
@@ -503,4 +516,47 @@
 .mint-popup-bottom{
 	width: 100%;
 }
+.zengjin{
+	width:4.9rem;
+	height:2.4rem;
+	background-color:#fff;
+	border-radius:5px;
+}
+.title{
+	width:100%;
+	height:1.1rem;
+	text-align:center;
+	padding-top:.4rem;
+}
+.title img{
+	width:.82rem;
+}
+.btips{
+	width:100%;
+	height:.8rem;
+	line-height:1rem;
+	color:#333;
+	font-size:.32rem;
+	font-weight:bold;
+	text-align:center;
+}
+.tips_a{
+	font-size:.24rem;
+	color:#666;
+	text-align:center;
+}
+.tip-button{
+	color:#f2b643;
+	height:.9rem;
+	line-height:.9rem;
+	font-size:.32rem;
+	text-align:center;
+	border-top:1px solid #e2dede;
+}
 </style>
+<style>
+.mint-popup{
+	border-radius:5px;
+}
+</style>
+

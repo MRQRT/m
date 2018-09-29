@@ -14,10 +14,10 @@
                         <p class="brief-each-name">期限</p>
                         <p class="brief-each-info">随时买卖</p>
                     </div>
-                    <div class="brief-each-else">
+                    <!-- <div class="brief-each-else">
                         <p class="brief-each-name">年化生金率</p>
                         <p class="brief-each-info">{{rate}}<span class="percentage">%</span></p>
-                    </div>
+                    </div> -->
                     <div class="brief-each-else">
                         <p class="brief-each-name">起购</p>
                         <p class="brief-each-info">{{minWeight | keepPoints}}克</p>
@@ -25,7 +25,7 @@
                 </section>
 			</section>
 			<!--购买起息到账情况-->
-			<section class="buy-interest-into">
+			<!-- <section class="buy-interest-into">
                 <div class="each-interest-into">
                     <img src="../../images/inToAccount.png">
                     <p class="each-interest-title">购买</p>
@@ -41,7 +41,7 @@
                     <p class="each-interest-title">到账(随时卖出)</p>
                     <p class="each-interest-time">{{dueDate}}</p>
                 </div>
-			</section>
+			</section> -->
             <!--产品详情购买记录-->
             <section class="detail-purchase">
                 <p class="detail-purchase-title">
@@ -56,13 +56,13 @@
                             <p class="detain-text">纯度为99.99%的现货黄金</p>
                         </div>
                     </div>
-                    <div class="detail-per-tip">
+                    <!-- <div class="detail-per-tip">
                         <img src="../../images/interestCompose.png">
                         <div>
                             <p class="detain-title">收益构成</p>
                             <p class="detain-text">{{rate}}%年化黄金收益+金价波动收益，每日手动收取金豆，将获得额外奖励</p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail-per-tip">
                         <img src="../../images/feeImg.png">
                         <div>
@@ -70,7 +70,7 @@
                             <p class="detain-text">买入{{buyFee}}元/克，卖出{{sellFee}}元/克</p>
                         </div>
                     </div>
-                    <div class="detail-per-tip">
+                    <!-- <div class="detail-per-tip">
                         <img src="../../images/interestAccrual.png">
                         <div>
                             <p class="detain-title">计息规则</p>
@@ -79,7 +79,7 @@
                             <p class="detain-text">复利计息，即上一期的本金和利息作为下一期的本金来计算利息</p>
                             <p class="detain-text">若您的持仓克重较少，可能无利息产生哦</p>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail-per-tip">
                         <img src="../../images/tradeTime.png">
                         <div>
@@ -291,7 +291,6 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
     }
     .brief-each-else:nth-child(2){
         margin-left:1.22rem;
-        margin-right:1.36rem;
     }
     .buy-interest-into{
         padding-top:.44rem;

@@ -8,8 +8,28 @@
 			</div>
 		</head-top>
 		<!--存金banner-->
-		<div class="storBanner">
+		<!-- <div class="storBanner">
 			<img src="../../images/storeGoldaBanner.jpg">
+			<img src="../../images/gradient.png" class="gradient">
+			<div class="price_container">
+				<p class="price_in" @click="toCurrent">
+					<span>回收金价(元/克)</span>
+					<img src="../../images/goldGo.png">
+				</p>
+				<p class="price_amount" @click="toCurrent">{{currentPrice | formatNum}}</p>
+				<button class="goStore" @click="$router.push('/stor')">我要存金
+					<a class="click_bg"></a>
+				</button>
+			</div>
+		</div> -->
+
+		<!-- 存金banner -->
+		<div class="storBanner">
+			<div class="swiper-container swiper-container-1">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide swiper-slide-1" v-for="(item, val, index) in banner" :style="{ backgroundImage: 'url(' + item.imgUrl + ')' }" :key="index"></div>
+				</div>
+			</div>
 			<img src="../../images/gradient.png" class="gradient">
 			<div class="price_container">
 				<p class="price_in" @click="toCurrent">
@@ -71,7 +91,7 @@
 <script>
 import foot from '@/components/footer/footGuid.vue'
 import headTop from '@/components/header/head.vue'
-import { queryMessagUnreadCount } from '@/service/getData'
+import { queryMessagUnreadCount,getLimit } from '@/service/getData'
 import message from '@/images/message.png'//消息图标白色
 import message2 from '@/images/message2.png'//消息图标黑色
 import {mapState} from 'vuex'
@@ -80,10 +100,11 @@ export default {
 		return {
 			message: message,
 			hasUnread:false,//是否有未读的消息
+			banner:[],//banner
 		}
 	},
 	mounted() {
-
+		this.bannerAxios();
 	},
 	computed:{
        ...mapState([
@@ -103,6 +124,25 @@ export default {
 		}
 	},
 	methods: {
+		//轮播图
+    	async bannerAxios(){
+  			const res = await getLimit(3,3);
+  			if(res.code==100){
+  				this.banner = res.content;
+  				let that = this
+  				setTimeout(function(){
+  					that.banner_swiper()
+  				},1000)
+  			}
+		},
+		//banner的swiper初始化
+    	banner_swiper(){
+    		var swiper = new Swiper('.swiper-container-1', {
+            	loop:true,
+            	speed: 400,
+            	autoplay: 3000,
+        	});
+    	},
 		//跳转实时金价
 		toCurrent(){
 			window.localStorage.setItem('page','storeGold'); //记录上一页是存金首页
@@ -245,7 +285,7 @@ img{
 	position:fixed;
 	top:0;
 }
-.store .message{
+.message{
 	width: .6rem;
 	height: .6rem;
 	position: absolute;
@@ -260,6 +300,7 @@ img{
 	position: absolute;
 	padding-top:.38rem;
 	box-shadow: 0px 8px 5px #f7f6f6;
+	z-index: 100;
 }
 .price_in{
 	text-align: center;
@@ -352,4 +393,11 @@ img{
 	right:.3rem;
 	top:.18rem;
 }
+.swiper-container-1{
+	height: 5.62rem;
+}
+.swiper-slide-1{
+	height: 5.62rem;
+}
 </style>
+

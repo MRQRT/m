@@ -59,7 +59,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="dingtou" v-if="productLists.length">
+		<!-- <div class="dingtou" v-if="productLists.length">
 			<router-link to="/buyInvestment" tag="div">
 				<p class="dingtou_header">
 					<span>积存定投</span>
@@ -72,7 +72,7 @@
 				<h4>{{item.name}}</h4>
 				<p>{{item.description}}</p>
 			</div>
-		</div>
+		</div> -->
 		<section class="safety_about">
 		    <router-link to="/safety" tag="div" class="safety">
                 <img src="../../images/safety.png">

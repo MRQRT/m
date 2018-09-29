@@ -27,7 +27,7 @@
 			<router-link :to="realnamed?'':'/personHomepage/authentication'" tag='section'>
 				<span>实名认证</span>
 				<span class="jian_right"></span>
-				<span class="noApprove isApprove">{{comRealnamed}}</span>
+				<span class="noApprove isApprove" :class="{'realnamedcolor':comRealnamed=='实名送3mg黄金'}">{{comRealnamed}}</span>
 			</router-link>
 		</div>
 		<div class="myAddress">
@@ -89,7 +89,7 @@ export default{
 				if(this.userInfo.realnamed){
 					return '已认证'
 				}else{
-					return '未实名认证'
+					return '实名送3mg黄金'
 				}
 			}
 		}
@@ -231,7 +231,6 @@ export default{
 	height: 100%;
 }
 .headPho_content>span:first-child{
-	display: inline-block;
 	width: .66rem;
 	height: 100%;
 	line-height: 1.4rem;
@@ -239,7 +238,6 @@ export default{
 	float: left;
 }
 .headPho_content>span:nth-child(2){
-	display: inline-block;
 	width: .3rem;
 	height: 100%;
 	background-image: url(../../images/right_jian.png);
@@ -277,14 +275,12 @@ export default{
 	background-color: #fff;
 }
 #personHomepage>.realname>.realname_content>span:nth-child(1){
-	display: inline-block;
 	font-size: .28rem;
 	height: 1.1rem;
 	line-height: 1.1rem;
 	float: left;
 }
 .jian_right{
-	display: inline-block;
 	width: .3rem;
 	height: 100%;
 	background-image: url(../../images/right_jian.png);
@@ -295,9 +291,7 @@ export default{
 }
 #personHomepage>.realname>.realname_content>span:nth-child(2){
 	float: right;
-	display: inline-block;
 	font-size: .28rem;
-	display: inline-block;
 	height: 1.1rem;
 	line-height: 1.1rem;
 	padding-right: .2rem;
@@ -313,14 +307,12 @@ export default{
 	height: 1.1rem;
 }
 #personHomepage>.loginAccount>section>span:first-child{
-	display: inline-block;
 	font-size: .28rem;
 	line-height: 1.1rem;
 	height: 1.1rem;
 	float: left;
 }
 #personHomepage>.loginAccount>section>span:nth-child(2){
-	display: inline-block;
 	font-size: .28rem;
 	line-height: 1.1rem;
 	height: 1.1rem;
@@ -337,14 +329,12 @@ export default{
 	height: 1.1rem;
 }
 #personHomepage>.approve>section>span:first-child{
-	display: inline-block;
 	font-size: .28rem;
 	line-height: 1.1rem;
 	height: 1.1rem;
 	float: left;
 }
 #personHomepage>.approve>section>span:nth-child(3){
-	display: inline-block;
 	font-size: .28rem;
 	line-height: 1.1rem;
 	height: 1.1rem;
@@ -369,7 +359,6 @@ export default{
 	height: 1.1rem;
 }
 #personHomepage>.myAddress>section>span:first-child{
-	display: inline-block;
 	font-size: .28rem;
 	line-height: 1.1rem;
 	height: 1.1rem;
@@ -396,7 +385,6 @@ export default{
 @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5){
 	.headPho>label:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -407,7 +395,6 @@ export default{
 	}
 	.realname_content:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -418,7 +405,6 @@ export default{
 	}
 	.loginAccount>section:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -429,7 +415,6 @@ export default{
 	}
 	.approve>section:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.7);
@@ -439,10 +424,9 @@ export default{
 		float: left;
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:1.5){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 	.headPho>label:afterafter{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);
@@ -453,7 +437,6 @@ export default{
 	}
 	.realname_content:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);
@@ -464,7 +447,6 @@ export default{
 	}
 	.loginAccount>section:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);
@@ -475,7 +457,6 @@ export default{
 	}
 	.approve>section:after{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eeeeee;
 		-webkit-transform: scaleY(0.5);
@@ -484,6 +465,9 @@ export default{
 		transform:scaleY(0.5);
 		float: left;
 	}
+}
+.realnamedcolor{
+	color:#EDA835;
 }
 </style>
 

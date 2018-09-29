@@ -21,7 +21,7 @@
 		</section>
 		<mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" :bottomPullText="bottomPullText" ref="loadmore">
 		<ul class="trans_detail_list"  v-if="cashArray">
-			<li v-for="item in cashArray">
+			<li v-for="(item,index) in cashArray" :key="index">
 				<p><span v-text="item.type==11?'充值':'提现'"></span><span :class="{'green':item.type==12,'red':item.type==11}" v-text="item.type==11?'+'+item.amount+'元':'-'+item.amount+'元'"></span></p>
 				<div>
 					<p><span>{{item.createTime | formDate}}</span>&nbsp;&nbsp;&nbsp;<span>{{item.createTime | formDateTime}}</span></p><span >{{item.status | stateType(item.type) }}</span>
@@ -293,7 +293,6 @@
 @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5){
 	.trans_detail_list>li:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.7);
@@ -303,10 +302,9 @@
 		float: left;
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:1.5){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:1.5){
 	.trans_detail_list>li:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.7);
@@ -378,7 +376,6 @@
 }
 .trans_detail_list>li>div{
 	width: 100%;
-	display: inline-block;	
 	font-size: .25rem;
 	float: left;
 	color: #999999;
@@ -387,7 +384,6 @@
 	display: inline-block;
 }
 .trans_detail_list>li>div>span{
-	display: inline-block;
 	float: right;
 }
 .green{
@@ -424,7 +420,6 @@
 </style>
 <style type="text/css">
 .balance_button{
-	display: inline-block;
 	float: left;
 	color: #ffffff;
     background-color: #f2b643;
@@ -451,7 +446,6 @@
     position: absolute;
 }
 .balance_button2{
-	display: inline-block;
 	float: left;
 	color: #ffffff;
     background-color: #ff6d39;
