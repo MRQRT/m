@@ -87,6 +87,7 @@ export default{
 .article span{
 	width:5%;
 	float:left;
+	padding-top:.1rem;
 }
 .button{
 	height: .9rem;

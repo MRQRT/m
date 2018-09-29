@@ -138,9 +138,9 @@ export default {
 		//banner的swiper初始化
     	banner_swiper(){
     		var swiper = new Swiper('.swiper-container-1', {
-            	// loop:true,
+            	loop:true,
             	speed: 400,
-            	// autoplay: 3000,
+            	autoplay: 3000,
         	});
     	},
 		//跳转实时金价
