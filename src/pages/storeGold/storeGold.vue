@@ -23,21 +23,25 @@
 			</div>
 		</div> -->
 
-
 		<!-- 存金banner -->
 		<div class="storBanner">
 			<div class="swiper-container swiper-container-1">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide swiper-slide-1" v-for="(item, val, index) in banner" :style="{ backgroundImage: 'url(' + item.imgUrl + ')' }" :key="index"></div>
-					<!-- <div class="swiper-slide swiper-slide-1">
-						<img :src="message" alt="">
-					</div> -->
 				</div>
-				<div class="swiper-pagination swiper-pagination-white"></div>
+			</div>
+			<img src="../../images/gradient.png" class="gradient">
+			<div class="price_container">
+				<p class="price_in" @click="toCurrent">
+					<span>回收金价(元/克)</span>
+					<img src="../../images/goldGo.png">
+				</p>
+				<p class="price_amount" @click="toCurrent">{{currentPrice | formatNum}}</p>
+				<button class="goStore" @click="$router.push('/stor')">我要存金
+					<a class="click_bg"></a>
+				</button>
 			</div>
 		</div>
-
-
 		<!--存金流程-->
 		<div class="store_flow">
 			<h4>存金流程</h4>
@@ -281,7 +285,7 @@ img{
 	position:fixed;
 	top:0;
 }
-.store .message{
+.message{
 	width: .6rem;
 	height: .6rem;
 	position: absolute;
@@ -296,6 +300,7 @@ img{
 	position: absolute;
 	padding-top:.38rem;
 	box-shadow: 0px 8px 5px #f7f6f6;
+	z-index: 100;
 }
 .price_in{
 	text-align: center;
