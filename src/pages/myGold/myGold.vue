@@ -49,8 +49,8 @@
             </div>
             <div class="content" style="margin-top:.5rem">
                 <div class="mess">
-                    <p>3. 赠金/利息的影响</p>
-                    <p>赠金/利息按0元买入计算新的成本均价。</p>
+                    <p>3. 赠金的影响</p>
+                    <p>赠金按0元买入计算新的成本均价。</p>
                 </div>
             </div>
             <div class="closePopup">
