@@ -36,7 +36,7 @@ module.exports = {
             //   "^/api": ""
             // },
             // target: "http://101.201.197.238:8099/",
-            target: "http://api.test.au32.cn/api/",
+            target: "https://api-test.au32.cn",
             pathRewrite: {"^/api": ""},
             secure: false,
             changeOrigin: true
