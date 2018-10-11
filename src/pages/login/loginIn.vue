@@ -131,6 +131,12 @@
 
         },
 		mounted() {
+			if(this.$route.query.redirect){
+				var path=this.$route.query.redirect;
+				var arr = path.split('/');
+				var lotteryUrl = '/'+arr[arr.length-1];
+				console.log(path)
+			}
 			// console.log(this.$route.query.redirect)
             window.isApp();//是否在app
             var ag=checkAgent();//安卓和ios判断
@@ -315,7 +321,7 @@
                         this.codeWrong=true;
                         return;
                     }
-                    
+
                     var tg=getStore('tg','local')?getStore('tg','local'):'#';
                     var browser=getStore('browser','local')?getStore('browser','local'):'#';
                     var yw=getStore('yw','local')?getStore('yw','local'):"#";
@@ -347,18 +353,21 @@
                         if(this.$route.query.from){
                             var path=this.$route.query.from
                         }
+						var redirectUrl = "";
 						if(this.$route.query.redirect){
-                            var lotteryUrl = this.$route.query.redirect;
-							var arr = lotteryUrl.split('/');
-							var path = '/'+arr[arr.length-1];
+                            redirectUrl = this.$route.query.redirect;
+							// var arr = lotteryUrl.split('/');
+							// var path = '/'+arr[arr.length-1];
                         }
 
-						if(path=='/lottery'){
+						console.log('redirectUrl---',redirectUrl)
+
+						if(this.$route.query.redirect){
 							this.$router.push({
                                 path:'/makePwd',
                                 query:{
                                     from:'lottery',
-									lotteryUrl:lotteryUrl
+									lotteryUrl:redirectUrl
                                 }
                             })
 						}else if(path=='register'){ //该用户是经由世界杯活动注册的新用户
@@ -396,6 +405,7 @@
                             });
 
                     }else if(reObj.code=='100'){
+						console.warn('fast login');
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
                         //登录成功后获取用户基本概况
                         this.userInforma();
@@ -403,11 +413,11 @@
                         this.RECORD_TOKEN(reObj.content)
                         //调用与app交互的传userid方法
                         window.sendUserId(reObj.content.userId,reObj.content.token);//给APP传userId和token
-                        var path="", id="",lotteryUrl="";
+                        var path="", id="",lotteryUrl="",redirectUrl="";
                         if(this.$route.query.redirect){
-                            path=this.$route.query.redirect;
-							var arr = path.split('/');
-							lotteryUrl = '/'+arr[arr.length-1];
+                            redirectUrl=this.$route.query.redirect;
+							// var arr = path.split('/lottery');
+							// lotteryUrl = '/'+arr[arr.length-1];
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
@@ -415,9 +425,10 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
+						console.warn('path', path);
                         var authorization=reObj.content.userId+'_'+reObj.content.token
-                        if(lotteryUrl=='/lottery'){
-                            window.location.href = path + '?authorization='+authorization
+                        if(this.$route.query.redirect){
+                            window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
                             return
                         }
                         if(path!='' && id==''){
@@ -463,12 +474,13 @@
                         this.RECORD_TOKEN(res.content)
                         //调用与app交互的传userid方法
                         window.sendUserId(res.content.userId,res.content.token);//给APP传userId和token
-						var path="", id="",lotteryUrl="";
+						var path="", id="",lotteryUrl="",redirectUrl="";
+						redirectUrl=this.$route.query.redirect
 
                         if(this.$route.query.redirect){
-                            path=this.$route.query.redirect;
-							var arr = path.split('/');
-							lotteryUrl = '/'+arr[arr.length-1];
+                            redirectUrl=this.$route.query.redirect;
+							// var arr = path.split('/');
+							// lotteryUrl = '/'+arr[arr.length-1];
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
@@ -479,10 +491,15 @@
 						console.log('path---',path)
 
                         var authorization=res.content.userId+'_'+res.content.token
-                        if(lotteryUrl=='/lottery'){
-                            window.location.href = path + '?authorization='+authorization
-                            return
-                        }
+
+						if(this.$route.query.redirect){
+							window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
+							return
+						}
+						// if(lotteryUrl=='/lottery'){
+                        //     window.location.href = path + '?authorization='+authorization
+                        //     return
+                        // }
                         if(path!=''&&id==''){
                             this.$router.replace({
                                 path:path

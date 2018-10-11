@@ -79,7 +79,7 @@
                         }
 						if(this.$route.query.from=='lottery'){ //该用户是经由转盘抽奖活动注册的新用户
 							setTimeout(function(){
-                                window.location.href = that.$route.query.lotteryUrl + '?authorization=' + that.token;
+                                window.location.href = that.$route.query.lotteryUrl + (that.$route.query.lotteryUrl.indexOf('?')>0 ? '&' : '?') + 'authorization=' + that.token;
                             },2200)
                             return
 						}
