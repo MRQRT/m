@@ -106,8 +106,8 @@
                 </mt-loadmore>
             </section>
             <!--立即买入按钮-->
-            <!-- <my-button   class="quick-buy" buttonText="立即买入" @click.native="$router.push('/buy')"></my-button> -->
-            <my-button   class="quick-buy" buttonText="立即买入"></my-button>
+            <my-button class="quick-buy" buttonText="立即买入" @click.native="gobuy()"></my-button>
+            <!-- <my-button   class="quick-buy" buttonText="立即买入"></my-button> -->
 		</div>
 	</div>
 </template>
@@ -137,7 +137,7 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
                 interestDate:null,//起息日期
                 dueDate:null,//到账日期
                 minWeight:null,//起购克重
-                maxWeightTotal:null//当日买卖上线克重
+                maxWeightTotal:null,//当日买卖上线克重
 			}
 		},
 		mounted() {
@@ -218,6 +218,13 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
             goback(){
                 window.toApp();
                 this.$router.push('/buyGold')
+            },
+            //去买金页
+            gobuy(){
+                var s = Date.parse('10/20/2018');
+                var nowdate = new Date();
+                var d = Date.parse(nowdate);//当前时间
+                (d<s)?this.$router.push('/buy'):'';
             }
 		},
 		computed:{
@@ -396,7 +403,7 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
 	    text-align: center;
 	    font-size:.34rem;
 	    color:#fff;
-	    background-color: rgb(241, 226, 198);
+	    background-color: #EDA835;
     }
     .purchase-box{
         padding-left:.32rem;
