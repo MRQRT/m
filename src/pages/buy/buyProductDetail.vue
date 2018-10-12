@@ -106,7 +106,8 @@
                 </mt-loadmore>
             </section>
             <!--立即买入按钮-->
-            <my-button   class="quick-buy" buttonText="立即买入" @click.native="$router.push('/buy')"></my-button>
+            <!-- <my-button   class="quick-buy" buttonText="立即买入" @click.native="$router.push('/buy')"></my-button> -->
+            <my-button   class="quick-buy" buttonText="立即买入"></my-button>
 		</div>
 	</div>
 </template>
@@ -395,7 +396,7 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
 	    text-align: center;
 	    font-size:.34rem;
 	    color:#fff;
-	    background-color: #F2B643;
+	    background-color: rgb(241, 226, 198);
     }
     .purchase-box{
         padding-left:.32rem;

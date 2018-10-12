@@ -398,6 +398,7 @@ img{
 }
 .swiper-slide-1{
 	height: 5.62rem;
+	background-size:100%;
 }
 </style>
 
