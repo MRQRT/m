@@ -106,7 +106,7 @@
                 </mt-loadmore>
             </section>
             <!--立即买入按钮-->
-            <my-button class="quick-buy" buttonText="立即买入" @click.native="gobuy()"></my-button>
+            <my-button class="quick-buy" :class="{'unable_click':unable==true}" buttonText="立即买入" @click.native="gobuy()"></my-button>
             <!-- <my-button   class="quick-buy" buttonText="立即买入"></my-button> -->
 		</div>
 	</div>
@@ -138,11 +138,16 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
                 dueDate:null,//到账日期
                 minWeight:null,//起购克重
                 maxWeightTotal:null,//当日买卖上线克重
+                unable:false,//按钮不可点击开关
 			}
 		},
 		mounted() {
             this.queryDemandFee()
             this.queryInterestDate()
+            var s = Date.parse('10/20/2018');
+            var nowdate = new Date();
+            var d = Date.parse(nowdate);//当前时间
+            (d>=s)?this.unable=true:''
 		},
 		filters:{
             keepPoints(val){ //保留3位小数
@@ -224,7 +229,7 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
                 var s = Date.parse('10/20/2018');
                 var nowdate = new Date();
                 var d = Date.parse(nowdate);//当前时间
-                (d<s)?this.$router.push('/buy'):'';
+                (d<s)?this.$router.push('/buy'):this.unable=true
             }
 		},
 		computed:{
@@ -240,185 +245,188 @@ import { queryDemandFee,orderDemandBuyOrderVoList,interestDate } from '@/service
 </script>
 <style scoped lang="less">
 @import '../../style/common.less';
-    .buy-product-detail{
-        padding-top:.88rem;
-        background-color: #F5F5F5;
-        height:100vh;
-        .buy-product-brief{
-            padding-top:.5rem;
-            background-color: #fff;
-            margin-bottom:.24rem;
-            .buy-product-text{
-                text-align: center;
-                line-height:.28rem;
-                padding-left:0.24rem;
-                span{
-                    .font-style(.26rem,@base-font-color1);
-                    position: relative;
-                }
-            }
-        }
-    }
-    .buy-product-box{
-        padding-bottom:1.2rem;
-    }
-    .buy-product-text span:before{
-        content:'';
-        .imgStyle(0.24rem,0.24rem);
-		position: absolute;
-		left:-0.34rem;
-		top:.06rem;
-		background: url('../../images/currPrice.png') no-repeat;
-		background-size: 100% 100%;
-    }
-    .buy-product-price{
-        .font-style(.88rem,#EDA835);
-        text-align: center;
-        font-weight:600;
-        padding-top:.14rem;
-    }
-    .buy-brief-else{
-        .flex;
-        .top-padding(0.5rem);
-            .brief-each-else{
-                text-align: center;
-                .brief-each-name{
-                    .font-style(.24rem,@base-font-color3);
-                }
-                .brief-each-info{
-                    .font-style(.34rem,#EDA835);
-                    font-weight:600;
-                    padding-top:.1rem;
-                    padding-bottom:.5rem;
-                    .percentage{
-                        font-size:.24rem;
-                        font-weight:normal;
-                    }
-                }
-            }
-    }
-    .brief-each-else:nth-child(2){
-        margin-left:1.22rem;
-    }
-    .buy-interest-into{
-        padding-top:.44rem;
-        padding-bottom:.46rem;
+.buy-product-detail{
+    padding-top:.88rem;
+    background-color: #F5F5F5;
+    height:100vh;
+    .buy-product-brief{
+        padding-top:.5rem;
         background-color: #fff;
         margin-bottom:.24rem;
-        .flex;
-        .each-interest-into{
+        .buy-product-text{
             text-align: center;
-            img{
-                .imgStyle(0.2rem,0.2rem);
-            }
-            .each-interest-title{
-                .font-style(.24rem,@base-font-color1);
-                padding-top:.22rem;
-                padding-bottom:.1rem;
-            }
-             .each-interest-time{
-                .font-style(.24rem,@base-font-color3);
+            line-height:.28rem;
+            padding-left:0.24rem;
+            span{
+                .font-style(.26rem,@base-font-color1);
+                position: relative;
             }
         }
     }
-    .second_into .centerImg{
-        width:.22rem;
-        height:.22rem;
-        background-image: url(../../images/inToAccount.png);
-        background-size: 0.2rem 0.2rem;
-        background-repeat: no-repeat;
-        position: relative;
-        display:inline-block;
-        background-position: center;
-    }
-    .second_into{
-        margin-left:1.2rem;
-        margin-right:1.04rem;
-    }
-    .second_into .centerImg:before,.second_into .centerImg:after{
-        content:'';
-        .imgStyle(1000%,1px);
-        background-color:rgba(242,182,67,.2);
-        position:absolute;
-        top:.1rem;
-    }
-    .second_into .centerImg:before{
-        left:-2.24rem;
-    }
-    .second_into .centerImg:after{
-        right:-2.24rem;
-    }
-    .detail-purchase{
-        background-color: #fff;
-        padding-top:.32rem;
-        .detail-purchase-title{
-            padding-left:2.16rem;
-            font-size:.28rem;
-            margin-bottom:.5rem;
-            height:.7rem;
-            .detail-title{
-                margin-right:.88rem;
+}
+.buy-product-box{
+    padding-bottom:1.2rem;
+}
+.buy-product-text span:before{
+    content:'';
+    .imgStyle(0.24rem,0.24rem);
+    position: absolute;
+    left:-0.34rem;
+    top:.06rem;
+    background: url('../../images/currPrice.png') no-repeat;
+    background-size: 100% 100%;
+}
+.buy-product-price{
+    .font-style(.88rem,#EDA835);
+    text-align: center;
+    font-weight:600;
+    padding-top:.14rem;
+}
+.buy-brief-else{
+    .flex;
+    .top-padding(0.5rem);
+        .brief-each-else{
+        text-align: center;
+        .brief-each-name{
+            .font-style(.24rem,@base-font-color3);
+        }
+        .brief-each-info{
+            .font-style(.34rem,#EDA835);
+            font-weight:600;
+            padding-top:.1rem;
+            padding-bottom:.5rem;
+            .percentage{
+                font-size:.24rem;
+                font-weight:normal;
             }
         }
     }
-    .detail-purchase-title .detail-title,.detail-purchase-title .purchase-title{
-        color:#999999;
-        padding-bottom:.28rem;
-        box-sizing: content-box;
-    }
-    .detail-purchase-title .detail-title.selcted,.detail-purchase-title .purchase-title.selcted{
-        color:#EDA835;
-        padding-bottom:.28rem;
-        border-bottom:2px solid #F2B643;
-        box-sizing: content-box;
-    }
-    .detail-box{
-        .detail-per-tip{
-            .flex-simple;
-            padding-left:.32rem;
-            padding-right:.36rem;
-            margin-bottom:.48rem;
-            img{
-                .imgStyle(0.44rem,0.44rem);
-                margin-right:.32rem;
-            }
-            p{
-                line-height:0.4rem;
-            }
+}
+.brief-each-else:nth-child(2){
+    margin-left:1.22rem;
+}
+.buy-interest-into{
+    padding-top:.44rem;
+    padding-bottom:.46rem;
+    background-color: #fff;
+    margin-bottom:.24rem;
+    .flex;
+    .each-interest-into{
+        text-align: center;
+        img{
+            .imgStyle(0.2rem,0.2rem);
+        }
+        .each-interest-title{
+            .font-style(.24rem,@base-font-color1);
+            padding-top:.22rem;
+            padding-bottom:.1rem;
+        }
+            .each-interest-time{
+            .font-style(.24rem,@base-font-color3);
         }
     }
-    .detail-per-tip .detain-title{
-        .font-style(0.28rem,@base-font-color1);
-        font-weight:600;
+}
+.second_into .centerImg{
+    width:.22rem;
+    height:.22rem;
+    background-image: url(../../images/inToAccount.png);
+    background-size: 0.2rem 0.2rem;
+    background-repeat: no-repeat;
+    position: relative;
+    display:inline-block;
+    background-position: center;
+}
+.second_into{
+    margin-left:1.2rem;
+    margin-right:1.04rem;
+}
+.second_into .centerImg:before,.second_into .centerImg:after{
+    content:'';
+    .imgStyle(1000%,1px);
+    background-color:rgba(242,182,67,.2);
+    position:absolute;
+    top:.1rem;
+}
+.second_into .centerImg:before{
+    left:-2.24rem;
+}
+.second_into .centerImg:after{
+    right:-2.24rem;
+}
+.detail-purchase{
+    background-color: #fff;
+    padding-top:.32rem;
+    .detail-purchase-title{
+        padding-left:2.16rem;
+        font-size:.28rem;
+        margin-bottom:.5rem;
+        height:.7rem;
+        .detail-title{
+            margin-right:.88rem;
+        }
     }
-    .detail-per-tip .detain-text{
-        .font-style(0.24rem,@base-font-color3);
-    }
-    .quick-buy{
-	    height:.98rem;
-	    line-height: .98rem;
-	    width:100%;
-	    position: fixed;
-	    bottom:0;
-	    text-align: center;
-	    font-size:.34rem;
-	    color:#fff;
-	    background-color: #EDA835;
-    }
-    .purchase-box{
+}
+.detail-purchase-title .detail-title,.detail-purchase-title .purchase-title{
+    color:#999999;
+    padding-bottom:.28rem;
+    box-sizing: content-box;
+}
+.detail-purchase-title .detail-title.selcted,.detail-purchase-title .purchase-title.selcted{
+    color:#EDA835;
+    padding-bottom:.28rem;
+    border-bottom:2px solid #F2B643;
+    box-sizing: content-box;
+}
+.detail-box{
+    .detail-per-tip{
+        .flex-simple;
         padding-left:.32rem;
-        padding-right:.3rem;
-        .font-style(.26rem,@base-font-color2);
+        padding-right:.36rem;
+        margin-bottom:.48rem;
+        img{
+            .imgStyle(0.44rem,0.44rem);
+            margin-right:.32rem;
+        }
         p{
-            margin-bottom:.44rem;
-            .userName{
-                float:left;
-                padding-right:.96rem;
-            }
-            .createTime{
-                 float:right;
-            }
+            line-height:0.4rem;
         }
     }
+}
+.detail-per-tip .detain-title{
+    .font-style(0.28rem,@base-font-color1);
+    font-weight:600;
+}
+.detail-per-tip .detain-text{
+    .font-style(0.24rem,@base-font-color3);
+}
+.quick-buy{
+    height:.98rem;
+    line-height: .98rem;
+    width:100%;
+    position: fixed;
+    bottom:0;
+    text-align: center;
+    font-size:.34rem;
+    color:#fff;
+    background-color: #EDA835;
+}
+.purchase-box{
+    padding-left:.32rem;
+    padding-right:.3rem;
+    .font-style(.26rem,@base-font-color2);
+    p{
+        margin-bottom:.44rem;
+        .userName{
+            float:left;
+            padding-right:.96rem;
+        }
+        .createTime{
+                float:right;
+        }
+    }
+}
+.unable_click{
+    background:rgb(246, 219, 176);
+}
 </style>
 
