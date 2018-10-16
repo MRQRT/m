@@ -48,7 +48,7 @@
                 </div>
             </section>
             </mt-loadmore>
-            <mt-button type="primary" class="give_btn" @click="$router.push('attorn')">转让鲸鱼分</mt-button>
+            <!-- <mt-button type="primary" class="give_btn" @click="$router.push('attorn')">转让鲸鱼分</mt-button> -->
         </div>
         <!--鲸鱼币攻略-->
         <div v-show="helpShow" class="help_container">
