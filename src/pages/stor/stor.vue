@@ -137,11 +137,10 @@
 				        show: 0,//存金说明弹框切换的标记
 				clientHeight: document.documentElement.clientHeight,
 				         rem: getRem(),
-				// popInputType: 'brand_frame',
-				popInputType: 'gram_frame',
+				popInputType: 'brand_frame',
  		   stor_content_show: 1,
 		   	    // popupVisible: false,//克重的弹出层
-		   	    popupVisible: true,//克重的弹出层
+		   	    popupVisible: false,//克重的弹出层
 		         productType: null,
 		    	  brandArray: null,//1、周大福，2、老凤祥，3、菜百，4、周生生，5、周大生，6老庙，7、中国黄金，8、山东黄金，9、中金
 					  brand1: [],//饰品品牌数组
