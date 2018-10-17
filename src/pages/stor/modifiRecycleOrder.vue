@@ -102,7 +102,7 @@
 		<div class="submit_buyBack_order" @click="submitBuyBackOrder">
 			<div>提交</div>
 		</div>
-		<mt-popup position="bottom"  closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
+		<mt-popup position="bottom"  :closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
 			<!-- 黄金品牌选择 -->
 			<div class="brand_box" v-if="popInputType=='brand_frame'">
 				<section class="brandItem" v-for="(item,index) in brandArray" @click="brandCheck(item)" :key="index">{{item | brandTran}}</section>
@@ -115,7 +115,7 @@
 				<section class="gramItem">
 					<p class="gram_title"><span>黄金克重</span><span class="gram_confirm" @click="close_pop">确定</span></p>
 					<ruler class="ruler"></ruler>
-					<p style="width:100%;color:#E1E1E1;font-size:.24rem;text-align:center;position:absolute;bottom: 20%;">左右滑动选择克重</p>
+					<!-- <p style="width:100%;color:#E1E1E1;font-size:.24rem;text-align:center;position:absolute;bottom: 20%;">左右滑动选择克重</p> -->
 					<div class="gram_tip" v-show="weight_show">小于10克，需要承担运保费</div>
 				</section>
 			</div>
@@ -502,7 +502,11 @@
 			},
 			//关闭弹框
 			close_pop(){
-				this.popupVisible=false
+				if(this.order.applyWeight==''){
+					alert('请输入克重')
+				}else{
+					this.popupVisible=false
+				}
 			},
 			//品牌选择
 			brandCheck(val){
@@ -1079,15 +1083,15 @@ width: 100%;
     font-size: .22rem;
     color: #FF6D39;
     text-align: left;
-    background-image: url(../../images/gantanhao.png);
-	background-position: 2.1rem .1rem;
-    background-repeat: no-repeat;
-    background-size: .27rem;
-    padding-left: .45rem;
+    /* background-image: url(../../images/gantanhao.png); */
+	/* background-position: 2.1rem .1rem; */
+    /* background-repeat: no-repeat; */
+    /* background-size: .27rem; */
+    padding-left: .84rem;
     margin-top: .15rem;
     position: absolute;
-    text-align: center;
-    bottom: 7%;
+    text-align: left;
+    bottom: 4%;
 }
 /*弹出的输入层*/
 .stor_box{
@@ -1163,13 +1167,13 @@ width: 100%;
 }
 .gramItem{
 	width: 100%;
-	height: 5.5rem;
+	/* height: 5.5rem; */
+	height: 4.3rem;
 	background-color: #ffffff;
 	position: relative;
 }
 .confirm{
 	float: right;
-	display: inline-block;
 	width: .8rem;
 	height: .5rem;
 	line-height: .5rem;

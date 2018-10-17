@@ -378,3 +378,16 @@ export function check(){
     }
     return browserType
 }
+
+/*
+* 匹配数字
+*/
+export function isNumber(a){
+    if(typeof a == 'number'){
+        a = a+''
+    }
+    // var reg = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i;
+    var reg = /[0-9]+/g;
+    var str = a.match(reg);
+    return str
+}
