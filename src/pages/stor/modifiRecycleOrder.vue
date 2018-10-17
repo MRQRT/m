@@ -1083,15 +1083,13 @@ width: 100%;
     font-size: .22rem;
     color: #FF6D39;
     text-align: left;
-    /* background-image: url(../../images/gantanhao.png); */
-	/* background-position: 2.1rem .1rem; */
-    /* background-repeat: no-repeat; */
-    /* background-size: .27rem; */
     padding-left: .84rem;
-    margin-top: .15rem;
-    position: absolute;
+    margin-top: 2.4rem;
     text-align: left;
-    bottom: 4%;
+    /* background-image: url(../../images/gantanhao.png); */
+	/* background-position: 2.1rem .1rem;
+    background-repeat: no-repeat; */
+    /* background-size: .27rem; */
 }
 /*弹出的输入层*/
 .stor_box{
