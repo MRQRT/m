@@ -7,7 +7,7 @@
 	<input type='text' v-model="gram" class="input_gram">
 	<div class="line"><span class="line_span"></span></div>
 	<div class="tips">
-		<p>最大输入克重为5000克</p>
+		<p>最大输入克重为10000克</p>
 		<p>若您有更大需求请联系客服：400-8196-199</p>
 	</div>
 </div>
@@ -42,8 +42,8 @@ export default{
 	watch:{
 		gram:function(value){
 			var str = clearNoNum(value,1);
-			if(Number(str)>5000){
-				this.gram=5000
+			if(Number(str)>10000){
+				this.gram=10000
 				this.$store.commit('set_rulerData', 5000)
 			}else if(str==''){
 				this.$store.commit('set_rulerData', '')
