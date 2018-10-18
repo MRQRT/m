@@ -980,20 +980,17 @@
 }
 .item_row_2>span:first-child,item_row_3>span:first-child{
 	float: left;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
 }
 .item_row_2>span:nth-child(2){
     float: right;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
     padding-right: .4rem;
 }
 .item_row_3>span:nth-child(2){
 	float: right;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
     padding-right: .4rem;
@@ -1077,7 +1074,7 @@ width: 100%;
 	border-radius: 0;
 }
 .gram_tip{
-    width: 100%;
+	width: 100%;
     height: .5rem;
     line-height: .5rem;
     font-size: .22rem;
@@ -1087,8 +1084,8 @@ width: 100%;
     margin-top: 2.4rem;
     text-align: left;
     /* background-image: url(../../images/gantanhao.png); */
-	/* background-position: 2.1rem .1rem;
-    background-repeat: no-repeat; */
+	/* background-position: 2.1rem .1rem; */
+    /* background-repeat: no-repeat; */
     /* background-size: .27rem; */
 }
 /*弹出的输入层*/
@@ -1227,7 +1224,6 @@ width: 100%;
 }
 .title>span:nth-child(2){
 	float: right;
-	display: inline-block;
 	width: 25%;
 	height: 1rem;
 	line-height: 1rem;
@@ -1241,13 +1237,11 @@ width: 100%;
 	background-color: #ffffff;
 }
 .addr_left{
-	display: inline-block;
 	width: 94%;
 	height: 1.4rem;
 	float: left;
 }
 .addr_right{
-	display: inline-block;
 	width: 6%;
 	height: 1.4rem;
 	float: left;

@@ -139,7 +139,6 @@
 				         rem: getRem(),
 				popInputType: 'brand_frame',
  		   stor_content_show: 1,
-		   	    // popupVisible: false,//克重的弹出层
 		   	    popupVisible: false,//克重的弹出层
 		         productType: null,
 		    	  brandArray: null,//1、周大福，2、老凤祥，3、菜百，4、周生生，5、周大生，6老庙，7、中国黄金，8、山东黄金，9、中金
@@ -918,7 +917,7 @@ width: 100%;
 	border-radius: 0;
 }
 .gram_tip{
-    width: 100%;
+   width: 100%;
     height: .5rem;
     line-height: .5rem;
     font-size: .22rem;
@@ -931,6 +930,7 @@ width: 100%;
 	/* background-position: 2.1rem .1rem;
     background-repeat: no-repeat; */
     /* background-size: .27rem; */
+
 }
 /*弹出的输入层*/
 .stor_box{
