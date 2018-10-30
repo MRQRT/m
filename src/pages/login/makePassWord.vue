@@ -108,6 +108,7 @@
 					return
 				}
                 window.toApp()
+                this.$router.push('/buyGold');
             }
 		},
 		components:{
