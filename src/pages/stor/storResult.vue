@@ -23,7 +23,7 @@
             <p class="toCash" v-show="returnRecycleOrder.isWithDraw">变现&nbsp;&nbsp;{{returnRecycleOrder.bankCardNo | formatBankNo}}</p>
             <!--订单集合-->
             <section class="all_order_result">
-                <div v-for="item in returnRecycleOrder.orderArray" class="order_container">
+                <div v-for="(item,index) in returnRecycleOrder.orderArray" class="order_container" :key="index">
                     <img :src="item.imageUrl">
                     <div class="order_desc">
                         <p class="order_p1">订单编号&nbsp;:&nbsp;&nbsp;{{item.id}}</p>
