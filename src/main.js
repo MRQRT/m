@@ -12,13 +12,21 @@ import { checkAgent,check,getStore,setStore } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
+import preview from 'vue-photo-preview'
 // import './config/vconsole.min.js'
 
+
+var options={
+    fullscreenEl:true, //关闭全屏按钮
+    showHideOpacity:true,
+    escKey:true,
+    timeToIdle:5000,
+}
+Vue.use(preview,options)
 Vue.use(MintUI)
 Vue.use(vueRouter)
 Vue.use(VueAwesomeSwiper)
 import { MessageBox,Indicator } from 'mint-ui'
-
 // 通过url获取参数的函数
 Vue.prototype.GetQueryString = function (name){
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
