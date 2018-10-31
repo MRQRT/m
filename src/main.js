@@ -12,6 +12,7 @@ import { checkAgent,check,getStore,setStore } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
+import 'vue-photo-preview/dist/skin.css'
 import preview from 'vue-photo-preview'
 // import './config/vconsole.min.js'
 
