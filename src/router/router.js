@@ -19,6 +19,8 @@ const storResult = r => require.ensure([], () => r(require('../pages/stor/storRe
 const storOrder = r => require.ensure([], () => r(require('../pages/storOrder/storOrder.vue')), 'storOrder')
 const storArg = r => require.ensure([], () => r(require('../pages/arguments/storArg.vue')), 'storArg')
 const storOrderDet = r => require.ensure([], () => r(require('../pages/storOrder/storOrderDet.vue')), 'storOrderDet')
+const report = r => require.ensure([], () => r(require('../pages/storOrder/report.vue')), 'report')
+
 const buyResult = r => require.ensure([], () => r(require('../pages/buy/buyResult.vue')), 'buyResult')
 const receiveCard = r => require.ensure([], () => r(require('../pages/buy/receiveCard.vue')), 'receiveCard')
 const storAddress = r => require.ensure([], () => r(require('../pages/stor/storAddress.vue')), 'storAddress')
@@ -574,6 +576,10 @@ export default [{
         {
             path: '/rechargeResult',//充值结果
             component: rechargeResult
+        },
+        {
+            path: '/report',//检测报告
+            component: report,
         }
     ]
 }];
