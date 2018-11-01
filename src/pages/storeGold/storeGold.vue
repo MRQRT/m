@@ -37,7 +37,7 @@
 					<img src="../../images/goldGo.png">
 				</p>
 				<p class="price_amount" @click="toCurrent">{{currentPrice | formatNum}}</p>
-				<button class="goStore" @click="$router.push('/stor')">我要存金
+				<button class="goStore" @click="$router.push('/stor')">我要卖金
 					<a class="click_bg"></a>
 				</button>
 			</div>
@@ -58,13 +58,13 @@
 				<p class="store_join_line"></p>
 				<div class="each_flow_container">
 					<img src="../../images/flow3.png">
-					<p>专业检测</p>
+					<p>检测变现</p>
 				</div>
-				<p class="store_join_line"></p>
+				<!-- <p class="store_join_line"></p>
 				<div class="each_flow_container">
 					<img src="../../images/flow4.png">
 					<p>快捷变现</p>
-				</div>
+				</div> -->
 			</section>
 		</div>
 		<!--安全保障-->
@@ -379,7 +379,7 @@ img{
 	padding-top:.14rem;
 }
 .flow_container  .store_join_line{
-	width:.8rem;
+	width:1.8rem;
 	height:.02rem;
 	background-color: #E1E1E1;
 	margin-left:.1rem;
@@ -388,7 +388,7 @@ img{
 }
 .store .my_store_order{
 	font-size:.24rem;
-	color:#333333;
+	color:#eda835;
 	position:absolute;
 	right:.3rem;
 	top:.18rem;
