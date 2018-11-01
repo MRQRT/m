@@ -385,7 +385,7 @@
                                 }
                             })
                         }else{
-                             this.$router.push({path:'/makePwd'})
+                            this.$router.push({path:'/makePwd'})
                         }
                     }else if(reObj.code=='-1004'){
                             Toast({
