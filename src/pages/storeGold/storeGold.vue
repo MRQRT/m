@@ -388,7 +388,7 @@ img{
 }
 .store .my_store_order{
 	font-size:.24rem;
-	color:#333333;
+	color:#eda835;
 	position:absolute;
 	right:.3rem;
 	top:.18rem;
