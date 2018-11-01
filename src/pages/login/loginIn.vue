@@ -488,7 +488,7 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
-						console.log('path---',path)
+						// console.log('path---',path)
 
                         var authorization=res.content.userId+'_'+res.content.token
 

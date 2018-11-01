@@ -30,21 +30,33 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex'
-export default{
+import {mapState} from 'vuex';
+import {} from '@/service/getData.js'
+export default {
     data(){
         return {
             agr:false,
         }
     },
+    created(){
+
+    },
     mounted(){
-        var pama=this.$route.query;
-        pama.entrust?this.agr=1:this.agr=0;
+        
     },
     computed:{
         ...mapState([
             'token'
         ]),
+    },
+    watch:{
+        $route: {
+            handler: function(val, oldVal){
+                console.log(val);
+            },
+            // 深度观察监听
+            deep: true
+        }
     },
     methods:{
         agree(){
@@ -53,7 +65,7 @@ export default{
                 this.$router.push({
                     path:'/loginIn',
                     query:{
-                        entrust:1,
+                        from:'/arg2',
                     }
                 })
             }
