@@ -4,7 +4,7 @@
         <span class="buyGold">买金</span>
         </router-link>
         <router-link v-bind:to="'/storeGold'" class="store">
-        <span class="storeGold">回购</span>
+        <span class="storeGold">存金通</span>
         </router-link>
         <router-link v-bind:to="'/benefit'" class="grow">
         <span class="growGold">积分商城</span>
