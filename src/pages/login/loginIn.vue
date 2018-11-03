@@ -91,7 +91,7 @@
 <script>
     import {setCookie,getCookie,openAPI,checkAgent,getStore,removeStore} from '@/config/mUtils.js'
     import {mapMutations,mapState} from 'vuex'
-    import {sendSms,quickLogin,quickLogin2,login,picCheck,queryMyProfil} from '@/service/getData.js'
+    import {sendSms,quickLogin,quickLogin2,login,picCheck,queryMyProfil,updateConfirmRedeem} from '@/service/getData.js'
     import { Toast,Button } from 'mint-ui'
 	export default {
 		data(){
@@ -421,6 +421,9 @@
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
+                            if(path=='/arg2'){
+                                this.updateConfirmRedeem();//如果是来自定期金委托存管协议页面，调用接口同意这个协议的接口
+                            }
                         }
                         if(this.$route.query.id){
                             id=this.$route.query.id
@@ -484,6 +487,10 @@
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
+                            console.log(path)
+                            if(path=='/arg2'){
+                                this.updateConfirmRedeem();//如果是来自定期金委托存管协议页面，调用接口同意这个协议的接口
+                            }
                         }
                         if(this.$route.query.id){
                             id=this.$route.query.id
@@ -593,6 +600,13 @@
             },
             toggleOpen(){
                 this.close=true;
+            },
+            //跳转到委托存管提前交付协议
+            async updateConfirmRedeem(val){
+                const res = await updateConfirmRedeem();
+                if(res.code==100){
+                    alert('同意了！')
+                }
             }
         },
 

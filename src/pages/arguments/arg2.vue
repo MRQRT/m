@@ -25,7 +25,7 @@
         </section>
         <div class="button_box">
             <button class="button" v-if="!agr" @click="agree">我同意以上协议</button>
-            <button class="button2" v-else>您已同意以上协议内容</button>
+            <button class="button2" v-else @click="agree">您已同意以上协议内容</button>
         </div>
     </div>
 </template>
@@ -42,7 +42,9 @@ export default {
 
     },
     mounted(){
-        
+        if(this.$route.query.id=='1'){
+            this.agr=1
+        }
     },
     computed:{
         ...mapState([
@@ -50,12 +52,8 @@ export default {
         ]),
     },
     watch:{
-        $route: {
-            handler: function(val, oldVal){
-                console.log(val);
-            },
-            // 深度观察监听
-            deep: true
+        '$route'(from ,to){
+            console.log(1212)
         }
     },
     methods:{
@@ -66,6 +64,7 @@ export default {
                     path:'/loginIn',
                     query:{
                         from:'/arg2',
+                        id:'1',
                     }
                 })
             }
