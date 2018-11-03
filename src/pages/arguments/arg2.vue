@@ -31,6 +31,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {updateConfirmRedeem} from '@/service/getData.js'
 export default {
     data(){
         return {
@@ -52,7 +53,7 @@ export default {
     },
     watch:{
         '$route'(from ,to){
-            console.log(1212)
+            console.log('委托管理提前交付协议监听路由')
         }
     },
     methods:{
@@ -66,8 +67,17 @@ export default {
                         id:'1',
                     }
                 })
+            }else{
+                this.updateConfirmRedeem();
             }
         },
+        //跳转到委托存管提前交付协议
+        async updateConfirmRedeem(val){
+            const res = await updateConfirmRedeem();
+            if(res.code==100){
+                console.log('同意了！')
+            }
+        }
     },
 }
 </script>
