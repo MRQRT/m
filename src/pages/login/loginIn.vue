@@ -605,7 +605,7 @@
             async updateConfirmRedeem(val){
                 const res = await updateConfirmRedeem();
                 if(res.code==100){
-                    alert('同意了！')
+                    console.log('同意了！')
                 }
             }
         },
