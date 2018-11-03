@@ -30,8 +30,7 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex';
-import {} from '@/service/getData.js'
+import {mapState} from 'vuex'
 export default {
     data(){
         return {
