@@ -25,7 +25,7 @@
         </section>
         <div class="button_box">
             <button class="button" v-if="!agr" @click="agree">我同意以上协议</button>
-            <button class="button2" v-else @click="agree">您已同意以上协议内容</button>
+            <button class="button2" v-else>您已同意以上协议内容</button>
         </div>
     </div>
 </template>
