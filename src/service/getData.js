@@ -930,3 +930,8 @@ export const queryWeekLikeList = (queryType) => fetch('/v3/like/queryWeekLikeLis
  * 查询用户排行
  */
 export const queryUserRank = () => fetch('/v3/like/queryUserRank/',{},'get')
+
+/** 
+ * 用户确认同意未到期订单赎回协议
+*/
+export const updateConfirmRedeem = () =>fetch("/v3/order/updateConfirmRedeem",{},'post')
