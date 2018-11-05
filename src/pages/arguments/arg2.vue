@@ -48,6 +48,9 @@ export default {
         if(this.$route.query.id=='1'||window.localStorage.getItem('agree')){
             this.agr=1
         }
+        if(this.token){
+            this.updateConfirmRedeem();
+        }
     },
     computed:{
         ...mapState([
