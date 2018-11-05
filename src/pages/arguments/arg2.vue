@@ -41,8 +41,11 @@ export default {
     created(){
 
     },
+    watch(){
+
+    },
     mounted(){
-        if(this.$route.query.id=='1'){
+        if(this.$route.query.id=='1'||window.localStorage.getItem('agree')){
             this.agr=1
         }
     },
@@ -76,6 +79,8 @@ export default {
             const res = await updateConfirmRedeem();
             if(res.code==100){
                 console.log('同意了！')
+                window.localStorage.setItem('agree',1);
+                this.agr=1
             }
         }
     },
