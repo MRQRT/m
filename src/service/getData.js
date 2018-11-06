@@ -182,7 +182,8 @@ export const xmlUploadImg=(current,src,method,Indicator,Toast,myrate,fa_index,fi
     img.src = src;
     function xhr_send(){
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", openAPI()+"/v3/member/uploadFile");
+        // xhr.open("POST", openAPI()+"/v3/member/uploadFile");
+        xhr.open("POST", "/api/v3/member/uploadFile");
         xhr.send(form);
         var that=current;
         xhr.onreadystatechange=function(){

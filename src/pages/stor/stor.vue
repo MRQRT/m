@@ -162,7 +162,8 @@
 				       files: [], // 文件缓存（上传图片）
       			       index: 0, // 序列号 可记录一共上传了多少张
       			   maxLength: 9, // 图片最大数量
-						 url: openAPI()+'/v3/recycleOrder/uploadRecyclePic2',
+						//  url: openAPI()+'/v3/recycleOrder/uploadRecyclePic2',
+						 url: '/api/v3/recycleOrder/uploadRecyclePic2',
 					  canAdd: true, //添加图片加号是否显示
 				 AndroVerson: checkAndroAgent(),
 				   iosVerson: iosVersion(),
