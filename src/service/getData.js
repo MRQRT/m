@@ -182,7 +182,8 @@ export const xmlUploadImg=(current,src,method,Indicator,Toast,myrate,fa_index,fi
     img.src = src;
     function xhr_send(){
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", openAPI()+"/v3/member/uploadFile");
+        // xhr.open("POST", openAPI()+"/v3/member/uploadFile");
+        xhr.open("POST", "/api/v3/member/uploadFile");
         xhr.send(form);
         var that=current;
         xhr.onreadystatechange=function(){
@@ -930,3 +931,8 @@ export const queryWeekLikeList = (queryType) => fetch('/v3/like/queryWeekLikeLis
  * 查询用户排行
  */
 export const queryUserRank = () => fetch('/v3/like/queryUserRank/',{},'get')
+
+/** 
+ * 用户确认同意未到期订单赎回协议
+*/
+export const updateConfirmRedeem = () =>fetch("/v3/order/updateConfirmRedeem",{},'post')

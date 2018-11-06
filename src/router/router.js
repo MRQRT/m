@@ -12,6 +12,7 @@ const coupon = r => require.ensure([], () => r(require('../pages/buy/children/co
 const makePrice = r => require.ensure([], () => r(require('../pages/buy/children/makePrice.vue')), 'makePrice')
 
 const arg = r => require.ensure([], () => r(require('../pages/arguments/arg.vue')), 'arg')
+const arg2 = r => require.ensure([], () => r(require('../pages/arguments/arg2.vue')), 'arg2')
 const physicalArg = r => require.ensure([], () => r(require('../pages/arguments/physicalArg.vue')), 'physicalArg')
 
 const stor = r => require.ensure([], () => r(require('../pages/stor/stor.vue')), 'stor')
@@ -294,8 +295,12 @@ export default [{
                 },
         },
         {
-            path: '/arguments', //黄金管家服务协议
+            path: '/arg', //黄金管家服务协议
             component: arg
+        },
+        {
+            path: '/arg2', //黄金管家服务协议
+            component: arg2
         },
         {
             path: '/physicalArg', //黄金管家提金服务协议
