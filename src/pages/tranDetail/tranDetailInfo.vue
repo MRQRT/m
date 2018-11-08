@@ -158,7 +158,7 @@
 					<!-- <p class="brief-right-p1">{{detailObj.status==1 ? '正常' :(detailObj.status==2 ? '已赎回' : (detailObj.status==3 ? '处理中':'失败'))}}</p> -->
 				</div>
 			</div>
-			<div class="detail_box" v-if="detailObj.confirmRedeem==1&&detailObj.realProfitWeight">
+			<div class="detail_box" v-if="detailObj.confirmRedeem==1&&(detailObj.realProfitWeight||detailObj.realProfitAmount)">
 				<div class="box_content">
 					<section class="detail_line"><span class="box_left">同意提前交付时间</span><span class="box_right">{{detailObj.confirmRedeemTime}}</span></section>
 					<section class="detail_line"><span class="box_left">本金克重</span><span class="box_right">{{detailObj.weight}}克</span></section>
