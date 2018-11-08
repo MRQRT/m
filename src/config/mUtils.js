@@ -9,6 +9,13 @@ export function openAPI(){
     return API
 }
 
+//hjgj-oss-api-bucketName
+export function bucketName(){
+    let bucketName='https://au32-cjt-p-test';//测试
+    // let bucketName='https://au32-cjt-p';//正式
+    return bucketName
+}
+
 /**
  * 测试网址和生产网址切换
  * 

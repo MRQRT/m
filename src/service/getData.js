@@ -1,8 +1,8 @@
 import {fetch} from '../config/fetch.js'
-import {openAPI,checkAndroAgent,iosVersion} from '../config/mUtils.js'
+import {openAPI,checkAndroAgent,iosVersion,bucketName} from '../config/mUtils.js'
 const andVerson = checkAndroAgent();
 const iosVerson = iosVersion();
-
+var endPoint  = 'oss-cn-beijing.aliyuncs.com';
 
 /**
 * 活动时间(抽奖活动)
@@ -936,3 +936,16 @@ export const queryUserRank = () => fetch('/v3/like/queryUserRank/',{},'get')
  * 用户确认同意未到期订单赎回协议
 */
 export const updateConfirmRedeem = () =>fetch("/v3/order/updateConfirmRedeem",{},'post')
+
+/** 
+ * 图片上传获取认证
+ * */ 
+
+export const getpolicy = () => fetch('/oss_api/oss/policy?endPoint='+endPoint,{},'get')
+
+/**
+ * 图片上传
+ * */
+
+export const uploadimg = (formdata) => fetch(bucketName()+'.oss-cn-beijing.aliyuncs.com',formdata,'post')
+

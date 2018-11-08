@@ -79,10 +79,10 @@
 <script type="text/javascript">
 	import headTop from '@/components/header/head.vue'
 	import { MessageBox,Toast,Indicator,Popup } from 'mint-ui'
-	import { queryBankCard, withDrawMax, queryMyProfil, xmlUploadImg, addRecycleOrder, queryAddress } from '@/service/getData.js'
+	import { queryBankCard, withDrawMax, queryMyProfil, xmlUploadImg, addRecycleOrder, queryAddress,uploadRecyclePic,getpolicy,uploadimg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { addHandId } from '@/images/addHandId.png'
-	import { getRem, setStore, getStore, removeStore,checkAgent } from '@/config/mUtils.js'
+	import { getRem, setStore, getStore, removeStore,checkAgent,bucketName } from '@/config/mUtils.js'
 	export default{
 		data(){
 			return {
@@ -276,16 +276,58 @@
 				if (!e.target.files || !e.target.files[0]){
 					return;
 				}
-				Indicator.open();
+				Indicator.open('上传中...');
 				var t=this;
+				let item = {
+					name: e.target.files[0].name,
+					size: e.target.files[0].size,
+					file: e.target.files[0],
+				}
 				var reader = new FileReader();
 				reader.readAsDataURL(e.target.files[0]);
 				reader.onload = function(evt) {
-					// Indicator.close();
 					t.photo=evt.target.result;
-					t.uploadRecyclePic(evt.target.result);
+					// t.uploadRecyclePic(evt.target.result);
+					t.getpolicy(reader,item);
                 }
-            },
+			},
+			//获取上传图片凭证
+			async getpolicy(reader,item){
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Toast('获取参数失败');
+				}
+			},
+			//图片处理
+			format(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+				let fd = new FormData();
+				fd.append('name',item.name)
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+				fd.append('file',item.file)
+				that.uploadImage(fd,item,uuid,random);
+			},
+			//上传图片接口(新-oss)
+			async uploadImage(val,item,uuid,random){
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.url=netimgurl;
+				Indicator.close()
+				Toast({
+					message:'上传成功',
+					duration: 800,
+				});
+			},
             //图片上传
 			uploadRecyclePic(value) {
 				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值
@@ -404,7 +446,7 @@
             			return
             		}
             		this.btn_lock=true
-					Indicator.open()
+					Indicator.open('提交中...')
 					var recycleOrder = this.recycleParams;
 					//如果是自定义品牌，参数里面的brandType的值和brandName的值需要重新修改
 					if(Number(recycleOrder.brandType)!=1&&Number(recycleOrder.brandType)!=2&&Number(recycleOrder.brandType)!=3&&Number(recycleOrder.brandType)!=4&&Number(recycleOrder.brandType)!=5&&Number(recycleOrder.brandType)!=6&&Number(recycleOrder.brandType)!=7&&Number(recycleOrder.brandType)!=8&&Number(recycleOrder.brandType)!=9){
