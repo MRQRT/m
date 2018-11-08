@@ -151,11 +151,20 @@
 		<div class="info-content" v-if="type==6 && detailObj">
 			<div class="brief-info">
 				<div class="brief-info-left">
-					<p class="brief-left-p1">定期买入-{{detailObj.fixedProductName}}</p>
+					<p class="brief-left-p1">定期委托实物</p>
 					<p class="brief-left-p2">{{detailObj.weight || 0 }}g</p>
 				</div>
 				<div class="brief-info-right">
-					<p class="brief-right-p1">{{detailObj.status==1 ? '正常' :(detailObj.status==2 ? '已赎回' : (detailObj.status==3 ? '处理中':'失败'))}}</p>
+					<!-- <p class="brief-right-p1">{{detailObj.status==1 ? '正常' :(detailObj.status==2 ? '已赎回' : (detailObj.status==3 ? '处理中':'失败'))}}</p> -->
+				</div>
+			</div>
+			<div class="detail_box" v-if="detailObj.confirmRedeem==1&&detailObj.realProfitWeight">
+				<div class="box_content">
+					<section class="detail_line"><span class="box_left">同意提前交付时间</span><span class="box_right">{{detailObj.confirmRedeemTime}}</span></section>
+					<section class="detail_line"><span class="box_left">本金克重</span><span class="box_right">{{detailObj.weight}}克</span></section>
+					<section class="detail_line" v-if="detailObj.realProfitWeight"><span class="box_left">延期补偿费</span><span class="box_right">{{detailObj.realProfitWeight}}克</span></section>
+					<section class="detail_line" v-else><span class="box_left">延期补偿费</span><span class="box_right">{{detailObj.realProfitAmount}}元</span></section>
+					<span class="depro">(延期补偿费包含利息、生金、金豆)</span>
 				</div>
 			</div>
 			<div class="detail-info">
@@ -421,6 +430,40 @@ import { updatePendingPlan, queryPendingPlanDetail, demandBuyOrderDetail, demand
     	color: #fff;
     	font-size: .34rem;
 		border-radius: 5px;
+	}
+	.detail_box{
+		width: 100%;
+		height: 3rem;
+		padding: .15rem .3rem 0 .3rem;
+	}
+	.box_content{
+		width: 100%;
+		height: 2.7rem;
+		box-shadow:  0px 0px 20px #eae5e5;
+		font-size: .28rem;
+	}
+	.detail_line{
+		width: 100%;
+		height: .7rem;
+		line-height: .7rem;
+		padding: .2rem .21rem 0 .21rem;
+	}
+	.box_left{
+		float: left;
+		color: #666;
+	}
+	.box_right{
+		color: #333;
+		float:right;
+	}
+	.depro{
+		width: 100%;
+		font-size: .24rem;
+		color: #999999;
+		text-align: left;
+		float:left;
+		padding-left: .21rem;
+		margin-top: -.15rem;
 	}
 </style>
 

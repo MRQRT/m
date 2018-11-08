@@ -25,11 +25,13 @@
                         <!--定投标题-->
 						<span class="item_top_left" v-if="item.type==3">定投买入-{{item.productName}}</span>
                         <!--定期标题-->
-						<span class="item_top_left" v-if="item.type==6">定期买入-{{item.productName}}</span>
+						<span class="item_top_left" v-if="item.type==6">定期委托实物</span>
 						<!--赠金标题-->
 						<span class="item_top_left" v-if="item.type==8">赠金-{{item.productName}}</span>
                         <!--买金、卖金、生息的克重金额显示-->
 						<span class="item_top_right" v-if="item.type===1 || item.type==2 || item.type==7" :class="{'failColor':item.status==2}">{{contains(Rcolor,item.type)?'-':'+'}}{{item.weight}}g</span>
+                        <!-- 定期金状态 -->
+						<span class="item_top_right" v-if="item.type==6" style="position:relative;"><img class="todetail" src="../../images/right_jian.png" alt=""></span>
                         <!--赠金的克重显示-->
                         <span class="item_top_right" v-if="item.type==8" :class="{'failColor':item.status==2?true:false}">{{contains(Rcolor,item.type)?'-':'+'}}{{item.weight ||item.realNetWeight || item.applyWeight}}g</span>
                         <!--挂单的克重金额显示-->
@@ -600,5 +602,12 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 50%;
+}
+.todetail{
+    position: absolute;
+    width: .15rem;
+    height: .32rem;
+    bottom: -.07rem;
+    right: .2rem;
 }
 </style>
