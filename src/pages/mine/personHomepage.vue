@@ -45,9 +45,9 @@
 <script type="text/javascript">
 import	headTop from '@/components/header/head'
 import	defaults from '@/images/defaults.png'
-import	{removeCookie, getCookie} from '@/config/mUtils'
+import	{removeCookie, getCookie,bucketName} from '@/config/mUtils'
 import	{mapState, mapMutations} from 'vuex'
-import	{logout, xmlUploadImg, putAvatar, queryMyProfil } from '@/service/getData.js'
+import	{logout, xmlUploadImg, putAvatar, queryMyProfil,getpolicy,uploadimg } from '@/service/getData.js'
 import {Toast, Indicator} from 'mint-ui'
 
 export default{
@@ -101,7 +101,6 @@ export default{
 		//头像选择
 		selectImage(e){
 			if(this.noPhoto){  //查看手机拍照读写权限
-
 				if(window.backPerInfo){  //查看手机拍照读写权限
 					var res=window.backPerInfo();
 					if(res=='OK'){
@@ -119,43 +118,78 @@ export default{
 						return;
 					}
 				}
-			   	  
 		    }
-			
 			if (!e.target.files || !e.target.files[0]){
 				return;
 			}
-			Indicator.open({
-                    text: '加载中...',
-                    spinnerType: 'fading-circle'
-            });
 			var that=this;
+			let item = {
+				name: e.target.files[0].name,
+				size: e.target.files[0].size,
+				file: e.target.files[0],
+			}
             let reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onload =function(evt){
-            	Indicator.close();
             	that.headImg = evt.target.result;
-            	that.createImage(evt.target.result);
+				// that.createImage(evt.target.result);
+				that.getpolicy(reader,item)
             }
 		},
+		//获取上传图片凭证
+		async getpolicy(reader,item){
+			Indicator.open('上传中...')
+			const res = await getpolicy();
+			if(res.code=='000000'){
+				this.param_policy=res.data
+				this.format(reader,item)//图片处理（压缩或者不压缩）
+			}else{
+				Toast('获取参数失败');
+			}
+		},
+		//图片处理
+		format(reader,item){
+			const uuidv1 = require('uuid/v1');
+			var that = this,
+				uuid = uuidv1(),
+				random = Math.random().toString(36).substr(2);
+
+			let fd = new FormData();
+			fd.append('name',item.name)
+			fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+			fd.append('policy',this.param_policy.policy)
+			fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+			fd.append('signature',this.param_policy.signature)
+			fd.append('success_action_status','200')
+
+			fd.append('file',item.file);
+			that.uploadImage(fd,item,uuid,random);
+		},
+		//上传图片接口(新-oss)
+		async uploadImage(val,item,uuid,random){
+			const res = await uploadimg(val);
+			var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+			this.url=netimgurl
+			Indicator.close()
+			this.uploadheadImage();
+		},
+		//旧的上传接口
 		createImage(src) {
 			xmlUploadImg(this,src,'uploadImage',Indicator,Toast,4);
         },
-        //图片上传
-        async uploadImage() {
+        //头像上传
+        async uploadheadImage() {
         	var res=await putAvatar(this.url);
         	if(res.code==100){
         		Toast({
-                        message:'头像设置成功',
-                        position: 'bottom',
-                        duration: 3000
-                    })
+					message:'头像设置成功',
+					duration: 3000
+				})
         	}else{
         		Toast({
-                        message:'图片上传失败',
-                        position: 'bottom',
-                        duration: 3000
-                    })
+					message:'图片上传失败',
+					duration: 3000
+				})
         	}
         },
         //退出登录

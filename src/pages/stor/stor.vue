@@ -119,10 +119,10 @@
 	import headTop from '@/components/header/head.vue'
 	import ruler from '@/components/ruler/ruler.vue'
 	import { clearNoNum, formatDate } from '../../config/mUtils.js'
-	import { queryRecycleProduct,queryRecycleOrderDetail,queryChildDictionary,coupons,activityInfo } from '@/service/getData.js'
+	import { queryRecycleProduct,queryRecycleOrderDetail,queryChildDictionary,coupons,activityInfo,getpolicy,uploadimg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
-	import { getRem,openAPI,checkAndroAgent,iosVersion } from "@/config/mUtils"
+	import { getRem,openAPI,checkAndroAgent,iosVersion,bucketName } from "@/config/mUtils"
 	import '../../config/ruler.js'
 
 	export default{
@@ -527,12 +527,64 @@
 							this.order.images.push(item)
 						}
 						if(this.files.length==len){
-							this.submit()
+							// 	this.submit()
+							this.getpolicy(reader,item);
 						}
 					}
 					reader.readAsDataURL(fileList[i])
-				  }
-    		},
+				}
+			},
+			//获取上传图片凭证
+			async getpolicy(reader,item){
+				Indicator.open('上传中...')
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Toast('获取参数失败');
+				}
+			},
+			//图片处理
+			format(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+
+				let fd = new FormData();
+				fd.append('name',item.name)
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+
+				fd.append('file',item.file);
+				that.uploadImage(fd,item,uuid,random);
+
+				// var img_size=item.size
+				// if(img_size/1024/1024>3){
+				// 	//进行压缩
+				// 	compress(reader,img_size,item,that,uuid)
+				// }else{
+				// 	fd.append('file',item.file);//lic[0]如果获取不到文件，就用e.target.files[0]
+				// 	// that.upload(formData);//图片上传接口(旧的)
+				// 	that.uploadImage(fd,item,uuid);
+				// }
+			},
+			//上传图片接口(新-oss)
+			async uploadImage(val,item,uuid,random){
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.order.urls.push(netimgurl)
+				this.files = [] // 清空文件缓存
+				Indicator.close()
+				Toast({
+					message:'上传成功',
+					duration: 800,
+				});
+			},
     		// 上传图片
     		submit () {
 				Indicator.open();

@@ -1,5 +1,5 @@
 import {fetch} from '../config/fetch.js'
-import {openAPI,checkAndroAgent,iosVersion} from '../config/mUtils.js'
+import {openAPI,checkAndroAgent,iosVersion,bucketName} from '../config/mUtils.js'
 const andVerson = checkAndroAgent();
 const iosVerson = iosVersion();
 var endPoint  = 'oss-cn-beijing.aliyuncs.com';

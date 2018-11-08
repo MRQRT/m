@@ -28,6 +28,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+        "/api/oss_api/": {
+            target:"https://oss-test.au32.cn/",
+            changeOrigin: true,
+            pathRewrite: {
+                "^/api/oss_api/": "/"
+            },
+        },
         "/api": {
             target: "https://api-test.au32.cn",
             secure: false,
@@ -36,13 +43,7 @@ module.exports = {
                 "^/api": ""
             },
         },
-        "/oss_api/": {
-            target:"https://oss-test.au32.cn/",
-            changeOrigin: true,
-            pathRewrite: {
-                "^/oss_api/": "/"
-            },
-        },
+        
     },
     //    proxyTable: {
     //     "/gold": {
