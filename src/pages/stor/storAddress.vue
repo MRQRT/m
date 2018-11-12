@@ -79,7 +79,7 @@
 <script type="text/javascript">
 	import headTop from '@/components/header/head.vue'
 	import { MessageBox,Toast,Indicator,Popup } from 'mint-ui'
-	import { queryBankCard, withDrawMax, queryMyProfil, xmlUploadImg, addRecycleOrder, queryAddress,uploadRecyclePic,getpolicy,uploadimg } from '@/service/getData.js'
+	import { queryBankCard, withDrawMax, queryMyProfil, xmlUploadImg, addRecycleOrder, queryAddress,getpolicy,uploadimg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { addHandId } from '@/images/addHandId.png'
 	import { getRem, setStore, getStore, removeStore,checkAgent,bucketName } from '@/config/mUtils.js'
@@ -99,7 +99,7 @@
 			  bankImgUrl: '',
 			    bankName: '',
 			  bankCardNo: '',//用户银行卡号
-	      hasUploadPhoto: '',//已经上传了手持身份证 true表示没有上传，false表示上传了手持身份证
+	      hasUploadPhoto: false,//已经上传了手持身份证 true表示没有上传，false表示上传了手持身份证
 	                 url: '',//上传手持身份证图片后返回的地址
 	           bank_show: false,
 	                 rem: '',
@@ -122,7 +122,7 @@
 			window.isApp();//是否在app
             var ag=checkAgent();//安卓和ios判断
             this.agent=ag;//
-			this.queryMyProfil();//获取用户的信息
+			// this.queryMyProfil();//获取用户的信息
 			this.queryBankCard();////获取用户银行卡
 			if(this.$route.query.from && this.$route.query.from=='storArg' || this.$route.query.from && this.$route.query.from=='bindBank'){
 				var ob = getStore('obj','session')
@@ -182,31 +182,26 @@
 					this.RECORD_USERINFO(res.content)
 					this.realnamed=res.content.realnamed
 					if(this.userInfo){
-							this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
-						}
+						this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
+					}
 				}
 			},
 			//获取用户的默认地址
 			async queryAddress(){
-				// console.log('进来')
 				var getObj=getStore('obj','session');
 				  const res = await queryAddress()
-				//   console.log(res)
       			if(res.code==100){
 					  //用户地址为空
       				if(res.content.length==0){
-						//   console.log('地址空')
 					  //再判断vuex中是否有地址，如果有，显示
 					  this.isHasAdd=false
       				}else if(this.address){
-						//   console.log('vuex有地址')
 						this.isHasAdd=true
       					this.realName=this.address.contact
       					this.telNum=this.address.telephone
       					this.addr=this.address.address
       				//用户地址不为空，vuex中没有地址，取用户默认地址
       				}else{
-						//   console.log('地址不为空')
 						  this.isHasAdd=true
       					for(let i=0;i<res.content.length;i++){
       						if(res.content[i].isDefault==1){
@@ -217,9 +212,8 @@
 								this.realName=res.content[0].contact
       							this.telNum=res.content[i].telephone
       							this.addr=res.content[i].address
-							  }
-						  }
-
+							}
+						}
       				}
 				}
 				//如果是从地址页过来的，将用户上传的身份证照片地址和是否变现重新绑定
@@ -259,13 +253,14 @@
 				    if(window.backPerInfo){  //查看手机拍照读写权限
 					    var res=window.backPerInfo();
 					    if(res=='OK'){
-						   this.canPhoto=true;
-						   this.noPhoto=false;
+							Indicator.open('加载中...');
+						   	this.canPhoto=true;
+						   	this.noPhoto=false;
 					    }else{
-						   this.canPhoto=false;
-						   this.noPhoto=true;
-						   Toast({
-							  	message:'请在应用权限管理中打开“电话或读写手机存储”访问权限!',
+						   	this.canPhoto=false;
+						   	this.noPhoto=true;
+						   	Toast({
+							  	 message: '请在应用权限管理中打开“电话或读写手机存储”访问权限!',
 							  	position: 'bottom',
 							  	duration: 3000
 						    })
@@ -274,9 +269,9 @@
 				    }
 			    }
 				if (!e.target.files || !e.target.files[0]){
+					Indicator.close();
 					return;
 				}
-				Indicator.open('上传中...');
 				var t=this;
 				let item = {
 					name: e.target.files[0].name,
@@ -287,12 +282,12 @@
 				reader.readAsDataURL(e.target.files[0]);
 				reader.onload = function(evt) {
 					t.photo=evt.target.result;
-					// t.uploadRecyclePic(evt.target.result);
 					t.getpolicy(reader,item);
                 }
 			},
 			//获取上传图片凭证
 			async getpolicy(reader,item){
+				Indicator.close();
 				const res = await getpolicy();
 				if(res.code=='000000'){
 					this.param_policy=res.data
@@ -319,6 +314,7 @@
 			},
 			//上传图片接口(新-oss)
 			async uploadImage(val,item,uuid,random){
+				Indicator.open('上传中...');
 				const res = await uploadimg(val);
 				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
 				this.url=netimgurl;
@@ -328,11 +324,6 @@
 					duration: 800,
 				});
 			},
-            //图片上传
-			uploadRecyclePic(value) {
-				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值
- 				xmlUploadImg(this,value,'',Indicator,Toast)
-            },
             //获取用户银行卡
             async queryBankCard(){
                 const res = await queryBankCard()
@@ -427,11 +418,11 @@
         				message: '请先绑定银行卡',
         				position: 'bottom',
             		})
-            	}else if(this.hasUploadPhoto && this.photo=='' && this.url==''){
-            		Toast({
-            			message: '请上传手持身份证',
-            			position: 'bottom',
-            		})
+            	// }else if(this.hasUploadPhoto && this.photo=='' && this.url==''){
+            	// 	Toast({
+            	// 		message: '请上传手持身份证',
+            	// 		position: 'bottom',
+            	// 	})
             	}else if(this.bg==false){
             		Toast({
             			message: '请同意存金服务协议',
