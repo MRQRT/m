@@ -439,7 +439,6 @@
         			let reader = new FileReader()
         			reader.onload = (e) => {
           				this.$set(item, 'src', e.target.result)
-
 						if(this.index>9){ //图片已达到9张 不在执行添加上传操作
 						}else{
 							this.files.push(item)

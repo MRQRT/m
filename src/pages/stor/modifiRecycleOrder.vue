@@ -115,7 +115,6 @@
 				<section class="gramItem">
 					<p class="gram_title"><span>黄金克重</span><span class="gram_confirm" @click="close_pop">确定</span></p>
 					<ruler class="ruler"></ruler>
-					<!-- <p style="width:100%;color:#E1E1E1;font-size:.24rem;text-align:center;position:absolute;bottom: 20%;">左右滑动选择克重</p> -->
 					<div class="gram_tip" v-show="weight_show">小于10克，需要承担运保费</div>
 				</section>
 			</div>
@@ -126,7 +125,7 @@
 	import headTop from '@/components/header/head.vue'
 	import ruler from '@/components/ruler/ruler.vue'
 	import { clearNoNum } from '../../config/mUtils.js'
-	import { queryRecycleProduct,queryRecycleOrderDetail,updateRecycleOrder,xmlUploadImg,withDrawMax,queryMyProfil,queryChildDictionary,queryBankCard,getpolicy,uploadimg } from '@/service/getData.js'
+	import { queryRecycleProduct,queryRecycleOrderDetail,updateRecycleOrder,withDrawMax,queryMyProfil,queryChildDictionary,queryBankCard,getpolicy,uploadimg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
 	import { getRem,openAPI,checkAndroAgent,iosVersion,bucketName } from "@/config/mUtils"
@@ -175,7 +174,6 @@
 				         files: [], // 文件缓存（上传图片）
       			         index: 0, // 序列号 可记录一共上传了多少张
       			   	 maxLength: 9, // 图片最大数量
-						apiUrl: openAPI()+'/v3/recycleOrder/uploadRecyclePic2',
 					    canAdd: true, //添加图片加号是否显示
 						   url: '',//重新选择idCard图片的地址
 					  btn_lock: '',//频繁操作开关
@@ -378,7 +376,6 @@
 				reader.onload = function(evt) {
 					Indicator.close();
 					_this.photo=evt.target.result;
-					// _this.uploadRecyclePic(evt.target.result,targetFile);
 					_this.getpolicy2(reader,item)
                 }
 			},
@@ -420,17 +417,6 @@
 					duration: 800,
 				});
 			},
-
-            //图片上传
-			// uploadRecyclePic(value) {
-			// 	//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值
- 			// 	xmlUploadImg(this,value,'',Indicator,Toast)
-            // },
-			//图片上传
-			uploadRecyclePic(value,value2) {
-				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值，参数八表示选中的图片文件
- 				xmlUploadImg(this,value,'',Indicator,Toast,'','',value2)
-            },
 			//选择是否变现
 			checkCash(val){
 				if(val==0){
@@ -768,12 +754,10 @@
 							this.order.images.push(item.src)
 						}
 						if(this.files.length==len){
-							// this.submit()
 							this.getpolicy(reader,item)
 						}
 					}
 					reader.readAsDataURL(fileList[i])
-
 				  }
 			},
 			//获取上传图片凭证
@@ -793,18 +777,15 @@
 				var that = this,
 					uuid = uuidv1(),
 					random = Math.random().toString(36).substr(2);
-
 				let fd = new FormData();
-				fd.append('name',item.name)
-				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('name',item.name);
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name);
 				fd.append('policy',this.param_policy.policy)
 				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
 				fd.append('signature',this.param_policy.signature)
 				fd.append('success_action_status','200')
-
 				fd.append('file',item.file);
 				that.uploadImage(fd,item,uuid,random);
-
 				// var img_size=item.size
 				// if(img_size/1024/1024>3){
 				// 	//进行压缩
@@ -827,76 +808,6 @@
 					duration: 800,
 				});
 			},
-    		// 上传图片（旧）
-    		submit () {
-				Indicator.open();
-        		var dataURLToBlob=function(url){
-                	var arr=url.split(','),mime=arr[0].match(/:(.*?);/)[1],
-                	bstr=atob(arr[1]),n=bstr.length,u8arr=new Uint8Array(n);
-                	while(n--){
-                    	u8arr[n]=bstr.charCodeAt(n);
-                	}
-                	return new Blob([u8arr],{type:mime});
-				}  //base64转换成二进制文件
-				let formData = new FormData()
-        		this.files.forEach((item, index) => {
-          			var img_size=item.size
-					var img = new Image,
-					canvas = document.createElement("canvas"),
-					ctx = canvas.getContext("2d");
-					img.crossOrigin = "Anonymous";
-					img.src = item.src
-					if(this.AndroVerson>4||this.iosVerson>10){
-						img.onload =() => {
-							var width = img.width;
-							var height = img.height;
-							// 最大上传不得查过500k
-							var rate = (img_size/(1024*500)).toFixed(1)
-							if(rate*1>1){
-								var real_rate = (width<height ? width/height : height/width)/rate;
-								canvas.width = width*real_rate;
-								canvas.height = height*real_rate;
-								ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
-								var src1 = canvas.toDataURL("image/jpg");
-								var blob=dataURLToBlob(src1)
-								formData.append('files', blob,'image.jpg')
-							}else{
-								formData.append('files', item.file)
-							}
-							if(index==(this.files.length-1)){ //formdata已创建完
-								xhr_send(this)
-							} 
-						}
-					}else{
-						formData.append('files', item.file)
-						if(index==(this.files.length-1)){ //formdata已创建完
-							xhr_send(this)
-						}
-					}
-				})
-				var xhr_send=(val)=>{
-					// 新建请求
-					const xhr = new XMLHttpRequest()
-					xhr.open('POST', val.apiUrl, true)
-					xhr.send(formData)
-					xhr.onload = () => {
-						if (xhr.status === 200 || xhr.status === 304) {
-							let datas = JSON.parse(xhr.responseText)
-							if(datas.code==100){
-							// 存储返回的地址
-								datas.content.forEach((item)=> {
-									val.order.picUrls.push(item)
-									val.files = [] // 清空文件缓存
-									Indicator.close()
-								})
-							} else {
-								val.$toast('请求错误')
-								Indicator.close()
-							}
-						}
-					}
-				}
-    		},
 		},
 		activated: function () {
 			
