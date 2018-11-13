@@ -135,7 +135,6 @@
 				var path=this.$route.query.redirect;
 				var arr = path.split('/');
 				var lotteryUrl = '/'+arr[arr.length-1];
-				console.log(path)
 			}
 			// console.log(this.$route.query.redirect)
             window.isApp();//是否在app
@@ -321,7 +320,6 @@
                         this.codeWrong=true;
                         return;
                     }
-
                     var tg=getStore('tg','local')?getStore('tg','local'):'#';
                     var browser=getStore('browser','local')?getStore('browser','local'):'#';
                     var yw=getStore('yw','local')?getStore('yw','local'):"#";
@@ -344,7 +342,6 @@
                             var reObj=await quickLogin2(phone,code,source);
                         }
                     }
-
                     if(reObj.code=='-1005'){//用户未设置登录密码
                         this.RECORD_TOKEN(reObj.content)
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
@@ -359,9 +356,6 @@
 							// var arr = lotteryUrl.split('/');
 							// var path = '/'+arr[arr.length-1];
                         }
-
-						console.log('redirectUrl---',redirectUrl)
-
 						if(this.$route.query.redirect){
 							this.$router.push({
                                 path:'/makePwd',
@@ -388,22 +382,21 @@
                             this.$router.push({path:'/makePwd'})
                         }
                     }else if(reObj.code=='-1004'){
-                            Toast({
-                                message: reObj.message,
-                                position: 'bottom',
-                                duration: 3000
-                            });
-                            this.errTimes++;//验证码错误次数加1
-                            if(this.errTimes>=3){
-                                this.resetPicCaptcha();
-                            }
+                        Toast({
+                            message: reObj.message,
+                            position: 'bottom',
+                            duration: 3000
+                        });
+                        this.errTimes++;//验证码错误次数加1
+                        if(this.errTimes>=3){
+                            this.resetPicCaptcha();
+                        }
                     }else if(reObj.code=='-1006'){ //手机号格式错误
-                            Toast({
-                                message: reObj.message,
-                                position: 'bottom',
-                                duration: 3000
-                            });
-
+                        Toast({
+                            message: reObj.message,
+                            position: 'bottom',
+                            duration: 3000
+                        });
                     }else if(reObj.code=='100'){
 						console.warn('fast login');
                         localStorage.setItem('needRender',true)  //依据此变量判断生金需不需要初始化数据
@@ -416,6 +409,7 @@
                         var path="", id="",lotteryUrl="",redirectUrl="";
                         if(this.$route.query.redirect){
                             redirectUrl=this.$route.query.redirect;
+                            path=redirectUrl;
 							// var arr = path.split('/lottery');
 							// lotteryUrl = '/'+arr[arr.length-1];
                         }
@@ -428,12 +422,11 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
-						console.warn('path', path);
                         var authorization=reObj.content.userId+'_'+reObj.content.token
-                        if(this.$route.query.redirect){
-                            window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
-                            return
-                        }
+                        // if(this.$route.query.redirect){
+                        //     window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
+                        //     return
+                        // }
                         if(path!='' && id==''){
                             this.$router.replace({
                                 path:path
@@ -458,7 +451,7 @@
                             duration: 3000
                         });
                     }
-                }else{  //密码登录
+                }else{//密码登录
                     var regPwd=/^[0-9a-zA-Z]{6,20}$/;
                     if(this.rightShow_2!=1){
                         this.accWrong=true;
@@ -479,15 +472,14 @@
                         window.sendUserId(res.content.userId,res.content.token);//给APP传userId和token
 						var path="", id="",lotteryUrl="",redirectUrl="";
 						redirectUrl=this.$route.query.redirect
-
                         if(this.$route.query.redirect){
                             redirectUrl=this.$route.query.redirect;
+                            path=redirectUrl;
 							// var arr = path.split('/');
 							// lotteryUrl = '/'+arr[arr.length-1];
                         }
                         if(this.$route.query.from){
                             path=this.$route.query.from
-                            console.log(path)
                             if(path=='/arg2'){
                                 this.updateConfirmRedeem();//如果是来自定期金委托存管协议页面，调用接口同意这个协议的接口
                             }
@@ -495,14 +487,11 @@
                         if(this.$route.query.id){
                             id=this.$route.query.id
                         }
-						// console.log('path---',path)
-
                         var authorization=res.content.userId+'_'+res.content.token
-
-						if(this.$route.query.redirect){
-							window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
-							return
-						}
+						// if(this.$route.query.redirect){
+						// 	window.location.href = redirectUrl + (redirectUrl.indexOf('?')>0 ? '&' : '?') + 'authorization='+authorization
+						// 	return
+						// }
 						// if(lotteryUrl=='/lottery'){
                         //     window.location.href = path + '?authorization='+authorization
                         //     return
@@ -534,7 +523,6 @@
                         if(this.errTimes>=3){
                             this.resetPicCaptcha();
                         }
-
                     }
                 }
             },

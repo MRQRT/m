@@ -124,7 +124,6 @@
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
 	import { getRem,openAPI,checkAndroAgent,iosVersion,bucketName } from "@/config/mUtils"
 	import '../../config/ruler.js'
-
 	export default{
 		data () {
 			return {
@@ -167,7 +166,6 @@
 					  canAdd: true, //添加图片加号是否显示
 				 AndroVerson: checkAndroAgent(),
 				   iosVerson: iosVersion(),
-
  			}
 		},
 		created(){
@@ -181,8 +179,6 @@
 			}
 		},
 		mounted(){
-			// console.log(this.$route.query.from)
-			// console.log(this.$route.query.lotteryUrl)
 			this.queryRecycleProduct();//查询存金产品列表
 			this.queryChildDictionary();//查询存金产品品牌
 			this.orderChange();//计算克重
@@ -430,83 +426,6 @@
 					this.selectImgs(e.target.files)
 				}
 			},
-			/*删除图片*/
-			delImage: function(index){
-                this.order.images.splice(index,1)
-				this.order.urls.splice(index,1)
-				this.index--
-                if(this.order.images.length==0){
-                }
-            },
-            //提交订单
-            submitBuyBackOrder(){
-				if(this.order.applyWeight==0){
-					Toast({
-						message:'克重不能为0',
-						position: 'bottom'
-					})
-					return
-				}else if( this.order.images.length==0 ){
-					Toast({
-						message:'至少上传一张存金图片',
-						position: 'bottom'
-					})
-					return
-				}
-    			if(!this.token){
-					this.RECORD_RECYCLEPARAMS(this.order)
-					this.$router.push({
-						path:'/loginIn',
-			   			query:{
-				    		redirect:'/storAddress'
-			    		}
-		    		})
-				}else{
-					this.RECORD_RECYCLEPARAMS(this.order)
-					this.$router.push({
-						path:'/storAddress'
-					})
-				}
-            },
-            //从订单详情跳转过来，给页面的数据赋值
-            async queryRecycleOrderDetail(){
-            	var res=await queryRecycleOrderDetail(this.editOrderId)
-            	if(res.code==100){
-            		this.order.checkType=res.content.productName
-            		this.order.applyWeight=res.content.applyWeight
-					this.order.brandType=res.content.brandType
-					//如果是自定义的品牌，就将brandType的值赋值成brandName的值
-					if(this.order.brandType==10 && res.content.brandName){
-						this.order.brandType=res.content.brandName
-					}
-					//之前订单没有选品牌也没有自定义品牌
-					if(!this.order.brandType){
-						this.checkBrand=true //选填显示
-					}else{
-						this.checkBrand=false
-					}
-					if(this.order.brandType==10){
-						this.checkBrand=true//选填选项
-					}
-					//初始化brandArray
-					if(this.order.productName=='投资金'){
-						this.brandArray=this.brand2
-					}else{
-						this.brandArray=this.brand1
-					}
-            		this.order.productId=res.content.productId
-            		var imgs=res.content.recycleDocumentVos
-            		for(var i=0,length=imgs.length;i<length;i++){
-            			if(imgs[i].type==0){
-							var srcObj = {src:imgs[i].url}
-            				this.order.images.push(srcObj)
-            				this.order.urls.push(imgs[i].url)
-            			}
-            		}
-            		this.weight_show=false
-            		this.estimatePrice=Number(this.order.applyWeight)*Number(this.currentPrice)
-            	}
-			},
 			// 选择图片
     		selectImgs (fileList) {
       			for (var  i = 0, len = fileList.length; i < len; i++) {
@@ -527,7 +446,6 @@
 							this.order.images.push(item)
 						}
 						if(this.files.length==len){
-							// 	this.submit()
 							this.getpolicy(reader,item);
 						}
 					}
@@ -581,6 +499,83 @@
 					message:'上传成功',
 					duration: 800,
 				});
+			},
+			/*删除图片*/
+			delImage: function(index){
+                this.order.images.splice(index,1)
+				this.order.urls.splice(index,1)
+				this.index--
+                if(this.order.images.length==0){
+                }
+			},
+			//从订单详情跳转过来，给页面的数据赋值
+            async queryRecycleOrderDetail(){
+            	var res=await queryRecycleOrderDetail(this.editOrderId)
+            	if(res.code==100){
+            		this.order.checkType=res.content.productName
+            		this.order.applyWeight=res.content.applyWeight
+					this.order.brandType=res.content.brandType
+					//如果是自定义的品牌，就将brandType的值赋值成brandName的值
+					if(this.order.brandType==10 && res.content.brandName){
+						this.order.brandType=res.content.brandName
+					}
+					//之前订单没有选品牌也没有自定义品牌
+					if(!this.order.brandType){
+						this.checkBrand=true //选填显示
+					}else{
+						this.checkBrand=false
+					}
+					if(this.order.brandType==10){
+						this.checkBrand=true//选填选项
+					}
+					//初始化brandArray
+					if(this.order.productName=='投资金'){
+						this.brandArray=this.brand2
+					}else{
+						this.brandArray=this.brand1
+					}
+            		this.order.productId=res.content.productId
+            		var imgs=res.content.recycleDocumentVos
+            		for(var i=0,length=imgs.length;i<length;i++){
+            			if(imgs[i].type==0){
+							var srcObj = {src:imgs[i].url}
+            				this.order.images.push(srcObj)
+            				this.order.urls.push(imgs[i].url)
+            			}
+            		}
+            		this.weight_show=false
+            		this.estimatePrice=Number(this.order.applyWeight)*Number(this.currentPrice)
+            	}
+			},
+			 //提交订单
+            submitBuyBackOrder(){
+				if(this.order.applyWeight==0){
+					Toast({
+						message:'克重不能为0',
+						position: 'bottom'
+					})
+					return
+				}else if( this.order.images.length==0 ){
+					Toast({
+						message:'至少上传一张存金图片',
+						position: 'bottom'
+					})
+					return
+				}
+    			if(!this.token){
+					this.RECORD_RECYCLEPARAMS(this.order)
+					this.$router.push({
+						path:'/loginIn',
+			   			query:{
+				    		redirect:'/storAddress'
+			    		}
+		    		})
+				}else{
+					this.RECORD_RECYCLEPARAMS(this.order)
+					this.$router.push({
+						path:'/storAddress'
+					})
+				}
 			},
 		},
 		activated: function () {

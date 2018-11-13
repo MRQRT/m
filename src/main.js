@@ -90,26 +90,24 @@ router.beforeEach((to, from, next) => {
                         if(res.content){ //0没有再交易时间内 1在交易时间内
                            next(true)
                         }else{
-                           MessageBox({
-                             title: '提示',
-                             message: '亲，非交易时段，无法进行交易哦~',
-                             confirmButtonText: '我知道了'
-                          }).then(function(){  //从登入页跳转到业务页时  该业务不在交易时间则跳到首页
-                            if(from.path=='/loginIn'){
-                                next({
-                                    path:'buyGold'
-                                })
-                            }
-                          });
+                            MessageBox({
+                                title: '提示',
+                                message: '亲，非交易时段，无法进行交易哦~',
+                                confirmButtonText: '我知道了'
+                            }).then(function(){  //从登入页跳转到业务页时  该业务不在交易时间则跳到首页
+                                if(from.path=='/loginIn'){
+                                    next({
+                                        path:'buyGold'
+                                    })
+                                }
+                            })
                         }
                     }
-
                })
-
             }else{
                 next(true)
             }
-        } else {
+        }else{
             next({
                 path: '/loginIn',
                 query: {redirect: to.fullPath}
