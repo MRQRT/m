@@ -11,8 +11,13 @@ export function openAPI(){
 
 //hjgj-oss-api-bucketName
 export function bucketName(){
-    // let bucketName='https://au32-cjt-p-test';//测试
-    let bucketName='https://au32-cjt-p';//正式
+    const herf = window.location.href;
+    var bucketName = '';
+    if(herf.search('test')>0){
+        bucketName='https://au32-cjt-p-test';//测试
+    }else{
+        bucketName='https://au32-cjt-p';//正式
+    }
     return bucketName
 }
 
