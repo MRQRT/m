@@ -13,9 +13,10 @@
 	</div>
 </template>
 <script>
-import {queryGoldPrice,interestByUser,queryAwardOrder} from './service/getData.js'
+import {queryGoldPrice,interestByUser,queryAwardOrder} from './service/getData.js';
 import {mapState,mapMutations} from 'vuex';
-import foot from '@/components/footer/footGuid'
+import foot from '@/components/footer/footGuid';
+import {MessageBox} from 'mint-ui';
   	export default {
         data(){
             return {
@@ -150,20 +151,19 @@ import foot from '@/components/footer/footGuid'
             },
             $route(){
                 this.messageBoxRemove();
+                MessageBox.close();
                 if(this.$route.path=="/buy"){  //买金页软键盘弹起按钮顶起处理
                    this.className='buyBtn';
                    this.setResize()
                 }else{
                     window.removeEventListener('onresize',this.setResize)
                 }
-
                 if(this.$route.path=="/sell"){  //卖金页软键盘弹起按钮顶起处理
                    this.className='sellBtn';
                    this.setResize()
                 }else{
                     window.removeEventListener('onresize',this.setResize)
                 }
-
                 if(this.$route.path=="/benefit"){ //有金豆收取信息时底部导航生金处红点提示
                     this.redCircle=false;
                     this.hasInterest=false;
@@ -172,7 +172,6 @@ import foot from '@/components/footer/footGuid'
                     this.token ? this.interestByUser() : '';
                     this.token ? this.queryAwardOrder() : '';
                 }
-
                 //告诉app当前处在那一页 判断返回时是否可直接返回首页
                 if(this.$route.path=="/buyGold" || this.$route.path=="/benefit" || this.$route.path=="/storeGold" || this.$route.path=="/mine"){
                     // window.tellHome('yes');

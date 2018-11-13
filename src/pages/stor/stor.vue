@@ -124,7 +124,6 @@
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
 	import { getRem,openAPI,checkAndroAgent,iosVersion,bucketName } from "@/config/mUtils"
 	import '../../config/ruler.js'
-
 	export default{
 		data () {
 			return {
@@ -166,7 +165,6 @@
 					  canAdd: true, //添加图片加号是否显示
 				 AndroVerson: checkAndroAgent(),
 				   iosVerson: iosVersion(),
-
  			}
 		},
 		created(){
@@ -180,8 +178,6 @@
 			}
 		},
 		mounted(){
-			// console.log(this.$route.query.from)
-			// console.log(this.$route.query.lotteryUrl)
 			this.queryRecycleProduct();//查询存金产品列表
 			this.queryChildDictionary();//查询存金产品品牌
 			this.orderChange();//计算克重
@@ -429,6 +425,79 @@
 					this.selectImgs(e.target.files)
 				}
 			},
+			// 选择图片
+    		selectImgs (fileList) {
+      			for (var  i = 0, len = fileList.length; i < len; i++) {
+        			let item = {
+          				key: this.index++,
+          				name: fileList[i].name,
+          				size: fileList[i].size,
+          				file: fileList[i]
+        			}
+        			// 将图片文件转成BASE64格式
+        			let reader = new FileReader()
+        			reader.onload = (e) => {
+          				this.$set(item, 'src', e.target.result)
+						if(this.index>9){ //图片已达到9张 不在执行添加上传操作
+						}else{
+							this.files.push(item)
+							this.order.images.push(item)
+						}
+						if(this.files.length==len){
+							this.getpolicy(reader,item);
+						}
+					}
+					reader.readAsDataURL(fileList[i])
+				}
+			},
+			//获取上传图片凭证
+			async getpolicy(reader,item){
+				Indicator.open('上传中...')
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Toast('获取参数失败');
+				}
+			},
+			//图片处理
+			format(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+				let fd = new FormData();
+				fd.append('name',item.name)
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+				fd.append('file',item.file);
+				that.uploadImage(fd,item,uuid,random);
+				// var img_size=item.size
+				// if(img_size/1024/1024>3){
+				// 	//进行压缩
+				// 	compress(reader,img_size,item,that,uuid)
+				// }else{
+				// 	fd.append('file',item.file);//lic[0]如果获取不到文件，就用e.target.files[0]
+				// 	// that.upload(formData);//图片上传接口(旧的)
+				// 	that.uploadImage(fd,item,uuid);
+				// }
+			},
+			//上传图片接口(新-oss)
+			async uploadImage(val,item,uuid,random){
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.order.urls.push(netimgurl)
+				this.files = [] // 清空文件缓存
+				Indicator.close()
+				Toast({
+					message:'上传成功',
+					duration: 800,
+				});
+			},
 			/*删除图片*/
 			delImage: function(index){
                 this.order.images.splice(index,1)
@@ -436,38 +505,8 @@
 				this.index--
                 if(this.order.images.length==0){
                 }
-            },
-            //提交订单
-            submitBuyBackOrder(){
-				if(this.order.applyWeight==0){
-					Toast({
-						message:'克重不能为0',
-						position: 'bottom'
-					})
-					return
-				}else if( this.order.images.length==0 ){
-					Toast({
-						message:'至少上传一张存金图片',
-						position: 'bottom'
-					})
-					return
-				}
-    			if(!this.token){
-					this.RECORD_RECYCLEPARAMS(this.order)
-					this.$router.push({
-						path:'/loginIn',
-			   			query:{
-				    		redirect:'/storAddress'
-			    		}
-		    		})
-				}else{
-					this.RECORD_RECYCLEPARAMS(this.order)
-					this.$router.push({
-						path:'/storAddress'
-					})
-				}
-            },
-            //从订单详情跳转过来，给页面的数据赋值
+			},
+			//从订单详情跳转过来，给页面的数据赋值
             async queryRecycleOrderDetail(){
             	var res=await queryRecycleOrderDetail(this.editOrderId)
             	if(res.code==100){
@@ -506,156 +545,36 @@
             		this.estimatePrice=Number(this.order.applyWeight)*Number(this.currentPrice)
             	}
 			},
-			// 选择图片
-    		selectImgs (fileList) {
-      			for (var  i = 0, len = fileList.length; i < len; i++) {
-        			let item = {
-          				key: this.index++,
-          				name: fileList[i].name,
-          				size: fileList[i].size,
-          				file: fileList[i]
-        			}
-        			// 将图片文件转成BASE64格式
-        			let reader = new FileReader()
-        			reader.onload = (e) => {
-          				this.$set(item, 'src', e.target.result)
-
-						if(this.index>9){ //图片已达到9张 不在执行添加上传操作
-						}else{
-							this.files.push(item)
-							this.order.images.push(item)
-						}
-						if(this.files.length==len){
-							// 	this.submit()
-							this.getpolicy(reader,item);
-						}
-					}
-					reader.readAsDataURL(fileList[i])
+			 //提交订单
+            submitBuyBackOrder(){
+				if(this.order.applyWeight==0){
+					Toast({
+						message:'克重不能为0',
+						position: 'bottom'
+					})
+					return
+				}else if( this.order.images.length==0 ){
+					Toast({
+						message:'至少上传一张存金图片',
+						position: 'bottom'
+					})
+					return
 				}
-			},
-			//获取上传图片凭证
-			async getpolicy(reader,item){
-				Indicator.open('上传中...')
-				const res = await getpolicy();
-				if(res.code=='000000'){
-					this.param_policy=res.data
-					this.format(reader,item)//图片处理（压缩或者不压缩）
+    			if(!this.token){
+					this.RECORD_RECYCLEPARAMS(this.order)
+					this.$router.push({
+						path:'/loginIn',
+			   			query:{
+				    		redirect:'/storAddress'
+			    		}
+		    		})
 				}else{
-					Toast('获取参数失败');
+					this.RECORD_RECYCLEPARAMS(this.order)
+					this.$router.push({
+						path:'/storAddress'
+					})
 				}
 			},
-			//图片处理
-			format(reader,item){
-				const uuidv1 = require('uuid/v1');
-				var that = this,
-					uuid = uuidv1(),
-					random = Math.random().toString(36).substr(2);
-
-				let fd = new FormData();
-				fd.append('name',item.name)
-				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
-				fd.append('policy',this.param_policy.policy)
-				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
-				fd.append('signature',this.param_policy.signature)
-				fd.append('success_action_status','200')
-
-				fd.append('file',item.file);
-				that.uploadImage(fd,item,uuid,random);
-
-				// var img_size=item.size
-				// if(img_size/1024/1024>3){
-				// 	//进行压缩
-				// 	compress(reader,img_size,item,that,uuid)
-				// }else{
-				// 	fd.append('file',item.file);//lic[0]如果获取不到文件，就用e.target.files[0]
-				// 	// that.upload(formData);//图片上传接口(旧的)
-				// 	that.uploadImage(fd,item,uuid);
-				// }
-			},
-			//上传图片接口(新-oss)
-			async uploadImage(val,item,uuid,random){
-				const res = await uploadimg(val);
-				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
-				this.order.urls.push(netimgurl)
-				this.files = [] // 清空文件缓存
-				Indicator.close()
-				Toast({
-					message:'上传成功',
-					duration: 800,
-				});
-			},
-    		// 上传图片
-    		submit () {
-				Indicator.open();
-        		var dataURLToBlob=function(url){
-                	var arr=url.split(','),mime=arr[0].match(/:(.*?);/)[1],
-                	bstr=atob(arr[1]),n=bstr.length,u8arr=new Uint8Array(n);
-                	while(n--){
-                    	u8arr[n]=bstr.charCodeAt(n);
-                	}
-                	return new Blob([u8arr],{type:mime});
-				}
-				//base64转换成二进制文件
-				let formData = new FormData()
-        		this.files.forEach((item, index) => {
-          			var img_size=item.size
-					var img = new Image,
-					canvas = document.createElement("canvas"),
-					ctx = canvas.getContext("2d");
-					img.crossOrigin = "Anonymous";
-					img.src = item.src
-					if(this.AndroVerson>4||this.iosVerson>10){
-						img.onload =() => {
-							var width = img.width;
-							var height = img.height;
-							// 最大上传不得查过500k
-							var rate = (img_size/(1024*500)).toFixed(1)
-							if(rate*1>1){
-								var real_rate = (width<height ? width/height : height/width)/rate;
-								canvas.width = width*real_rate;
-								canvas.height = height*real_rate;
-								ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
-								var src1 = canvas.toDataURL("image/jpg");
-								var blob=dataURLToBlob(src1)
-								formData.append('files', blob,'image.jpg')
-							}else{
-								formData.append('files', item.file)
-							}
-							if(index==(this.files.length-1)){ //formdata已创建完
-								xhr_send(this)
-							}
-						}
-					}else{
-						formData.append('files', item.file)
-						if(index==(this.files.length-1)){ //formdata已创建完
-							xhr_send(this)
-						}
-					}
-
-				})
-				function xhr_send(val){
-					// 新建请求
-					const xhr = new XMLHttpRequest()
-					xhr.open('POST', val.url, true)
-					xhr.send(formData)
-					xhr.onload = () => {
-						if (xhr.status === 200 || xhr.status === 304) {
-							let datas = JSON.parse(xhr.responseText)
-							if(datas.code==100){
-								// 存储返回的地址
-								datas.content.forEach((item)=> {
-									val.order.urls.push(item)
-									val.files = [] // 清空文件缓存
-									Indicator.close()
-								})
-							} else {
-								val.$toast('请求错误')
-								Indicator.close()
-							}
-						}
-					}
-				}
-    		},
 		},
 		activated: function () {
 

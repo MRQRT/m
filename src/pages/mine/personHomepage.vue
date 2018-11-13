@@ -4,7 +4,7 @@
 			<img slot='head_goback' src='../../images/back.png' class="head_goback" @click="toMine()">
 		</head-top>
 		<div class="headPho">
-			<label class="headPho_content"  for="headImg" @click="selectImage">
+			<label class="headPho_content"  for="headImg">
 				<span>头像</span>
 				<span class="jian_right"></span>
 				<input type="file" name="file" id="headImg" v-if="canPhoto" accept="image/*" style="display: none" @change="selectImage">
@@ -47,7 +47,7 @@ import	headTop from '@/components/header/head'
 import	defaults from '@/images/defaults.png'
 import	{removeCookie, getCookie,bucketName} from '@/config/mUtils'
 import	{mapState, mapMutations} from 'vuex'
-import	{logout, xmlUploadImg, putAvatar, queryMyProfil,getpolicy,uploadimg } from '@/service/getData.js'
+import	{logout, putAvatar, queryMyProfil,getpolicy,uploadimg } from '@/service/getData.js'
 import {Toast, Indicator} from 'mint-ui'
 
 export default{
@@ -60,7 +60,6 @@ export default{
 		   canPhoto: false,//可以拍照
 		    noPhoto: true, //不可以拍照
 	   clientHeight: document.documentElement.clientHeight,
-
 		}
 	},
 	created(){
@@ -115,11 +114,13 @@ export default{
 							position: 'bottom',
 							duration: 3000
 						})
+						Indicator.close();
 						return;
 					}
 				}
 		    }
 			if (!e.target.files || !e.target.files[0]){
+				Indicator.close();
 				return;
 			}
 			var that=this;
@@ -132,18 +133,18 @@ export default{
             reader.readAsDataURL(e.target.files[0]);
             reader.onload =function(evt){
             	that.headImg = evt.target.result;
-				// that.createImage(evt.target.result);
 				that.getpolicy(reader,item)
             }
 		},
 		//获取上传图片凭证
 		async getpolicy(reader,item){
-			Indicator.open('上传中...')
+			Indicator.close();
 			const res = await getpolicy();
 			if(res.code=='000000'){
 				this.param_policy=res.data
 				this.format(reader,item)//图片处理（压缩或者不压缩）
 			}else{
+				Indicator.close("上传失败");
 				Toast('获取参数失败');
 			}
 		},
@@ -153,7 +154,6 @@ export default{
 			var that = this,
 				uuid = uuidv1(),
 				random = Math.random().toString(36).substr(2);
-
 			let fd = new FormData();
 			fd.append('name',item.name)
 			fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
@@ -161,34 +161,30 @@ export default{
 			fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
 			fd.append('signature',this.param_policy.signature)
 			fd.append('success_action_status','200')
-
 			fd.append('file',item.file);
 			that.uploadImage(fd,item,uuid,random);
 		},
 		//上传图片接口(新-oss)
 		async uploadImage(val,item,uuid,random){
+			Indicator.open('上传中...')
 			const res = await uploadimg(val);
 			var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
 			this.url=netimgurl
-			Indicator.close()
+			Indicator.close();
 			this.uploadheadImage();
 		},
-		//旧的上传接口
-		createImage(src) {
-			xmlUploadImg(this,src,'uploadImage',Indicator,Toast,4);
-        },
         //头像上传
         async uploadheadImage() {
         	var res=await putAvatar(this.url);
         	if(res.code==100){
         		Toast({
 					message:'头像设置成功',
-					duration: 3000
+					duration: 1500
 				})
         	}else{
         		Toast({
 					message:'图片上传失败',
-					duration: 3000
+					duration: 1500
 				})
         	}
         },
@@ -235,7 +231,6 @@ export default{
         	Indicator.close()
 			this.$router.push('/mine')
         }
-
 	},
 	components:{
 		headTop: headTop
