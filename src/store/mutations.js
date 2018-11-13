@@ -113,7 +113,13 @@ export default {
 	},
 	//标尺刻度
 	[set_rulerData](state, val) {
-		state.rulerData = val
+		var reval = '';
+		if(val.match(/^\d+\.\d{1,1}$/)){
+			reval=val+'0'
+		}else{
+			reval=val
+		}
+		state.rulerData = reval
 	},
 	//标尺默认刻度
 	[set_initRulerData](state, val) {
