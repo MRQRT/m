@@ -302,8 +302,8 @@
 					this.RECORD_USERINFO(res.content)
 					this.realnamed=res.content.realnamed
 					if(this.userInfo){
-							this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
-						}
+						// this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
+					}
 				}
 			},
 			//通过银行卡号获取银行卡名称和logo
@@ -612,12 +612,12 @@
         				position: 'bottom',
             		})
 					return
-            	}else if( this.hasUploadPhoto && this.photo=='' && this.url==''){
-            		Toast({
-            			message: '请上传手持身份证',
-            			position: 'bottom',
-            		})
-					return
+            	// }else if( this.hasUploadPhoto && this.photo=='' && this.url==''){
+            	// 	Toast({
+            	// 		message: '请上传手持身份证',
+            	// 		position: 'bottom',
+            	// 	})
+				// 	return
             	}else if(this.bg==false){
             		Toast({
             			message: '请同意存金服务协议',

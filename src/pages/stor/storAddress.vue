@@ -122,7 +122,7 @@
 			window.isApp();//是否在app
             var ag=checkAgent();//安卓和ios判断
             this.agent=ag;//
-			// this.queryMyProfil();//获取用户的信息
+			this.queryMyProfil();//查看是否已实名绑卡时需要
 			this.queryBankCard();////获取用户银行卡
 			if(this.$route.query.from && this.$route.query.from=='storArg' || this.$route.query.from && this.$route.query.from=='bindBank'){
 				var ob = getStore('obj','session')
@@ -182,7 +182,7 @@
 					this.RECORD_USERINFO(res.content)
 					this.realnamed=res.content.realnamed
 					if(this.userInfo){
-						this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
+						//this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
 					}
 				}
 			},
