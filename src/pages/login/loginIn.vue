@@ -602,6 +602,13 @@
 </script>
 
 <style scoped>
+    .loginIn{
+        background-color:#fff;
+        position: relative;
+        top: 0;
+        border:1px solid #fff;
+        min-height:100vh;
+    }
     input{
         caret-color: #333333;
     }
@@ -718,6 +725,7 @@
         color:#333333;
         outline-style: none;
         padding-left:.22rem;
+        background-color: #fff;
     }
     #inputPwd.visibleYN{
         background-color: transparent;
