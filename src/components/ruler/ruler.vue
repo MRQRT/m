@@ -44,7 +44,7 @@ export default{
 			var str = clearNoNum(value,2);
 			if(Number(str)>10000){
 				this.gram=10000
-				this.$store.commit('set_rulerData', 5000)
+				this.$store.commit('set_rulerData', '10000')
 			}else if(str==''){
 				this.$store.commit('set_rulerData', '')
 			}else{
