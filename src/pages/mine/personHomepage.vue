@@ -27,7 +27,7 @@
 			<router-link :to="realnamed?'':'/personHomepage/authentication'" tag='section'>
 				<span>实名认证</span>
 				<span class="jian_right"></span>
-				<span class="noApprove isApprove" :class="{'realnamedcolor':comRealnamed=='实名送3mg黄金'}">{{comRealnamed}}</span>
+				<!-- <span class="noApprove isApprove" :class="{'realnamedcolor':comRealnamed=='实名送3mg黄金'}">{{comRealnamed}}</span> -->
 			</router-link>
 		</div>
 		<div class="myAddress">
@@ -83,15 +83,15 @@ export default{
 		...mapState([
 			'userInfo','token'
 		]),
-		comRealnamed: function(){
-			if(this.userInfo){
-				if(this.userInfo.realnamed){
-					return '已认证'
-				}else{
-					return '实名送3mg黄金'
-				}
-			}
-		}
+		// comRealnamed: function(){
+		// 	if(this.userInfo){
+		// 		if(this.userInfo.realnamed){
+		// 			return '已认证'
+		// 		}else{
+		// 			return '实名送3mg黄金'
+		// 		}
+		// 	}
+		// }
 	},
 	methods:{
 		...mapMutations([

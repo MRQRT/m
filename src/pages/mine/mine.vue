@@ -61,7 +61,7 @@
 				<img :src="bank">
 				<span>银行卡</span>
 				<img :src="right_jian" style="width:.15rem;height:.3rem;float:right;">
-				<span class="isbind" :class="{'isbindcolor':isbind=='绑卡送3mg黄金'}" style="float:right;padding-right:.25rem;">{{isbind}}</span>
+				<!-- <span class="isbind" :class="{'isbindcolor':isbind=='绑卡送3mg黄金'}" style="float:right;padding-right:.25rem;">{{isbind}}</span> -->
 			</p>
 		</div>
 		<div class="mine_content" style="margin-top: 0">
@@ -188,18 +188,18 @@ import bank from '@/images/bank.png'
 					return ''
 				}
 			},
-			//是否绑卡
-			isbind(){
-				if(this.token){
-					if(this.hasBank){
-						return '已绑定'
-					}else{
-						return '绑卡送3mg黄金'
-					}
-				}else{
-					return ''
-				}
-			}
+			// //是否绑卡
+			// isbind(){
+			// 	if(this.token){
+			// 		if(this.hasBank){
+			// 			return '已绑定'
+			// 		}else{
+			// 			return '绑卡送3mg黄金'
+			// 		}
+			// 	}else{
+			// 		return ''
+			// 	}
+			// }
 		},
 		methods:{
 			...mapMutations([
