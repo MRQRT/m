@@ -262,7 +262,8 @@
 			},
 			formatWeight(val){
 				if((!val && Number(val)!=0) || val==null) return;
-				return Number(val).toFixed(1)
+				// return Number(val).toFixed(1)
+				return val
 			},
 			brandTran: function(val){
 				let brandStrArray = ['周大福','老凤祥','菜百','周生生','周大生','老庙','中国黄金','山东黄金','中金']
@@ -685,7 +686,7 @@
             	var res=await queryRecycleOrderDetail(this.$route.query.id)
             	if(res.code==100){
             		this.order.checkType=res.content.productName
-            		this.order.applyWeight=res.content.applyWeight
+            		this.order.applyWeight=res.content.applyWeight+''
 					this.order.brandType=res.content.brandType
 					//如果是自定义的品牌，就将brandType的值赋值成brandName的值
 					if(this.order.brandType==10 && res.content.brandName){
@@ -707,7 +708,7 @@
 					this.order.id=res.content.id
 					this.order.isCash=res.content.isCash
 					this.order.productId=res.content.productId
-					this.order.applyWeight=res.content.applyWeight
+					this.order.applyWeight=res.content.applyWeight+''
 					this.set_initRulerData(this.order.applyWeight)
 					this.order.productName=res.content.productName
 					//初始化brandArray

@@ -148,7 +148,7 @@
 		               order: {//订单对象
 				               checkType: '',//投资金的选择类型
 				   			   productId: '',//投资金类型的产品ID
-						     applyWeight: 10.0,//克重
+						     applyWeight: '10.0',//克重
 						       brandType: null,//品牌
 						          images: [],//手机上选择图片的图片地址
 				                    urls: [],//存放上传后图片在服务器的地址
