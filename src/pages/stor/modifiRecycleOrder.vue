@@ -541,7 +541,9 @@
 				if(this.order.applyWeight==''){
 					alert('请输入克重')
 				}else if(this.order.applyWeight.match(/^\d*\.$/)){
-					alert('请输入完整的克数')
+					var plu_0 = this.order.applyWeight.split('.')[0];
+					this.$store.commit('set_rulerData', plu_0);
+					this.popupVisible=false
 				}else{
 					this.popupVisible=false
 				}
