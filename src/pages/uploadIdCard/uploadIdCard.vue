@@ -57,8 +57,9 @@
 <script>
 	import headTop from '../../components/header/head.vue';
 	import {Toast, Indicator} from 'mint-ui'
-	import { xmlUploadImg } from '@/service/getData'
+	import { getpolicy,uploadimg } from '@/service/getData'
 	import  defaultUpload  from '@/images/uploadPic.png'
+	import	{bucketName} from '@/config/mUtils'
 	export default {
 		data(){
 			return {
@@ -67,9 +68,9 @@
 				     url: '',//上传图片接口返回地址
 				   query: '',//跳转到此页带的参数，进入到下一页时需要
 				     src: defaultUpload,//默认的身份证图片
-				     from:null, //页面的上一页是哪儿
-				     canPhoto:false,//可以拍照
-				     noPhoto:true //不可以拍照
+				    from: null, //页面的上一页是哪儿
+				canPhoto: false,//可以拍照
+				 noPhoto: true //不可以拍照
 			}
 		},
 		created(){
@@ -86,50 +87,82 @@
 			this.from=this.$route.query.from;
 		},
 		methods:{
-			createImage(src){
-				xmlUploadImg(this,src,'',Indicator,Toast)
-
-			},
 			selectImage(e) {
 				if(this.noPhoto){  //查看手机拍照读写权限
-
 				    if(window.backPerInfo){  //查看手机拍照读写权限
 					    var res=window.backPerInfo();
 					    if(res=='OK'){
-						   this.canPhoto=true;
-						   this.noPhoto=false;
-						   document.querySelector('#idCardInput').onchange();
+						   	this.canPhoto=true;
+						   	this.noPhoto=false;
+						   	document.querySelector('#idCardInput').onchange();
 					    }else{
-						   this.canPhoto=false;
-						   this.noPhoto=true;
-						   Toast({
-							  message:'请在应用权限管理中打开“电话或读写手机存储”访问权限!',
-							  position: 'bottom',
-							  duration: 3000
+						   	this.canPhoto=false;
+						   	this.noPhoto=true;
+						   	Toast({
+								message:'请在应用权限管理中打开“电话或读写手机存储”访问权限!',
+							  	position: 'bottom',
+							  	duration: 3000
 						    })
-						     return;
+						    return;
 					    }
 				    }
 			    }
-
 				if (!e.target.files || !e.target.files[0]){
 					return;
 				}
-				Indicator.open({
-                          text: '加载中...',
-                          spinnerType: 'fading-circle'
-                });
-				var t=this;
-				var reader = new FileReader();
+				Indicator.open('加载中...');
+				var that=this;
+				let item = {
+					name: e.target.files[0].name,
+					size: e.target.files[0].size,
+					file: e.target.files[0],
+				}
+				let reader = new FileReader();
 				reader.readAsDataURL(e.target.files[0]);
-				reader.onload = function(evt) {
+				reader.onload =function(evt){
 					Indicator.close();
 					document.getElementById('image').src = evt.target.result;
 					t.src=evt.target.result;
 					t.needShow=false;
-					t.createImage(evt.target.result)
-                }
-            },
+					that.getpolicy(reader,item)
+				}
+			},
+			//获取上传图片凭证
+			async getpolicy(reader,item){
+				Indicator.close();
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Indicator.close("上传失败");
+					Toast('获取参数失败');
+				}
+			},
+			//图片处理
+			format(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+				let fd = new FormData();
+				fd.append('name',item.name)
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+				fd.append('file',item.file);
+				that.uploadImage(fd,item,uuid,random);
+			},
+			//上传图片接口(新-oss)
+			async uploadImage(val,item,uuid,random){
+				Indicator.open('上传中...')
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.url=netimgurl
+				Indicator.close();
+			},
             findTip(){  //打开照片上传提示窗
            	    this.mainShow=!this.mainShow;
             },
@@ -140,13 +173,13 @@
             nextFillOrder(){
            	    if(this.src == defaultUpload){
            	    	Toast({
-                            message:'未选择照片',
-                            position: 'bottom',
-                            duration: 3000
-                        })
+						message:'未选择照片',
+						position: 'bottom',
+						duration: 3000
+					})
            	    	return;
            	    }
-           	        var to='';
+				var to='';
            	    if(this.from=='1'){   //判断该返回那个业务 1为提金业务
            	    	to='/fillInOrder';
            	    	this.query.url=this.url;
