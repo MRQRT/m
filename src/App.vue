@@ -73,6 +73,7 @@ import {MessageBox} from 'mint-ui';
             ]),
             //messageBox删除
             messageBoxRemove(){
+                MessageBox.close();
                 var thisNode=document.getElementsByClassName("mint-msgbox-wrapper")[0]
                 if(thisNode){
                     thisNode.parentNode.removeChild(thisNode)
