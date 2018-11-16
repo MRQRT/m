@@ -438,7 +438,6 @@ export	default{
 	}
 	.biankuang:before{
 		content: '';
-		display: inline-block;
 		width: 90%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.7);
@@ -448,10 +447,9 @@ export	default{
 		float: left;
 	}
 }
-@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)(-o-min-device-pixel-ratio:2){
+@media(-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2),(-o-min-device-pixel-ratio:2){
 	.recharge>.bankType:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.5);
@@ -462,7 +460,6 @@ export	default{
 	}
 	.biankuang:before{
 		content: '';
-		display: inline-block;
 		width: 100%;
 		border-bottom: 1px solid #eee;
 		-webkit-transform: scaleY(0.5);
@@ -493,7 +490,6 @@ export	default{
 	left: .75rem;
 }
 .recharge>.avail_number>label{
-	display: inline-block;
 	height: 1.2rem;
 	line-height: 1.2rem;
 	font-size: .3rem;
@@ -589,7 +585,6 @@ export	default{
 	font-size: .3rem;
 }
 .shuru>.getVerif{
-	display: inline-block;
 	font-size: .28rem;
 	float: right;
 	color: #eda835;

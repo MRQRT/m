@@ -122,8 +122,8 @@
 				reader.onload =function(evt){
 					Indicator.close();
 					document.getElementById('image').src = evt.target.result;
-					t.src=evt.target.result;
-					t.needShow=false;
+					that.src=evt.target.result;
+					that.needShow=false;
 					that.getpolicy(reader,item)
 				}
 			},
