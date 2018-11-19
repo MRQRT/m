@@ -12,13 +12,39 @@ import { checkAgent,check,getStore,setStore } from '@/config/mUtils'
 import { bizCloseCheck,queryMyProfil } from '@/service/getData'
 import vueScrollBehavior from '@/config/vue-scroll-behevior.js'
 import './style/common.css'
+import 'vue-photo-preview/dist/skin.css'
+import preview from 'vue-photo-preview'
+import Raven from 'raven-js'
+import RavenVue from 'raven-js/plugins/vue'
 // import './config/vconsole.min.js'
 
+const sentyDSN = 'https://1752029d7b2c4e41a1931380eb2ff5dc@sentry.au32.cn/6';
+process.env.NODE_ENV === 'production' && window.location.host == "m.au32.cn" && Raven.config(sentyDSN,
+{
+    environment: 'm.au32.cn'
+},
+{
+    release:'m@3.1.0'
+})
+.addPlugin(RavenVue, Vue)
+.install()
+if(process.env.NODE_ENV == 'production' && window.location.host == "m.au32.cn"){
+    Vue.config.errorHandler = function(err, vm, info) {
+        Raven.captureException(err)
+    }
+}
+
+var options={
+    fullscreenEl:true, //关闭全屏按钮
+    showHideOpacity:true,
+    escKey:true,
+    timeToIdle:5000,
+}
+Vue.use(preview,options)
 Vue.use(MintUI)
 Vue.use(vueRouter)
 Vue.use(VueAwesomeSwiper)
 import { MessageBox,Indicator } from 'mint-ui'
-
 // 通过url获取参数的函数
 Vue.prototype.GetQueryString = function (name){
   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -81,26 +107,24 @@ router.beforeEach((to, from, next) => {
                         if(res.content){ //0没有再交易时间内 1在交易时间内
                            next(true)
                         }else{
-                           MessageBox({
-                             title: '提示',
-                             message: '亲，非交易时段，无法进行交易哦~',
-                             confirmButtonText: '我知道了'
-                          }).then(function(){  //从登入页跳转到业务页时  该业务不在交易时间则跳到首页
-                            if(from.path=='/loginIn'){
-                                next({
-                                    path:'buyGold'
-                                })
-                            }
-                          });
+                            MessageBox({
+                                title: '提示',
+                                message: '亲，非交易时段，无法进行交易哦~',
+                                confirmButtonText: '我知道了'
+                            }).then(function(){  //从登入页跳转到业务页时  该业务不在交易时间则跳到首页
+                                if(from.path=='/loginIn'){
+                                    next({
+                                        path:'buyGold'
+                                    })
+                                }
+                            })
                         }
                     }
-
                })
-
             }else{
                 next(true)
             }
-        } else {
+        }else{
             next({
                 path: '/loginIn',
                 query: {redirect: to.fullPath}

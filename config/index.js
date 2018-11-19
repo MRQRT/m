@@ -28,19 +28,22 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+        "/api/oss_api/": {
+            target:"https://oss-test.au32.cn/",
+            changeOrigin: true,
+            pathRewrite: {
+                "^/api/oss_api/": "/"
+            },
+        },
         "/api": {
-            // target: "http://120.133.0.86:8099/",
-            // target: "http://101.201.197.238:8099/",
-            // target: "http://api.test.au32.cn/api",
-            // pathRewrite: {
-            //   "^/api": ""
-            // },
-            // target: "http://101.201.197.238:8099/",
             target: "https://api-test.au32.cn",
-            pathRewrite: {"^/api": ""},
             secure: false,
-            changeOrigin: true
-        }
+            changeOrigin: true,
+            pathRewrite: {
+                "^/api": ""
+            },
+        },
+        
     },
     //    proxyTable: {
     //     "/gold": {

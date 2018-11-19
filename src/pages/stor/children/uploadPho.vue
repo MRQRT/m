@@ -6,7 +6,7 @@
 		</head-top>
 		<div class="uploadPho_photo">
            <ul  v-if="images.length >0" class="upload_image_preview">
-              <li v-for="(image, key) in images">
+              <li v-for="(image, index) in images" :key="index">
                  <img :src="image" @click="openBigImg(image)">
                  <span @click='delImage(key)' class="del_image"></span>
               </li>
@@ -51,7 +51,7 @@
 	import	delImg from '@/images/delImg.png'
 	import store from '@/store'
 
-	import { xmlUploadImg } from '@/service/getData.js'
+	// import { xmlUploadImg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import {Toast,Indicator} from 'mint-ui'
 	

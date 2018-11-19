@@ -145,14 +145,28 @@
 		position="middle" id="popupVisibleReport" v-if="orderDetail">
 		<section class="view_report">
 			<h3 class="report_title">检测报告</h3>
+
 			<p>订单号：{{orderDetail.code || '--'}}</p>
-			<p>实测总毛重：{{orderDetail.realGrossWeight || '--'}}克</p>
-			<p>实测总净重：{{orderDetail.realNetWeight || '--'}}克</p>
-			<p>产品成色：{{orderDetail.productCondition | formatPoint}}‰</p>
-			<p>检测人：{{orderDetail.verifyBy || '--'}}</p>
-			<p>检测时间：{{orderDetail.verifyTime || '--'}}</p>
-			<p>检测说明：{{orderDetail.verifyRemark || '--'}}</p>
-			<p>检测结果：{{orderDetail.verifyResult==0?'通过':'不通过'}}</p>
+            <p>实测毛重：{{orderDetail.realGrossWeight || '--'}}克</p>
+            <p>实测净重：{{orderDetail.realNetWeight || '--'}}克</p>
+            <!-- <p>克重损耗：{{orderDetail.realLoss || ''}}克</p> -->
+
+            <p v-if="orderDetail.isCash==1">回收金价：{{orderDetail.realPrice || '--'}}元/克</p> 
+            <p>产品成色：{{orderDetail.productCondition | com }}‰</p>
+            
+            <p v-if="orderDetail.isCash==1&&orderDetail.sellAmount&&orderDetail.welfare">卖金总额：{{orderDetail.sellAmount || '--'}}元</p>
+            <p v-if="orderDetail.isCash==1&&orderDetail.welfare">减免金额：{{orderDetail.welfare || '--'}}元</p>
+            <p v-if="orderDetail.isCash==1&&orderDetail.receiveAmount" style="color:#EDA835;">回收总额：{{orderDetail.receiveAmount || '--'}}元</p>
+
+            <p v-if="orderDetail.isCash==2&&orderDetail.sellAmount&&orderDetail.welfare">卖金总重：{{orderDetail.sellAmount || '--'}}克</p>
+            <p v-if="orderDetail.isCash==2&&orderDetail.welfare">减免克重：{{orderDetail.welfare || '--'}}克</p>
+            <p v-if="orderDetail.isCash==2&&orderDetail.receiveAmount" style="color:#EDA835;">回收总重：{{orderDetail.receiveAmount || '--'}}克</p>
+
+            <p>检测人：{{orderDetail.verifyBy || '--'}}</p>
+            <p>检测时间：{{orderDetail.verifyTime || '--'}}</p>
+            <p>检测说明：{{orderDetail.verifyRemark || '--'}}</p>
+            <p>检测结果：{{orderDetail.verifyResult==0?'通过':'不通过'}}</p>
+
 			<img :src="orderDetail.imageUrl">
 			<div class="report_btns">
 				<p style="border-right:1px solid #EEEEEE;" @click="confirmStor">确认订单</p>
@@ -218,8 +232,8 @@ export default {
     mounted() {
 		var tg = this.$route.query.source;
 		var yw = this.$route.query.channel;
-		tg?setStore('tg',tg,'local'):'';
-		yw?setStore('yw',yw,'local'):'';
+		tg?setStore('tg',tg,'local'):setStore('tg','','local');
+		yw?setStore('yw',yw,'local'):setStore('yw','','local');
 		new Swiper('.swiper-container-4', {
 			slidesPerView: 2.5,
 			spaceBetween: 30,

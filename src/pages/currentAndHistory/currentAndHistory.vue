@@ -81,7 +81,7 @@
             <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore" class="loadmore">
 
                 <ul class="myUl">
-                    <li v-for="item in comments" class="subList">
+                    <li v-for="(item,index) in comments" class="subList" :key="index">
                         <div class="image">
                             <img :src="item.avatar ? item.avatar:defaultImg">
                         </div>
@@ -106,7 +106,7 @@
                    <span>评论</span>
                 </div>
             </div>
-            <a @click="$router.push('/buy')" class="buyGoldLink" id="click_btn">立即买入</a>
+            <a class="buyGoldLink">立即买入</a>
         </section>
 
          <!--添加评论部分-->
@@ -1168,7 +1168,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     .buyGoldLink{
         height:.98rem;
         width:5.02rem;
-        background-color: #F2B643;
+        background-color: #ecd8b0;
         text-align: center;
         line-height: .98rem;
         font-size:.34rem;

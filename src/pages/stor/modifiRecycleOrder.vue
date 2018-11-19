@@ -102,7 +102,7 @@
 		<div class="submit_buyBack_order" @click="submitBuyBackOrder">
 			<div>提交</div>
 		</div>
-		<mt-popup position="bottom"  closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
+		<mt-popup position="bottom"  :closeOnClickModal="false" v-model="popupVisible" class="mint-popup-bottom">
 			<!-- 黄金品牌选择 -->
 			<div class="brand_box" v-if="popInputType=='brand_frame'">
 				<section class="brandItem" v-for="(item,index) in brandArray" @click="brandCheck(item)" :key="index">{{item | brandTran}}</section>
@@ -115,7 +115,6 @@
 				<section class="gramItem">
 					<p class="gram_title"><span>黄金克重</span><span class="gram_confirm" @click="close_pop">确定</span></p>
 					<ruler class="ruler"></ruler>
-					<p style="width:100%;color:#E1E1E1;font-size:.24rem;text-align:center;position:absolute;bottom: 20%;">左右滑动选择克重</p>
 					<div class="gram_tip" v-show="weight_show">小于10克，需要承担运保费</div>
 				</section>
 			</div>
@@ -126,10 +125,10 @@
 	import headTop from '@/components/header/head.vue'
 	import ruler from '@/components/ruler/ruler.vue'
 	import { clearNoNum } from '../../config/mUtils.js'
-	import { queryRecycleProduct,queryRecycleOrderDetail,updateRecycleOrder,xmlUploadImg,withDrawMax,queryMyProfil,queryChildDictionary,queryBankCard } from '@/service/getData.js'
+	import { queryRecycleProduct,queryRecycleOrderDetail,updateRecycleOrder,withDrawMax,queryMyProfil,queryChildDictionary,queryBankCard,getpolicy,uploadimg } from '@/service/getData.js'
 	import { mapState,mapMutations } from 'vuex'
 	import { MessageBox, Toast, Indicator,Popup } from 'mint-ui'
-	import { getRem,openAPI,checkAndroAgent,iosVersion } from "@/config/mUtils"
+	import { getRem,openAPI,checkAndroAgent,iosVersion,bucketName } from "@/config/mUtils"
 	import '../../config/ruler.js'
 	export default{
 		data () {
@@ -175,7 +174,6 @@
 				         files: [], // 文件缓存（上传图片）
       			         index: 0, // 序列号 可记录一共上传了多少张
       			   	 maxLength: 9, // 图片最大数量
-						apiUrl: openAPI()+'/v3/recycleOrder/uploadRecyclePic2',
 					    canAdd: true, //添加图片加号是否显示
 						   url: '',//重新选择idCard图片的地址
 					  btn_lock: '',//频繁操作开关
@@ -264,7 +262,8 @@
 			},
 			formatWeight(val){
 				if((!val && Number(val)!=0) || val==null) return;
-				return Number(val).toFixed(1)
+				// return Number(val).toFixed(1)
+				return val
 			},
 			brandTran: function(val){
 				let brandStrArray = ['周大福','老凤祥','菜百','周生生','周大生','老庙','中国黄金','山东黄金','中金']
@@ -304,8 +303,8 @@
 					this.RECORD_USERINFO(res.content)
 					this.realnamed=res.content.realnamed
 					if(this.userInfo){
-							this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
-						}
+						// this.userInfo.isHandheldIDphoto==1?this.hasUploadPhoto=0:this.hasUploadPhoto=1
+					}
 				}
 			},
 			//通过银行卡号获取银行卡名称和logo
@@ -368,19 +367,57 @@
 				Indicator.open();
 				var _this=this;
 				var targetFile = e.target.files[0];
+				let item = {
+					name: e.target.files[0].name,
+					size: e.target.files[0].size,
+					file: e.target.files[0],
+				}
 				var reader = new FileReader();
 				reader.readAsDataURL(e.target.files[0]);
 				reader.onload = function(evt) {
 					Indicator.close();
 					_this.photo=evt.target.result;
-					_this.uploadRecyclePic(evt.target.result,targetFile);
+					_this.getpolicy2(reader,item)
                 }
 			},
-			//图片上传
-			uploadRecyclePic(value,value2) {
-				//参数一表示vue实例，参数二表示base64格式的图片，参数三表示方法，参数四表示mint-ui的加载的动画，参数五是Toast提示，参数六是缩小的比例,参数七表示订单数组的索引值，参数八表示选中的图片文件
- 				xmlUploadImg(this,value,'',Indicator,Toast,'','',value2)
-            },
+			//获取上传图片凭证
+			async getpolicy2(reader,item){
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format2(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Toast('获取参数失败');
+				}
+			},
+			//图片处理
+			format2(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+				let fd = new FormData();
+				fd.append('name',item.name)
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name)
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+				fd.append('file',item.file)
+				that.uploadImage2(fd,item,uuid,random);
+			},
+			//上传图片接口(新-oss)
+			async uploadImage2(val,item,uuid,random){
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.url=netimgurl;
+				this.order.idPic=netimgurl;
+				Indicator.close()
+				Toast({
+					message:'上传成功',
+					duration: 800,
+				});
+			},
 			//选择是否变现
 			checkCash(val){
 				if(val==0){
@@ -502,7 +539,15 @@
 			},
 			//关闭弹框
 			close_pop(){
-				this.popupVisible=false
+				if(this.order.applyWeight==''){
+					alert('请输入克重')
+				}else if(this.order.applyWeight.match(/^\d*\.$/)){
+					var plu_0 = this.order.applyWeight.split('.')[0];
+					this.$store.commit('set_rulerData', plu_0);
+					this.popupVisible=false
+				}else{
+					this.popupVisible=false
+				}
 			},
 			//品牌选择
 			brandCheck(val){
@@ -572,12 +617,12 @@
         				position: 'bottom',
             		})
 					return
-            	}else if( this.hasUploadPhoto && this.photo=='' && this.url==''){
-            		Toast({
-            			message: '请上传手持身份证',
-            			position: 'bottom',
-            		})
-					return
+            	// }else if( this.hasUploadPhoto && this.photo=='' && this.url==''){
+            	// 	Toast({
+            	// 		message: '请上传手持身份证',
+            	// 		position: 'bottom',
+            	// 	})
+				// 	return
             	}else if(this.bg==false){
             		Toast({
             			message: '请同意存金服务协议',
@@ -641,7 +686,7 @@
             	var res=await queryRecycleOrderDetail(this.$route.query.id)
             	if(res.code==100){
             		this.order.checkType=res.content.productName
-            		this.order.applyWeight=res.content.applyWeight
+            		this.order.applyWeight=res.content.applyWeight+''
 					this.order.brandType=res.content.brandType
 					//如果是自定义的品牌，就将brandType的值赋值成brandName的值
 					if(this.order.brandType==10 && res.content.brandName){
@@ -663,7 +708,7 @@
 					this.order.id=res.content.id
 					this.order.isCash=res.content.isCash
 					this.order.productId=res.content.productId
-					this.order.applyWeight=res.content.applyWeight
+					this.order.applyWeight=res.content.applyWeight+''
 					this.set_initRulerData(this.order.applyWeight)
 					this.order.productName=res.content.productName
 					//初始化brandArray
@@ -714,83 +759,60 @@
 							this.order.images.push(item.src)
 						}
 						if(this.files.length==len){
-							this.submit()
+							this.getpolicy(reader,item)
 						}
 					}
 					reader.readAsDataURL(fileList[i])
-
 				  }
-    		},
-    		// 上传图片
-    		submit () {
-				Indicator.open();
-        		var dataURLToBlob=function(url){
-                	var arr=url.split(','),mime=arr[0].match(/:(.*?);/)[1],
-                	bstr=atob(arr[1]),n=bstr.length,u8arr=new Uint8Array(n);
-                	while(n--){
-                    	u8arr[n]=bstr.charCodeAt(n);
-                	}
-                	return new Blob([u8arr],{type:mime});
-				}  //base64转换成二进制文件
-				let formData = new FormData()
-        		this.files.forEach((item, index) => {
-          			var img_size=item.size
-					var img = new Image,
-					canvas = document.createElement("canvas"),
-					ctx = canvas.getContext("2d");
-					img.crossOrigin = "Anonymous";
-					img.src = item.src
-					if(this.AndroVerson>4||this.iosVerson>10){
-						img.onload =() => {
-							var width = img.width;
-							var height = img.height;
-							// 最大上传不得查过500k
-							var rate = (img_size/(1024*500)).toFixed(1)
-							if(rate*1>1){
-								var real_rate = (width<height ? width/height : height/width)/rate;
-								canvas.width = width*real_rate;
-								canvas.height = height*real_rate;
-								ctx.drawImage(img,0,0,width,height,0,0,width*real_rate,height*real_rate);
-								var src1 = canvas.toDataURL("image/jpg");
-								var blob=dataURLToBlob(src1)
-								formData.append('files', blob,'image.jpg')
-							}else{
-								formData.append('files', item.file)
-							}
-							if(index==(this.files.length-1)){ //formdata已创建完
-								xhr_send(this)
-							} 
-						}
-					}else{
-						formData.append('files', item.file)
-						if(index==(this.files.length-1)){ //formdata已创建完
-							xhr_send(this)
-						}
-					}
-				})
-				var xhr_send=(val)=>{
-					// 新建请求
-					const xhr = new XMLHttpRequest()
-					xhr.open('POST', val.apiUrl, true)
-					xhr.send(formData)
-					xhr.onload = () => {
-						if (xhr.status === 200 || xhr.status === 304) {
-							let datas = JSON.parse(xhr.responseText)
-							if(datas.code==100){
-							// 存储返回的地址
-								datas.content.forEach((item)=> {
-									val.order.picUrls.push(item)
-									val.files = [] // 清空文件缓存
-									Indicator.close()
-								})
-							} else {
-								val.$toast('请求错误')
-								Indicator.close()
-							}
-						}
-					}
+			},
+			//获取上传图片凭证
+			async getpolicy(reader,item){
+				Indicator.open('上传中...')
+				const res = await getpolicy();
+				if(res.code=='000000'){
+					this.param_policy=res.data
+					this.format(reader,item)//图片处理（压缩或者不压缩）
+				}else{
+					Toast('获取参数失败');
 				}
-    		},
+			},
+			//图片处理
+			format(reader,item){
+				const uuidv1 = require('uuid/v1');
+				var that = this,
+					uuid = uuidv1(),
+					random = Math.random().toString(36).substr(2);
+				let fd = new FormData();
+				fd.append('name',item.name);
+				fd.append('key',this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name);
+				fd.append('policy',this.param_policy.policy)
+				fd.append('OSSAccessKeyId',this.param_policy.accessKeyId)
+				fd.append('signature',this.param_policy.signature)
+				fd.append('success_action_status','200')
+				fd.append('file',item.file);
+				that.uploadImage(fd,item,uuid,random);
+				// var img_size=item.size
+				// if(img_size/1024/1024>3){
+				// 	//进行压缩
+				// 	compress(reader,img_size,item,that,uuid)
+				// }else{
+				// 	fd.append('file',item.file);//lic[0]如果获取不到文件，就用e.target.files[0]
+				// 	// that.upload(formData);//图片上传接口(旧的)
+				// 	that.uploadImage(fd,item,uuid);
+				// }
+			},
+			//上传图片接口(新-oss)
+			async uploadImage(val,item,uuid,random){
+				const res = await uploadimg(val);
+				var netimgurl = bucketName()+'.'+'oss-cn-beijing.aliyuncs.com/'+this.param_policy.dir+'/'+random+'-'+uuid+'-'+item.name;
+				this.order.picUrls.push(netimgurl)
+				this.files = [] // 清空文件缓存
+				Indicator.close()
+				Toast({
+					message:'上传成功',
+					duration: 800,
+				});
+			},
 		},
 		activated: function () {
 			
@@ -976,20 +998,17 @@
 }
 .item_row_2>span:first-child,item_row_3>span:first-child{
 	float: left;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
 }
 .item_row_2>span:nth-child(2){
     float: right;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
     padding-right: .4rem;
 }
 .item_row_3>span:nth-child(2){
 	float: right;
-    display: inline-block;
     height: 1.1rem;
     line-height: 1.1rem;
     padding-right: .4rem;
@@ -1073,21 +1092,19 @@ width: 100%;
 	border-radius: 0;
 }
 .gram_tip{
-    width: 100%;
+	width: 100%;
     height: .5rem;
     line-height: .5rem;
     font-size: .22rem;
     color: #FF6D39;
     text-align: left;
-    background-image: url(../../images/gantanhao.png);
-	background-position: 2.1rem .1rem;
-    background-repeat: no-repeat;
-    background-size: .27rem;
-    padding-left: .45rem;
-    margin-top: .15rem;
-    position: absolute;
-    text-align: center;
-    bottom: 7%;
+    padding-left: .84rem;
+    margin-top: 2.4rem;
+    text-align: left;
+    /* background-image: url(../../images/gantanhao.png); */
+	/* background-position: 2.1rem .1rem; */
+    /* background-repeat: no-repeat; */
+    /* background-size: .27rem; */
 }
 /*弹出的输入层*/
 .stor_box{
@@ -1163,13 +1180,13 @@ width: 100%;
 }
 .gramItem{
 	width: 100%;
-	height: 5.5rem;
+	/* height: 5.5rem; */
+	height: 4.3rem;
 	background-color: #ffffff;
 	position: relative;
 }
 .confirm{
 	float: right;
-	display: inline-block;
 	width: .8rem;
 	height: .5rem;
 	line-height: .5rem;
@@ -1225,7 +1242,6 @@ width: 100%;
 }
 .title>span:nth-child(2){
 	float: right;
-	display: inline-block;
 	width: 25%;
 	height: 1rem;
 	line-height: 1rem;
@@ -1239,13 +1255,11 @@ width: 100%;
 	background-color: #ffffff;
 }
 .addr_left{
-	display: inline-block;
 	width: 94%;
 	height: 1.4rem;
 	float: left;
 }
 .addr_right{
-	display: inline-block;
 	width: 6%;
 	height: 1.4rem;
 	float: left;

@@ -12,6 +12,7 @@ const coupon = r => require.ensure([], () => r(require('../pages/buy/children/co
 const makePrice = r => require.ensure([], () => r(require('../pages/buy/children/makePrice.vue')), 'makePrice')
 
 const arg = r => require.ensure([], () => r(require('../pages/arguments/arg.vue')), 'arg')
+const arg2 = r => require.ensure([], () => r(require('../pages/arguments/arg2.vue')), 'arg2')
 const physicalArg = r => require.ensure([], () => r(require('../pages/arguments/physicalArg.vue')), 'physicalArg')
 
 const stor = r => require.ensure([], () => r(require('../pages/stor/stor.vue')), 'stor')
@@ -19,6 +20,8 @@ const storResult = r => require.ensure([], () => r(require('../pages/stor/storRe
 const storOrder = r => require.ensure([], () => r(require('../pages/storOrder/storOrder.vue')), 'storOrder')
 const storArg = r => require.ensure([], () => r(require('../pages/arguments/storArg.vue')), 'storArg')
 const storOrderDet = r => require.ensure([], () => r(require('../pages/storOrder/storOrderDet.vue')), 'storOrderDet')
+const report = r => require.ensure([], () => r(require('../pages/storOrder/report.vue')), 'report')
+
 const buyResult = r => require.ensure([], () => r(require('../pages/buy/buyResult.vue')), 'buyResult')
 const receiveCard = r => require.ensure([], () => r(require('../pages/buy/receiveCard.vue')), 'receiveCard')
 const storAddress = r => require.ensure([], () => r(require('../pages/stor/storAddress.vue')), 'storAddress')
@@ -292,8 +295,12 @@ export default [{
                 },
         },
         {
-            path: '/arguments', //黄金管家服务协议
+            path: '/arg', //黄金管家服务协议
             component: arg
+        },
+        {
+            path: '/arg2', //黄金管家服务协议
+            component: arg2
         },
         {
             path: '/physicalArg', //黄金管家提金服务协议
@@ -574,6 +581,10 @@ export default [{
         {
             path: '/rechargeResult',//充值结果
             component: rechargeResult
+        },
+        {
+            path: '/report',//检测报告
+            component: report,
         }
     ]
 }];

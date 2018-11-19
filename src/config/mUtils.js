@@ -9,6 +9,18 @@ export function openAPI(){
     return API
 }
 
+//hjgj-oss-api-bucketName
+export function bucketName(){
+    const herf = window.location.href;
+    var bucketName = '';
+    if(herf.search('test')>0){
+        bucketName='https://au32-cjt-p-test';//测试
+    }else{
+        bucketName='https://au32-cjt-p';//正式
+    }
+    return bucketName
+}
+
 /**
  * 测试网址和生产网址切换
  * 
@@ -377,4 +389,17 @@ export function check(){
         browserType = "SAFARI"
     }
     return browserType
+}
+
+/*
+* 匹配数字
+*/
+export function isNumber(a){
+    if(typeof a == 'number'){
+        a = a+''
+    }
+    // var reg = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i;
+    var reg = /[0-9]+/g;
+    var str = a.match(reg);
+    return str
 }

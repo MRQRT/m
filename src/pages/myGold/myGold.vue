@@ -28,7 +28,7 @@
 			</div>
 			<div class="myGoldFooter">
 				<mt-button type="default" class="myGold_button" @click="sell_buy('sellgold')">卖出</mt-button>
-				<mt-button type="default" class="myGold_button2" @click="sell_buy('buygold')">买入</mt-button>
+				<mt-button type="default" class="myGold_button2" :class="{'unable_click':unable==true}" @click="sell_buy('buygold')">买入</mt-button>
 			</div>
 		</div>
 		<!--成本均价-->
@@ -103,7 +103,8 @@
 			  goldRateData: null,//年化生金率数组
 		 averagePrivePupUp: false,//成本均价弹窗
 		        accumulate: false,//累计收益弹框
-		         firstShow: true,//我的黄金页面显示控制
+				 firstShow: true,//我的黄金页面显示控制
+				    unable: false,//控制买入按钮不可点击的开关
 			}
 		},
 		created: function(){
@@ -113,7 +114,11 @@
             this.token ? this.userInforma() : '';//获取用户信息
             this.token ? this.floatingAverage() : ''//成本均价和浮动盈亏
             this.token ? this.queryAllInterest() : ''//累计收取克重
-            this.token ? this.queryRate() : ''//查询利息图表
+			this.token ? this.queryRate() : ''//查询利息图表
+			var s = Date.parse('10/20/2018');
+            var nowdate = new Date();
+            var d = Date.parse(nowdate);//当前时间
+            (d>=s)?this.unable=true:''
 		},
 		computed: {
 			...mapState([
@@ -188,7 +193,14 @@
 				}
 			},
 			sell_buy(value){
-				(value=='sellgold')?this.$router.push({path: '/sell'}):this.$router.push({path: '/buyProductDetail'})
+				if(value=='sellgold'){
+					this.$router.push({path: '/sell'})
+				}else{
+					var s = Date.parse('10/20/2018');
+					var nowdate = new Date();
+					var d = Date.parse(nowdate);//当前时间
+					(d<s)?this.$router.push('/buyProductDetail'):this.unable=true
+				}
 			},
 			//获取用户信息
 			async userInforma(){
@@ -565,7 +577,6 @@
     position: absolute;
 }
 .myGold_button2{
-	display: inline-block;
 	float: left;
 	color: #ffffff;
     background-color: #ff6d39;
@@ -574,6 +585,9 @@
     width: 50%;
     height: .9rem;
     font-size: .34rem;
+}
+.unable_click{
+	background-color: #f5ab91;
 }
 .myGold_button2::after {
     background-color: #e03e05;
