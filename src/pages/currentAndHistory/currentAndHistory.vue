@@ -46,7 +46,7 @@
                 <div class="joinPerson">
                     <div class="joinTitle">本周行情大家看</div>
                     <div class="personCount">参与人数:<span>{{total}}</span></div>
-                </div> 
+                </div>
                 <!--看涨看跌详情-->
                 <div class="vote">
                     <div class="goUp">
@@ -95,7 +95,7 @@
                 </ul>
 
             </mt-loadmore>
-            
+
         </section>
 
         <!-- 底部 -->
@@ -108,7 +108,7 @@
             </div>
             <a @click="$router.push('/buy')" class="buyGoldLink" id="click_btn">立即买入</a>
         </section>
-        
+
          <!--添加评论部分-->
          <section class="comment_box">
 
@@ -116,11 +116,11 @@
                 <span class="cancel" @click="cancel">取消</span>
                 <h2>写评论</h2>
                 <span class="publish" @click="publish">发送</span>
-                
+
             </section>
             <textarea id="content" class="textareac" placeholder="说说你的想法..." v-model="myContent"></textarea>
         </section>
-        
+
         <!--遮罩背景-->
         <section class="comment_mask" id="comment_mask"></section>
         </div>
@@ -198,6 +198,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
             }
         },
         mounted() {
+			console.log(highCharts)
           this.initEchart1();
           this.screenRotate() //屏幕旋转添加事件
 		},
@@ -223,7 +224,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
             //返回上一页
             goBack(){
                 window.toApp()
-                this.$router.go(-1)   
+                this.$router.go(-1)
 
             },
             //请求实时金价
@@ -520,7 +521,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
                     this.selectedFlag1=false;
                     this.selectedFlag2=true;
                     this.selectedFlag3=false;
-                    this.initEchart2(-12); 
+                    this.initEchart2(-12);
                 }
             },
             //评论之前先判断有没有登入
@@ -785,10 +786,10 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
         -moz-animation: rightToleft 0.4s linear;
         -o-animation: rightToleft 0.4s linear;
         -webkit-animation: rightToleft 0.4s linear;
-        animation-fill-mode:forwards; 
-        -webkit-animation-fill-mode:forwards; 
-        -o-animation-fill-mode:forwards; 
-        -moz-animation-fill-mode:forwards; 
+        animation-fill-mode:forwards;
+        -webkit-animation-fill-mode:forwards;
+        -o-animation-fill-mode:forwards;
+        -moz-animation-fill-mode:forwards;
     }
     .currentClass{
         color:#eda835;
@@ -813,7 +814,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
         font-weight: bold;
     }
     #currentPrice-container1 .unit{
-        font-size:.22rem; 
+        font-size:.22rem;
         color:#A5A5A5;
     }
     /*折线图*/
@@ -824,7 +825,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     .toggleBtn{
         height:0.62rem;
         width:5.38rem;
-        background-color:#F5F5F5; 
+        background-color:#F5F5F5;
         border-radius:0.31rem;
         -webkit-border-radius:0.31rem;
         -moz-border-radius:0.31rem;
@@ -845,7 +846,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     }
     .noSelectedStyle{
         color:#000;
-        background-color:#F5F5F5; 
+        background-color:#F5F5F5;
         border-radius: 0.31rem;
         -webkit-border-radius:0.31rem;
         -moz-border-radius:0.31rem;
@@ -853,7 +854,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     }
     .selectedStyle{
         color:#fff;
-        background-color:#F2B643; 
+        background-color:#F2B643;
         border-radius: 0.31rem;
         -webkit-border-radius:0.31rem;
         -moz-border-radius:0.31rem;
@@ -951,7 +952,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     }
     .voteSign1.addAnimate,.voteSign2.addAnimate{
         animation:fadeInAndOut 1s linear;
-        animation-fill-mode:forwards; 
+        animation-fill-mode:forwards;
     }
     /*比例条*/
     .ratioBar{
@@ -971,11 +972,11 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
         height: .3rem;
         line-height: .28rem;
         border-radius: 50%;
-        -moz-border-radius: 50%; 
-        -o-border-radius: 50%; 
-        -webkit-border-radius: 50%; 
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        -webkit-border-radius: 50%;
         background-color: #fd9d0f;
-        font-size: 13px; 
+        font-size: 13px;
         font-weight: bold;
         color:#fff;
         text-align: center;
@@ -1022,7 +1023,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
     }
     .voteBtn .goUpBtn.votedStyle,.voteBtn .goDownBtn.votedStyle{
         border: none;
-        background-color:#B6B6B6; 
+        background-color:#B6B6B6;
         color:#fff;
     }
     /*评论信息*/
@@ -1087,7 +1088,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
         width:0.24rem;
         height:0.24rem;
         background:url(../../images/dianzan.png);
-        background-size:100%; 
+        background-size:100%;
         position:absolute;
         left:-0.36rem;
         top:0rem;
@@ -1184,7 +1185,7 @@ import { queryPriceTo24h,queryClosePriceToDay,getCommentList,getUpDown,userCmt,i
         font-size:.4rem;
         color:#000000;
         border-bottom:1px solid #EEEEEE;
-    } 
+    }
     .priceOrigin .originContent{
         padding-top:.42rem;
         color:#666666;
