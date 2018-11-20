@@ -105,8 +105,8 @@
         <span>福利券<b @click="showCoupon()"></b></span>
         <span class="no-use" v-if="orderDetail.status==1 || orderDetail.status==5 ||orderDetail.status==9 || orderDetail.status==10">未使用</span>
         <span class="no-use" v-else-if="(orderDetail.status==6 || orderDetail.status==8) && couponAmount===''">未使用</span>
-        <span class="price" v-else-if="(orderDetail.status==6 || orderDetail.status==8) && couponAmount!=''">{{couponAmount}}元</span>
-        <span v-else>订单成交时，系统自动匹配</span>
+        <span class="price" v-else-if="(orderDetail.status==6 || orderDetail.status==8) && couponAmount!=''">¥{{couponAmount}}</span>
+        <span v-else>存金检验环节，系统将按照您的实测毛重自动匹配</span>
     </div>
     <div class="distance"></div>
     <!--存金信息-->
@@ -161,7 +161,7 @@
            <p>检测结果：{{orderDetail.verifyResult==0?'通过':'不通过'}}</p>
            <img :src="checkImg">
            <!-- 福利券 -->
-           <div class="popup-welfare">
+           <!-- <div class="popup-welfare">
                <h4>福利券</h4>
                <p class="sub-title">确认订单后生效</p>
                <div class="bottom-img">
@@ -175,7 +175,7 @@
                        <p>*仅限存金回购业务使用</p>
                    </div>
                </div>
-           </div>
+           </div> -->
            <!-- 操作按钮 -->
            <div class="report_btns">
                <p style="border-right:1px solid #EEEEEE;" @click="confirmStor" :class="{'hasConfirm':orderDetail.status==8}" v-if="orderDetail.status==6 || orderDetail.status==8">{{orderDetail.status==8?'已确认':'确认订单'}}</p>
@@ -211,6 +211,7 @@
   export default{
     data(){
       return {
+        couponAmount:38,//福利券金额
         orderId: null,//存金订单Id
         stateShow:false,//状态默认不显示(延迟渲染)
         orderDetail:{},//存金订单
@@ -253,9 +254,6 @@
         checkImg:null,//检测报告图片
         comfirmLimit:true,//确认按钮避免重复提交
         cashAmount:null,//提现金额
-        couponAmount:'',//福利券金额
-        couponLimit:'', //福利券最小克重
-        couponTime:'2018-10-25 12:12:12', //福利券有效期
       }
     },
     mounted(){
@@ -388,7 +386,7 @@
     methods: {
         // 点击问号显示福利券说明
         showCoupon(){
-            var html = '<div style="font-size:.26rem;text-align:left;color:#333;padding-left:.2rem">系统已根据存金检验结果自动为您匹配最优福利券。</div><div style="font-size:.26rem;text-align:left;color:#333;padding-left:.2rem">福利券会在卖金时为您加价。</div>'
+            var html = '<div style="font-size:.26rem;text-align:left;color:#333;padding-left:.2rem">系统将会根据存金检验结果自动为您匹配最优福利券，当您确认检测报告时，福利金额将会发放到您的银行卡中或黄金管家账户余额。</div>'
             MessageBox({
               title: '提示',
               message:html ,
@@ -413,8 +411,6 @@
           this.isCash=res.content.isCash
           if(res.content.couponAmount){ //福利券金额
             this.couponAmount = res.content.couponAmount;
-            this.couponLimit = res.content.couponUseLimit;
-            this.couponTime = res.content.couponExpireTime;
           }
           if(this.isCash==4) this.cashAmount=res.content.cashAmount
           var arrDocument=res.content.recycleDocumentVos;
@@ -877,6 +873,7 @@
    }
    .welfare>span:nth-of-type(2){
        color: #999;
+       font-size: .11rem;
    }
    .welfare .price{
        color: #EDA835 !important;

@@ -8,10 +8,11 @@
             <p><span>实测净重：</span><span>{{orderDetail.realNetWeight || '--'}}克</span></p>
             <!-- <p>克重损耗：{{orderDetail.realLoss || ''}}克</p> -->
 
-            <p v-if="orderDetail.isCash==1"><span>回收金价：</span><span>{{orderDetail.realPrice || '--'}}元/克</span></p> 
+            <p v-if="orderDetail.isCash==1"><span>回收金价：</span><span>{{orderDetail.realPrice || '--'}}元/克</span></p>
             <p><span>产品成色：</span><span>{{orderDetail.productCondition | com }}‰</span></p>
-            
+
             <p v-if="orderDetail.isCash==1&&orderDetail.sellAmount&&orderDetail.welfare"><span>卖金总额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
+            <p v-if="orderDetail.couponAmount"><span>福利金额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.welfare"><span>减免金额：</span><span>{{orderDetail.welfare || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.receiveAmount"><span>回收总额：</span><span style="color:#EDA835;">{{orderDetail.receiveAmount || '--'}}元</span></p>
 
@@ -23,7 +24,28 @@
             <p><span>检测时间：</span><span>{{orderDetail.verifyTime || '--'}}</span></p>
             <p><span>检测说明：</span><span>{{orderDetail.verifyRemark || '--'}}</span></p>
             <p><span>检测结果：</span><span>{{orderDetail.verifyResult==0?'通过':'不通过'}}</span></p>
+
+            <div class="warming-tip" v-show="!isApp && orderDetail.couponAmount">* 温馨提示：若您的存金方式为直接变现，福利金额将会在您确认检测报告后连同卖金总额一起发放到您的银行卡中，若您的存金方式为存入克重，福利金额将会发放到您的黄金管家账户余额中。</div>
+
             <img :src="checkImg" alt="检测报告" preview="1">
+
+            <!-- 福利券(使用了福利券才显示) -->
+            <div class="popup-welfare" v-if="!orderDetail.couponAmount">
+                <h4>福利券</h4>
+                <p class="sub-title">确认订单后生效</p>
+                <div class="bottom-img">
+                    <div class="left-price">
+                        <p class="price"><span>¥</span>{{orderDetail.couponAmount || '00'}}</p>
+                        <p class="name">福利券</p>
+                    </div>
+                    <div class="right-info">
+                        <p>存金实测毛重≥{{parseFloat(orderDetail.couponLimit)}}g</p>
+                        <p>有效期至{{orderDetail.couponTime}}</p>
+                        <!-- <p>*仅限存金回购业务使用</p> -->
+                    </div>
+                </div>
+            </div>
+
             <div class="report_btns">
                 <p @click="confirmStor" :class="{'hasConfirm':orderDetail.status==8}" v-if="orderDetail.status==6 || orderDetail.status==8">{{orderDetail.status==8?'已确认':'确认订单'}}</p>
                 <p @click="tele" :class="{'contact':orderDetail.status!=6 && orderDetail.status!=8}">联系客服</p>
@@ -33,12 +55,12 @@
         <mt-popup v-model="popupVisible" popup-transition="popup-fade" :closeOnClickModal="false">
             <div class="confirmbox" v-show="awa">
                <p class="sign cir"><img class="infi_cir" src="../../images/cir.png" alt=""></p>
-               <p class="wait">订单确认中，请稍后...</p> 
+               <p class="wait">订单确认中，请稍后...</p>
                <p class="con_explain">确认成功后将自动跳转至订单详情页</p>
             </div>
             <div class="confirmbox" v-show="fail">
                <p class="sign"><img src="../../images/sign.png" alt=""></p>
-               <p class="wait">订单确认失败</p> 
+               <p class="wait">订单确认失败</p>
                <p class="fail_button"><span @click="cancel">取消</span><span @click="re_confirm">重试</span></p>
             </div>
         </mt-popup>
@@ -46,13 +68,14 @@
     </div>
 </template>
 <script>
-import {queryRecycleOrderDetail, confirmationResult} from '@/service/getData.js' 
+import {queryRecycleOrderDetail, confirmationResult} from '@/service/getData.js'
 import headTop from '@/components/header/head.vue'
 import banner from '@/images/banner.png'
 
 export default{
     data(){
         return{
+            isApp:false,//是否是在App内
             orderId:'',//存金订单
             orderDetail:{},//存金订单
             checkImg:null,//检测报告图片
@@ -65,6 +88,9 @@ export default{
     mounted(){
         this.orderId = this.$route.query.id
         this.orderDet();
+        if(window.isApp()){
+            this.isApp = true;
+        }
     },
     computed:{
 
@@ -76,6 +102,18 @@ export default{
             }else{
                 return '--'
             }
+        },
+        /* 改变时间样式(月-日 时-分) */
+        changeTime(val){
+            var arr=val.split(' ');
+
+            var timeArr1=arr[0].split('-');
+            timeArr1=timeArr1.join('-');
+
+            var timeArr2=arr[1].split(':');
+            timeArr2.pop();
+            timeArr2=timeArr2.join(':');
+            return timeArr1;
         }
     },
     methods:{
@@ -152,7 +190,7 @@ export default{
     components:{
         headTop
     }
-}   
+}
 </script>
 <style type="text/css" scoped>
 .report{
@@ -193,6 +231,12 @@ export default{
     display: block;
     margin-top:.32rem;
 }
+.warming-tip{
+    color: #333;
+    font-size: .22rem;
+    font-family: PingFangSC-Light;
+    padding:.2rem .4rem 0;
+}
 .report_btns{
     height:1.28rem;
     margin-top:.6rem;
@@ -216,6 +260,63 @@ export default{
 .report_btns p:nth-child(2){
     background-color: #EDA835;
     color: #fff;
+}
+.popup-welfare{
+    width: 100%;
+    text-align: center;
+    margin-top:.5rem;
+}
+.popup-welfare h4{
+    color: #333;
+    font-size: .32rem;
+    font-weight: bold;
+}
+.popup-welfare .sub-title{
+    padding-left: 0;
+}
+.popup-welfare p{
+    font-size: .22rem;
+    color: #999;
+}
+.popup-welfare .bottom-img{
+    width: 100%;
+    height: 2.3rem;
+    padding:.7rem .8rem 0;
+    background: url('../../images/popup-wel.png') no-repeat;
+    background-size:100%;
+    display: flex;
+}
+.bottom-img .left-price .price{
+    font-size: .7rem;
+    color: #EF3B20;
+    font-weight: 600;
+}
+.left-price .price span{
+    color: #EF3B20;
+    font-size: .26rem;
+}
+.bottom-img .left-price .name{
+    color: #666;
+    margin-top:-.1rem;
+}
+.bottom-img .right-info p{
+    text-align: left;
+    padding-left:.7rem;
+    padding-bottom: 0 !important;
+}
+.bottom-img .right-info>p:nth-of-type(1){
+    color: #333;
+    font-size: .3rem;
+    font-weight: 500;
+    margin-bottom: .2rem;
+}
+.bottom-img .right-info>p:nth-of-type(2){
+    color: #666;
+    font-size: .24rem;
+}
+.bottom-img .right-info>p:nth-of-type(3){
+    color: #EDA835;
+    font-size: .22rem;
 }
 .hasConfirm{
     color:#999999;
@@ -284,7 +385,7 @@ export default{
 }
 </style>
 <style type="text/css">
-.mint-popup{
+.report .mint-popup{
     width: 4.9rem;
     height: 3.1rem;
 }

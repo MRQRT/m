@@ -40,9 +40,9 @@
 					<div class="useStatus">
 						<div class="use-rightNow" v-if="item.status==0 && !invalid(item.expireTime)" @click="$router.push({path:'/stor',query:{from:'coupon'}})">立即使用</div>
 						<!-- 已使用 -->
-						<div class="cup-has-used" v-if="item.status==1 || item.status==2"></div>
+						<div class="cup-has-used" v-else-if="item.status==1 || item.status==2"></div>
 						<!-- 已失效 -->
-						<div class="cup-invalid" v-if="invalid(item.expireTime)"></div>
+						<div class="cup-invalid" v-else-if="invalid(item.expireTime)"></div>
 					</div>
 				</div>
 			</section>

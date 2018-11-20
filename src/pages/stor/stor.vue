@@ -26,17 +26,17 @@
 					<span><span style="color:#999999;" v-show="checkBrand">选填</span><span v-show="!checkBrand"  style="color:#333333;">{{order.brandType | brandTran}}</span></span>
 				</content>
 
-				<!-- 只在活动日期+10期间显示 -->
-				<!-- 无福利券或未登录情况下显示 -->
-				<div class="" v-if="welfareStatus">
-					<content class="item_row item_row_4" v-if="!token || !hasWelfare">
+				<!-- 福利券 -->
+				<div class="">
+					<!-- 无福利券或未登录情况下显示 -->
+					<content class="item_row item_row_4" v-if="!token || !hasWelfare || welfarePrice==''">
 						<span>福利券</span>
 						<span>暂无福利券可用</span>
 					</content>
 					<content class="item_row item_row_5" v-else>
 						<span>福利券</span>
 						<div class="has-coupon">
-							<p>{{welfareNum}}张福利券可用</p>
+							<p>¥{{welfarePrice}}福利券可用</p>
 							<p>以实测毛重自动匹配福利券</p>
 						</div>
 					</content>
@@ -199,7 +199,7 @@
 				this.coupons();
 			}
 			//根据活动时间判断是否显示福利券信息
-			this.showWelfare();
+			// this.showWelfare();
 		},
 		computed:{
 			...mapState({
@@ -208,7 +208,25 @@
 		   recycleParams: state => state.recycleParams,
 		   	   rulerData: state => state.rulerData,
 			  activityId: state => state.activityId,
-    		})
+		    }),
+			//根据输入克重显示可用福利券
+ 		   	welfarePrice(){
+ 			   var weight = this.order.applyWeight;
+ 			   if(weight>=200){
+ 				   return 748
+ 			   }else if(weight>=100){
+ 				   return 318
+ 			   }else if(weight>=50){
+ 				   return 108
+ 			   }else if(weight>=20){
+ 				   return 38
+ 			   }else if(weight>=10){
+ 				   return 18
+ 			   }else{
+ 				   return ''
+ 			   }
+ 		   },
+
 		},
 		watch:{
 			//监听品牌选择
@@ -313,23 +331,22 @@
 						this.hasWelfare = false;
 					}else{
 						this.hasWelfare = true;
-						this.welfareNum = res.content.usable.length;
 					}
 				}
 			},
 			// 控制福利券显示与隐藏
-			async showWelfare(){
-				var res = await activityInfo(this.activityId);
-				if(res.code==100){
-					var date1 = new Date(res.content.endTime.replace(/-/g,"/"));
-					var date2 = date1.setDate(date1.getDate() + 10);
-					if(Date.parse(new Date()) > date2){
-						this.welfareStatus =  false;
-					}else{
-						 this.welfareStatus = true;
-					}
-				}
-			},
+			// async showWelfare(){
+			// 	var res = await activityInfo(this.activityId);
+			// 	if(res.code==100){
+			// 		var date1 = new Date(res.content.endTime.replace(/-/g,"/"));
+			// 		var date2 = date1.setDate(date1.getDate() + 10);
+			// 		if(Date.parse(new Date()) > date2){
+			// 			this.welfareStatus =  false;
+			// 		}else{
+			// 			 this.welfareStatus = true;
+			// 		}
+			// 	}
+			// },
 			//投资金还是首饰
 			checkTypeFun(id, name, index){
 				this.order.productId = id
@@ -786,7 +803,7 @@
 }
 .item_row_4>span:nth-of-type(2){
 	float: right;
-	color: #999999;
+	color: #EDA835;
     height: 1.1rem;
     line-height: 1.1rem;
 }
