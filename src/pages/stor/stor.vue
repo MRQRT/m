@@ -214,16 +214,16 @@
  		   	welfarePrice(){
  			   var weight = this.order.applyWeight;
 			   var limitArr = this.couponLimitArr;
-
- 			   if(weight>=200 && limitArr.indexOf('200')!=-1){
+		
+ 			   if(weight>=200 && limitArr.indexOf(200)!=-1){
  				   return 748
- 			   }else if(weight>=100 && limitArr.indexOf('100')!=-1){
+ 			   }else if(weight>=100 && limitArr.indexOf(100)!=-1){
  				   return 318
- 			   }else if(weight>=50 && limitArr.indexOf('50')!=-1){
+ 			   }else if(weight>=50 && limitArr.indexOf(50)!=-1){
  				   return 108
- 			   }else if(weight>=20 && limitArr.indexOf('20')!=-1){
+ 			   }else if(weight>=20 && limitArr.indexOf(20)!=-1){
  				   return 38
- 			   }else if(weight>=10 && limitArr.indexOf('10')!=-1){
+ 			   }else if(weight>=10 && limitArr.indexOf(10)!=-1){
  				   return 18
  			   }else{
  				   return ''
