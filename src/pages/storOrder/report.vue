@@ -12,7 +12,7 @@
             <p><span>产品成色：</span><span>{{orderDetail.productCondition | com }}‰</span></p>
 
             <p v-if="orderDetail.isCash==1&&orderDetail.sellAmount&&orderDetail.welfare"><span>卖金总额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
-            <p v-if="orderDetail.couponAmount"><span>福利金额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
+            <p v-if="orderDetail.couponAmount"><span>福利金额：</span><span>{{orderDetail.couponAmount || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.welfare"><span>减免金额：</span><span>{{orderDetail.welfare || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.receiveAmount"><span>回收总额：</span><span style="color:#EDA835;">{{orderDetail.receiveAmount || '--'}}元</span></p>
 
@@ -30,17 +30,17 @@
             <img :src="checkImg" alt="检测报告" preview="1">
 
             <!-- 福利券(使用了福利券才显示) -->
-            <div class="popup-welfare" v-if="!orderDetail.couponAmount">
+            <div class="popup-welfare" v-if="orderDetail.couponAmount">
                 <h4>福利券</h4>
                 <p class="sub-title">确认订单后生效</p>
                 <div class="bottom-img">
                     <div class="left-price">
-                        <p class="price"><span>¥</span>{{orderDetail.couponAmount || '00'}}</p>
+                        <p class="price"><span>¥</span>{{orderDetail.couponAmount}}</p>
                         <p class="name">福利券</p>
                     </div>
                     <div class="right-info">
-                        <p>存金实测毛重≥{{parseFloat(orderDetail.couponLimit)}}g</p>
-                        <p>有效期至{{orderDetail.couponTime}}</p>
+                        <p>存金实测毛重≥{{parseFloat(orderDetail.couponUseLimit)}}g</p>
+                        <p>有效期至{{orderDetail.couponExpireTime | changeTime}}</p>
                         <!-- <p>*仅限存金回购业务使用</p> -->
                     </div>
                 </div>
