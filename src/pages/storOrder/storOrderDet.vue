@@ -211,7 +211,7 @@
   export default{
     data(){
       return {
-        couponAmount:38,//福利券金额
+        couponAmount:'',//福利券金额
         orderId: null,//存金订单Id
         stateShow:false,//状态默认不显示(延迟渲染)
         orderDetail:{},//存金订单
@@ -873,7 +873,7 @@
    }
    .welfare>span:nth-of-type(2){
        color: #999;
-       font-size: .11rem;
+       font-size: .22rem;
    }
    .welfare .price{
        color: #EDA835 !important;

@@ -130,6 +130,7 @@
 				hasWelfare:false,  //是否有可用福利券
 				welfareNum:'',     //可使用福利券张数
 				welfareStatus:true,//福利券是否展示
+				couponLimitArr:[], //可用福利券克重数组
 				  checkBrand: true,//黄金品牌是否选择 true没有选择 false选择
 				    canPhoto: false,//可以拍照
 		             noPhoto: true, //不可以拍照
@@ -212,15 +213,17 @@
 			//根据输入克重显示可用福利券
  		   	welfarePrice(){
  			   var weight = this.order.applyWeight;
- 			   if(weight>=200){
+			   var limitArr = this.couponLimitArr;
+
+ 			   if(weight>=200 && limitArr.indexOf('200')!=-1){
  				   return 748
- 			   }else if(weight>=100){
+ 			   }else if(weight>=100 && limitArr.indexOf('100')!=-1){
  				   return 318
- 			   }else if(weight>=50){
+ 			   }else if(weight>=50 && limitArr.indexOf('50')!=-1){
  				   return 108
- 			   }else if(weight>=20){
+ 			   }else if(weight>=20 && limitArr.indexOf('20')!=-1){
  				   return 38
- 			   }else if(weight>=10){
+ 			   }else if(weight>=10 && limitArr.indexOf('10')!=-1){
  				   return 18
  			   }else{
  				   return ''
@@ -325,12 +328,16 @@
 			},
 			// 福利券数量
 			async coupons(){
+				var that = this;
 				var res = await coupons(4);//4--交易类型为存金
 				if(res.code==100){
 					if(res.content.usable.length==0){
 						this.hasWelfare = false;
 					}else{
 						this.hasWelfare = true;
+						res.content.usable.forEach(item=>{
+							that.couponLimitArr.push(parseFloat(item.useLimit));
+						})
 					}
 				}
 			},
