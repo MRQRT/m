@@ -11,7 +11,7 @@
             <p v-if="orderDetail.isCash==1"><span>回收金价：</span><span>{{orderDetail.realPrice || '--'}}元/克</span></p>
             <p><span>产品成色：</span><span>{{orderDetail.productCondition | com }}‰</span></p>
 
-            <p v-if="orderDetail.isCash==1&&orderDetail.sellAmount&&orderDetail.welfare"><span>卖金总额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
+            <p v-if="orderDetail.isCash==1&&orderDetail.sellAmount&&(orderDetail.welfare||orderDetail.couponAmount)"><span>卖金总额：</span><span>{{orderDetail.sellAmount || '--'}}元</span></p>
             <p v-if="orderDetail.couponAmount"><span>福利金额：</span><span>{{orderDetail.couponAmount || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.welfare"><span>减免金额：</span><span>{{orderDetail.welfare || '--'}}元</span></p>
             <p v-if="orderDetail.isCash==1&&orderDetail.receiveAmount"><span>回收总额：</span><span style="color:#EDA835;">{{orderDetail.receiveAmount || '--'}}元</span></p>
