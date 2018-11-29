@@ -120,13 +120,14 @@
 			</div>
 		</mt-popup>
 		<!-- 克重大于10000克提示框 -->
-		<section class="cover">
+		<section class="cover" v-show="tips">
 			<div class="pop_message_box">
 				<p class="pop_title">提示</p>
-				<section class="pop_message">您输入的克重超过最大回收克重10000克，请重新输入回收克重，若您有更大需求请联系客服400-8196-196。</section>
+				<section class="pop_message">您输入的克重超过最大回收克重10000克，请重新输入回收克重，若您有更大需求请联系客服400-8196-199。</section>
+				<div class="line"></div>
 				<section class="pop_bottom">
-					<span class="pop_bottom_left">重试</span>
-					<span class="pop_bottom_right">联系客服</span>
+					<span class="pop_bottom_left" @click="rewrite">重试</span>
+					<span class="pop_bottom_right"><a href="tel:4008196199">联系客服</a></span>
 				</section>
 			</div>
 		</section>
@@ -185,6 +186,8 @@
 				 AndroVerson: checkAndroAgent(),
 				   iosVerson: iosVersion(),
 				greater_show: false,//输入克重大于10000克的提示信息开关
+				        tips: false,
+
  			}
 		},
 		created(){
@@ -419,6 +422,9 @@
 					this.popupVisible=false
 				}
 			},
+			rewrite(){
+				this.tips=false;
+			},
 			//关闭弹框
 			close_pop(){
 				if(this.order.applyWeight==''){
@@ -608,7 +614,7 @@
 					Toast('克重不能为0')
 					return
 				}else if(this.order.applyWeight>10000){
-					this.greater_show=true
+					this.tips=true
 					return
 				}else if( this.order.images.length==0 ){
 					Toast('至少上传一张存金图片')
@@ -1161,6 +1167,7 @@
 	color:#333;
 	line-height:.4rem;
 	padding:0 .25rem 0 .25rem;
+	margin-bottom: .31rem;
 }
 .pop_bottom{
 	width: 100%;
@@ -1176,5 +1183,20 @@
 	color:rgba(237,168,53,1);
 	line-height: .88rem;
 	text-align:center;
+}
+.pop_bottom_right>a{
+	color:rgba(237,168,53,1);
+}
+.pop_bottom:before{
+	content:'';
+	display: inline-block;
+	height: .88rem;
+	position: absolute;
+	right:50%;
+	top:0; 
+	border-right:1px solid #dddddd;
+    transform: scaleX(0.5);
+    transform-origin:0 0;
+    overflow: hidden;
 }
 </style>

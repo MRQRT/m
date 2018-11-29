@@ -146,3 +146,18 @@ html,body{
 .mint-msgbox-wrapper .mint-msgbox-confirm:active,.mint-msgbox-wrapper .mint-msgbox-cancel:active{
     color: #EDA835;
 }
+/*细线*/
+.line{
+    height:1px;
+    -webkit-transform: scaleY(0.5);
+    -webkit-transform-origin:0 0;
+    -o-transform: scaleY(0.5);
+    -o-transform-origin:0 0;
+    -moz-transform: scaleY(0.5);
+    -moz-transform-origin:0 0;
+    transform: scaleY(0.5);
+    transform-origin:0 0;
+    overflow: hidden;
+    background: #dddddd;
+    position: relative;
+}
