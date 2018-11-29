@@ -17,15 +17,21 @@
 					<span>黄金类型</span>
 					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType" :key="index">{{item.name}}</span>
 				</content>
-				<content class="item_row item_row_2" @click="checkGramFun()">
+				<content class="item_row item_row_2">
 					<span>黄金克重</span>
-					<span>{{order.applyWeight}}克</span>
+					<!-- <span>{{order.applyWeight}}克</span> -->
+					<span>克</span>
+					<input type="text" v-model="gram" class="input_gram">
 				</content>
+				<div v-show="gram<10" class="tip_gram_less">小于10克需承担运保费</div>
+				<div v-show="gram>10000" class="tip_gram_greater">
+					<p>最大输入克重为10000克</p>
+					<p>若您有更大需求请联系客服：400-8196-199</p>
+				</div>
 				<content class="item_row item_row_3" @click="checkBrandFun()">
 					<span>选择品牌</span>
 					<span><span style="color:#999999;" v-show="checkBrand">选填</span><span v-show="!checkBrand"  style="color:#333333;">{{order.brandType | brandTran}}</span></span>
 				</content>
-
 				<!-- 福利券 -->
 				<div class="">
 					<!-- 无福利券或未登录情况下显示 -->
@@ -113,6 +119,17 @@
 				</section>
 			</div>
 		</mt-popup>
+		<!-- 克重大于10000克提示框 -->
+		<section class="cover">
+			<div class="pop_message_box">
+				<p class="pop_title">提示</p>
+				<section class="pop_message">您输入的克重超过最大回收克重10000克，请重新输入回收克重，若您有更大需求请联系客服400-8196-196。</section>
+				<section class="pop_bottom">
+					<span class="pop_bottom_left">重试</span>
+					<span class="pop_bottom_right">联系客服</span>
+				</section>
+			</div>
+		</section>
 	</div>
 </template>
 <script type="text/javascript">
@@ -154,7 +171,8 @@
 						          images: [],//手机上选择图片的图片地址
 				                    urls: [],//存放上传后图片在服务器的地址
 							   brandName: '',//自定义品牌
-	   			 			 	},
+							},
+						gram:'10.0',//用户手动输入的克重值
 		         editOrderId: null, //需要重新填写的订单编号
 		       estimatePrice: null, //预估金价
 				screenHeight: document.documentElement.clientHeight,//记录高度值(这里是给到了一个默认值)
@@ -166,6 +184,7 @@
 					  canAdd: true, //添加图片加号是否显示
 				 AndroVerson: checkAndroAgent(),
 				   iosVerson: iosVersion(),
+				greater_show: false,//输入克重大于10000克的提示信息开关
  			}
 		},
 		created(){
@@ -246,6 +265,12 @@
 				this.order.applyWeight = val
 				Number(val)<10?this.weight_show=true:this.weight_show=false
 				this.orderChange()//计算金价
+			},
+			//输入的克重值
+			gram(val){
+				var str = clearNoNum(val,2);
+				this.order.applyWeight=str
+				this.gram=str
 			},
 			index(){ //监听一共上传了多少张确定添加图片是否显示
 				if(this.index>=9){
@@ -540,6 +565,7 @@
             	if(res.code==100){
             		this.order.checkType=res.content.productName
             		this.order.applyWeight=res.content.applyWeight
+            		this.gram=res.content.applyWeight
 					this.order.brandType=res.content.brandType
 					//如果是自定义的品牌，就将brandType的值赋值成brandName的值
 					if(this.order.brandType==10 && res.content.brandName){
@@ -575,17 +601,17 @@
 			},
 			 //提交订单
             submitBuyBackOrder(){
-				if(this.order.applyWeight==0){
-					Toast({
-						message:'克重不能为0',
-						position: 'bottom'
-					})
+				if(this.order.applyWeight==''){
+					Toast('克重不能为空')
+					return
+				}else if(this.order.applyWeight==0){
+					Toast('克重不能为0')
+					return
+				}else if(this.order.applyWeight>10000){
+					this.greater_show=true
 					return
 				}else if( this.order.images.length==0 ){
-					Toast({
-						message:'至少上传一张存金图片',
-						position: 'bottom'
-					})
+					Toast('至少上传一张存金图片')
 					return
 				}
     			if(!this.token){
@@ -778,7 +804,15 @@
 		left: 0;
 	}
 }
-.item_row_2,.item_row_3{
+.item_row_2{
+	margin-left: 4%;
+	width: 92%;
+	background-position: right .37rem;
+    background-repeat: no-repeat;
+    background-size: .15rem;
+	position: relative;
+}
+.item_row_3{
 	margin-left: 4%;
 	width: 92%;
 	background-image: url(../../images/right_jian.png);
@@ -791,11 +825,22 @@
     height: 1.1rem;
     line-height: 1.1rem;
 }
-.item_row_2>span:nth-child(2){
+/* .item_row_2>span:nth-child(2){
     float: right;
     height: 1.1rem;
     line-height: 1.1rem;
     padding-right: .4rem;
+} */
+.item_row_2>span:nth-child(2){
+	float: right;
+    height: 1.1rem;
+    width: .7rem;
+    line-height: 1.1rem;
+    text-align: left;
+    background-image: url('../../images/input_gram.png');
+    background-size: 38%;
+    background-position: .35rem center;
+    background-repeat: no-repeat;
 }
 .item_row_3>span:nth-child(2){
 	float: right;
@@ -860,8 +905,8 @@
 	float:left;
 }
 .add_img_label>div>span{
-display: inline-block;
-width: 100%;
+	display: inline-block;
+	width: 100%;
 }
 .add_img_label>div>span:nth-child(2){
 	margin-top: .1rem;
@@ -926,11 +971,6 @@ width: 100%;
     padding-left: .84rem;
     margin-top: 2.69rem;
     text-align: left;
-    /* background-image: url(../../images/gantanhao.png); */
-	/* background-position: 2.1rem .1rem;
-    background-repeat: no-repeat; */
-    /* background-size: .27rem; */
-
 }
 /*弹出的输入层*/
 .stor_box{
@@ -1052,5 +1092,89 @@ width: 100%;
 	width: 100%;
 	position: absolute;
 	top: 10%;
+}
+.input_gram{
+	width: 70%;
+	height: .40rem;
+	font-size: .32rem;
+	margin-top: .34rem;
+	text-align: right;
+	float:right;
+	padding-right:0.1rem;
+}
+.tip_gram_less{
+	color:#FF6D39;
+	font-size:.22rem;
+	background-color:#f5f5f5;
+	height: .58rem;
+	line-height: .58rem;
+	background-image:url("../../images/gantanhao.png");
+	background-repeat: no-repeat;
+    background-position: .25rem 0.15rem;
+    background-size: .23rem;
+    padding-left: .65rem;
+}
+.tip_gram_greater{
+	color:#FF6D39;
+	font-size:.22rem;
+	background-color:#f5f5f5;
+	height: .88rem;
+	background-image:url("../../images/gantanhao.png");
+	background-repeat: no-repeat;
+    background-position: .25rem 0.15rem;
+    background-size: .23rem;
+    padding-left: .65rem;
+	padding-top:.12rem;
+	padding-bottom:.12rem;
+}
+/*克重大于10000克的提示信息*/
+.cover{
+	width: 100%;
+	min-height: 100vh;
+	background-color:rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top:0;
+	z-index: 100;
+}
+.pop_message_box{
+	width: 4.9rem;
+	height: 3.33rem;
+	background-color:#fff;
+	position: absolute;
+	left:50%;
+	margin-left:-2.45rem;
+	margin-top:-1.15rem;
+	top:50%;
+	border-radius:4px;
+}
+.pop_title{
+	line-height: .8rem;
+    font-size: .32rem;
+    font-weight: 500;
+    color: rgba(51,51,51,1);
+    text-align: center;
+    padding-top: .15rem;
+}
+.pop_message{
+	font-size:.26rem;
+	font-weight:330;
+	color:#333;
+	line-height:.4rem;
+	padding:0 .25rem 0 .25rem;
+}
+.pop_bottom{
+	width: 100%;
+	height: .88rem;
+	position: absolute;
+	bottom:0;
+}
+.pop_bottom_left,.pop_bottom_right{
+	width: 50%;
+	float: left;
+	font-size:.34rem;
+	font-weight:400;
+	color:rgba(237,168,53,1);
+	line-height: .88rem;
+	text-align:center;
 }
 </style>

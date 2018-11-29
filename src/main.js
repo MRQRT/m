@@ -21,10 +21,10 @@ import RavenVue from 'raven-js/plugins/vue'
 const sentyDSN = 'https://1752029d7b2c4e41a1931380eb2ff5dc@sentry.au32.cn/6';
 process.env.NODE_ENV === 'production' && window.location.host == "m.au32.cn" && Raven.config(sentyDSN,
 {
-    environment: 'm.au32.cn'
+    environment: 'prod'
 },
 {
-    release:'m@3.1.0'
+    release:'3.1.0'
 })
 .addPlugin(RavenVue, Vue)
 .install()

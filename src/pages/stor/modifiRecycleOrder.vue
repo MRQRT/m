@@ -16,10 +16,17 @@
 					<span>黄金类型</span>
 					<span class="item_row_1_unchecked" :class="{'item_row_1_checked':order.checkType==item.name}" @click="checkTypeFun(item.id,item.name,index)" v-for="(item, index) in productType" :key="index">{{item.name}}</span>
 				</content>
-				<content class="item_row item_row_2" @click="checkGramFun()">
+				<content class="item_row item_row_2">
 					<span>黄金克重</span>
-					<span>{{order.applyWeight | formatWeight}}克</span>
+					<!-- <span>{{order.applyWeight | formatWeight}}克</span> -->
+					<span>克</span>
+					<input type="text" v-model="gram" class="input_gram">
 				</content>
+				<div v-show="gram<10" class="tip_gram_less">小于10克需承担运保费</div>
+				<div v-show="gram>10000" class="tip_gram_greater">
+					<p>最大输入克重为10000克</p>
+					<p>若您有更大需求请联系客服：400-8196-199</p>
+				</div>
 				<content class="item_row item_row_3" @click="checkBrandFun()">
 					<span>选择品牌</span>
 					<span><span style="color:#999999;" v-show="checkBrand">选填</span><span v-show="!checkBrand"  style="color:#333333;">{{order.brandType | brandTran}}</span></span>
@@ -169,7 +176,8 @@
 								brandName: '',	//存金品牌自己自定义的
 							  productName: '', //存金类型
 								   images: [],//存金实物图片本地地址（有正式ip 有base64）
-	   			 			},
+								},
+						  gram: '',//用户手动输入的克重值
 		       	 estimatePrice: null, //预估金价
 				         files: [], // 文件缓存（上传图片）
       			         index: 0, // 序列号 可记录一共上传了多少张
@@ -178,7 +186,7 @@
 						   url: '',//重新选择idCard图片的地址
 					  btn_lock: '',//频繁操作开关
 				   AndroVerson: checkAndroAgent(),
-				     iosVerson: iosVersion(),
+					 iosVerson: iosVersion(),
  			}
 		},
 		created(){
@@ -243,6 +251,12 @@
 				this.order.applyWeight = val
 				Number(val)<10?this.weight_show=true:this.weight_show=false
 				this.orderChange()//计算金价
+			},
+			//输入的克重值
+			gram(val){
+				var str = clearNoNum(val,2);
+				this.order.applyWeight=str
+				this.gram=str
 			},
 			index(){ //监听一共上传了多少张确定添加图片是否显示
 				if(this.index>=9){
@@ -709,6 +723,7 @@
 					this.order.isCash=res.content.isCash
 					this.order.productId=res.content.productId
 					this.order.applyWeight=res.content.applyWeight+''
+					this.gram=res.content.applyWeight+''
 					this.set_initRulerData(this.order.applyWeight)
 					this.order.productName=res.content.productName
 					//初始化brandArray
@@ -988,10 +1003,17 @@
 		left: 0;
 	}
 }
-.item_row_2,.item_row_3{
+.item_row_3{
 	margin-left: 4%;
 	width: 92%;
 	background-image: url(../../images/right_jian.png);
+	background-position: right .4rem;
+    background-repeat: no-repeat;
+    background-size: .15rem;
+}
+.item_row_2{
+	margin-left: 4%;
+	width: 92%;
 	background-position: right .4rem;
     background-repeat: no-repeat;
     background-size: .15rem;
@@ -1435,5 +1457,50 @@ strong{
 .txt{
 	margin-left:.48rem;
 	color: rgb(171, 171, 171)
+}
+.input_gram{
+	width: 70%;
+	height: .40rem;
+	font-size: .32rem;
+	margin-top: .34rem;
+	text-align: right;
+	float:right;
+	padding-right:.1rem;
+}
+.item_row_2>span:nth-child(2){
+	float: right;
+    height: 1.1rem;
+    width: .7rem;
+    line-height: 1.1rem;
+    text-align: left;
+    background-image: url('../../images/input_gram.png');
+    background-size: 38%;
+    background-position: .35rem center;
+    background-repeat: no-repeat;
+}
+.tip_gram_less{
+	color:#FF6D39;
+	font-size:.22rem;
+	background-color:#f5f5f5;
+	height: .58rem;
+	line-height: .58rem;
+	background-image:url("../../images/gantanhao.png");
+	background-repeat: no-repeat;
+    background-position: .25rem 0.15rem;
+    background-size: .23rem;
+    padding-left: .65rem;
+}
+.tip_gram_greater{
+	color:#FF6D39;
+	font-size:.22rem;
+	background-color:#f5f5f5;
+	height: .88rem;
+	background-image:url("../../images/gantanhao.png");
+	background-repeat: no-repeat;
+    background-position: .25rem 0.15rem;
+    background-size: .23rem;
+    padding-left: .65rem;
+	padding-top:.12rem;
+	padding-bottom:.12rem;
 }
 </style>
