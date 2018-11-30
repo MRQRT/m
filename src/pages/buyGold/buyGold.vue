@@ -176,11 +176,8 @@
 	    </mt-popup>
 	</div>
 </template>
-<script type="text/javascript" src="@/plugins/swiper.min.js"></script>
 <script>
 import headTop from '../../components/header/head.vue'
-// import Swiper from 'swiper'
-import '@/style/swiper.min.css'
 import { queryNews,getLimit,queryGoods,queryMessagUnreadCount,queryRegularProduct,queryRegularProductHasLogin,allTradeWeight,queryRecycleOrderRead,confirmationResult } from '@/service/getData.js'
 import message from '@/images/message.png'
 import message2 from '@/images/message2.png'
@@ -213,13 +210,6 @@ export default {
       gram:null,//克
       hasActivity:false,//有没有活动
       logo:logo,
-    swiperOption: {
-		          pagination: '.swiper-pagination',
-		 paginationClickable: false,
-		              effect: 'fade',
-		   paginationElement: 'li',
-			        autoplay: 3000,
-		  },
 		  orderDetail:null,//用户要确认的订单
 		  noReadArr:[],//待用户确认未读的订单
 		  popupVisibleReport:false,//弹窗是否出现
@@ -426,10 +416,9 @@ export default {
     	banner_swiper(){
     		var swiper = new Swiper('.swiper-container-1', {
             	pagination: '.swiper-pagination',
-            	// paginationClickable: true,
-            	// loop:true,
+            	loop:true,
             	speed: 400,
-            	// autoplay: 3000,
+            	autoplay: 2000,
             	paginationElement : 'li',
         	});
     	},
@@ -530,6 +519,8 @@ export default {
 		this.allTradeWeight();
 		this.token ? this.queryRegularProductHasLogin() : this.queryRegularProduct();
 		this.token ? this.queryMessagUnreadCount() :'';
+		this.banner_swiper();
+		
     },
     deactivated: function () {
     	document.onscroll=null;
@@ -781,7 +772,6 @@ export default {
 	}
 	.infor_Entr_left{
 		font-family: "Cursive";
-		display: inline-block;
 		font-size: .35rem;
 		width: .75rem;
 		line-height: .35rem;

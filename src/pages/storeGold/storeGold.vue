@@ -140,7 +140,7 @@ export default {
     		var swiper = new Swiper('.swiper-container-1', {
             	loop:true,
             	speed: 400,
-            	autoplay: 3000,
+            	autoplay: 2000,
         	});
     	},
 		//跳转实时金价
@@ -183,7 +183,8 @@ export default {
 	activated: function () {
 		this.token ? this.queryMessagUnreadCount() :this.hasUnread=false;
 	    document.onscroll=this.changeHead;
-	    document.ontouchmove=this.changeHead;
+		document.ontouchmove=this.changeHead;
+		this.banner_swiper();
     },
     deactivated: function () {
     	document.onscroll=null;
