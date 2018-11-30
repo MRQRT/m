@@ -47,7 +47,6 @@
 						</div>
 					</content>
 				</div>
-
 				<!-- 选择图片 -->
 				<h3 class="title_two">存金图片<span style="color:#999999;font-size: .28rem;">（请上传实物、发票等相关图片,最多9张）</span></h3>
 				<div class="uploadPho_photo">

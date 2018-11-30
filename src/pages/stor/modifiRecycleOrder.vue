@@ -126,6 +126,18 @@
 				</section>
 			</div>
 		</mt-popup>
+		<!-- 克重大于10000克提示框 -->
+		<section class="cover" v-show="tips">
+			<div class="pop_message_box">
+				<p class="pop_title">提示</p>
+				<section class="pop_message">您输入的克重超过最大回收克重10000克，请重新输入回收克重，若您有更大需求请联系客服400-8196-199。</section>
+				<div class="line"></div>
+				<section class="pop_bottom">
+					<span class="pop_bottom_left" @click="rewrite">重试</span>
+					<span class="pop_bottom_right"><a href="tel:4008196199">联系客服</a></span>
+				</section>
+			</div>
+		</section>
 	</div>
 </template>
 <script type="text/javascript">
@@ -187,6 +199,8 @@
 					  btn_lock: '',//频繁操作开关
 				   AndroVerson: checkAndroAgent(),
 					 iosVerson: iosVersion(),
+				  greater_show: false,//输入克重大于10000克的提示信息开关
+				          tips: false,
  			}
 		},
 		created(){
@@ -551,6 +565,9 @@
 					this.popupVisible=false
 				}
 			},
+			rewrite(){
+				this.tips=false;
+			},
 			//关闭弹框
 			close_pop(){
 				if(this.order.applyWeight==''){
@@ -613,23 +630,20 @@
 				if(this.url){ //更改证件照
 					this.order.idPic=this.url
 				}
-				if(this.order.applyWeight==0){
-					Toast({
-						message:'克重不能为0',
-						position: 'bottom'
-					})
+				if(this.order.applyWeight==''){
+					Toast('克重不能为空')
 					return
-				}else if( this.order.picUrls.length==0 ){
-					Toast({
-						message:'至少上传一张存金图片',
-						position: 'bottom'
-					})
+				}else if(this.order.applyWeight==0){
+					Toast('克重不能为0')
+					return
+				}else if(this.order.applyWeight>10000){
+					this.tips=true
+					return
+				}else if(this.order.picUrls.length==0){
+					Toast('至少上传一张存金图片')
 					return
 				}else if(!this.direct && !this.isHasBank){
-					Toast({
-        				message: '请先绑定银行卡',
-        				position: 'bottom',
-            		})
+					Toast('请先绑定银行卡')
 					return
             	// }else if( this.hasUploadPhoto && this.photo=='' && this.url==''){
             	// 	Toast({
@@ -1502,5 +1516,71 @@ strong{
     padding-left: .65rem;
 	padding-top:.12rem;
 	padding-bottom:.12rem;
+}
+/*克重大于10000克的提示信息*/
+.cover{
+	width: 100%;
+	min-height: 100vh;
+	background-color:rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top:0;
+	z-index: 100;
+}
+.pop_message_box{
+	width: 4.9rem;
+	height: 3.33rem;
+	background-color:#fff;
+	position: absolute;
+	left:50%;
+	margin-left:-2.45rem;
+	margin-top:-1.15rem;
+	top:50%;
+	border-radius:4px;
+}
+.pop_title{
+	line-height: .8rem;
+    font-size: .32rem;
+    font-weight: 500;
+    color: rgba(51,51,51,1);
+    text-align: center;
+    padding-top: .15rem;
+}
+.pop_message{
+	font-size:.26rem;
+	font-weight:330;
+	color:#333;
+	line-height:.4rem;
+	padding:0 .25rem 0 .25rem;
+	margin-bottom: .31rem;
+}
+.pop_bottom{
+	width: 100%;
+	height: .88rem;
+	position: absolute;
+	bottom:0;
+}
+.pop_bottom_left,.pop_bottom_right{
+	width: 50%;
+	float: left;
+	font-size:.34rem;
+	font-weight:400;
+	color:rgba(237,168,53,1);
+	line-height: .88rem;
+	text-align:center;
+}
+.pop_bottom_right>a{
+	color:rgba(237,168,53,1);
+}
+.pop_bottom:before{
+	content:'';
+	display: inline-block;
+	height: .88rem;
+	position: absolute;
+	right:50%;
+	top:0; 
+	border-right:1px solid #dddddd;
+    transform: scaleX(0.5);
+    transform-origin:0 0;
+    overflow: hidden;
 }
 </style>
